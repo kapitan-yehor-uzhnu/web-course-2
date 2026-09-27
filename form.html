@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Бронювання квитка — Кінотеатр «Кіносвіт»</title>
+    <link rel="icon" href="favicon.png" />
+  </head>
+  <body>
+    <header>
+      <img src="images/logo.png" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
+      <h1>Кінотеатр «Кіносвіт»</h1>
+      <nav aria-label="Головне меню">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="index.html#concept">Про кінотеатр</a></li>
+          <li><a href="about.html">Про проєкт</a></li>
+          <li><a href="form.html">Бронювання</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Форма бронювання квитка</h1>
+      <p>
+        Заповніть цю форму, щоб забронювати місце на обраний сеанс у
+        кінотеатрі «Кіносвіт». Після відправлення форми ми надішлемо
+        підтвердження бронювання з номером замовлення на вказану вами
+        електронну пошту, а оплатити квиток можна буде онлайн або
+        безпосередньо в касі кінотеатру перед сеансом.
+      </p>
+
+      <form action="/submit" method="post">
+        <!-- method="post": кожне надсилання створює окреме бронювання,
+             тож дані не можна залишати в URL, а випадкове дублювання
+             запиту при оновленні сторінки (F5) має бути виключене -->
+
+        <fieldset>
+          <legend>Дані клієнта</legend>
+
+          <p>
+            <label for="fullname">Прізвище та ім'я</label><br />
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              placeholder="Петренко Іван"
+            />
+          </p>
+
+          <p>
+            <label for="email">Електронна пошта</label><br />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="ivan.petrenko@example.com"
+            />
+          </p>
+
+          <p>
+            <label for="phone">Телефон</label><br />
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+380671234567"
+            />
+          </p>
+
+          <p>
+            <label for="visit-date">Дата візиту</label><br />
+            <input type="date" id="visit-date" name="visit_date" />
+          </p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Деталі бронювання</legend>
+
+          <p>
+            <label for="session">Фільм і сеанс</label><br />
+            <select id="session" name="session">
+              <option value="">— оберіть —</option>
+              <option value="night-journeys">«Нічні подорожі крізь зоряні простори» — 20.09, 19:00</option>
+              <option value="last-lighthouse">«Останній маяк» — 21.09, 18:30</option>
+              <option value="coffee-rain">«Кава з видом на дощ» — 22.09, 20:00</option>
+              <option value="city-flight">«Політ над містом» — 23.09, 17:00</option>
+            </select>
+          </p>
+
+          <p>
+            <label for="tickets">Кількість квитків</label><br />
+            <input
+              type="number"
+              id="tickets"
+              name="tickets"
+              min="1"
+              max="10"
+              placeholder="2"
+            />
+          </p>
+
+          <p>Зал:</p>
+          <p>
+            <label for="hall-great">
+              <input type="radio" id="hall-great" name="hall" value="great" checked />
+              Великий зал
+            </label>
+          </p>
+          <p>
+            <label for="hall-chamber">
+              <input type="radio" id="hall-chamber" name="hall" value="chamber" />
+              Камерний зал
+            </label>
+          </p>
+          <p>
+            <label for="hall-family">
+              <input type="radio" id="hall-family" name="hall" value="family" />
+              Родинний зал
+            </label>
+          </p>
+
+          <p>
+            <label for="seat">Місце</label><br />
+            <select id="seat" name="seat">
+              <option value="">— оберіть —</option>
+              <option value="A1">Ряд A, місце 1</option>
+              <option value="A2">Ряд A, місце 2</option>
+              <option value="A3">Ряд A, місце 3</option>
+              <option value="B1">Ряд B, місце 1</option>
+              <option value="B2">Ряд B, місце 2</option>
+              <option value="B3">Ряд B, місце 3</option>
+            </select>
+          </p>
+
+          <p>Додаткові послуги:</p>
+          <p>
+            <label for="extra-popcorn">
+              <input type="checkbox" id="extra-popcorn" name="extras" value="popcorn" />
+              Попкорн
+            </label>
+          </p>
+          <p>
+            <label for="extra-glasses">
+              <input type="checkbox" id="extra-glasses" name="extras" value="glasses3d" />
+              3D-окуляри
+            </label>
+          </p>
+          <p>
+            <label for="extra-drink">
+              <input type="checkbox" id="extra-drink" name="extras" value="drink" />
+              Напій (кола/сік)
+            </label>
+          </p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Додатково</legend>
+
+          <p>
+            <label for="comment">Коментар (необов'язково)</label><br />
+            <textarea
+              id="comment"
+              name="comment"
+              rows="4"
+              placeholder="Наприклад: прохання щодо доступу для людей з інвалідністю"
+            ></textarea>
+          </p>
+
+          <p>
+            <label for="consent">
+              <input type="checkbox" id="consent" name="consent" value="agreed" />
+              Я погоджуюся з правилами й умовами обробки персональних даних
+            </label>
+          </p>
+        </fieldset>
+
+        <p>
+          <button type="submit">Забронювати</button>
+          <button type="reset">Скинути форму</button>
+        </p>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
+      <p>Виконав: Капітан Єгор, група 1</p>
+    </footer>
+  </body>
+</html>
