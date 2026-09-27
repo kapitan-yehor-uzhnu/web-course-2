@@ -4,18 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Про проєкт — Кіносвіт</title>
-    <link rel="icon" href="images/favicon.png" />
+    <link rel="icon" href="favicon.png" />
   </head>
   <body>
-    <!-- Шапка сторінки -->
-    <header>
-      <h1 id="top">Про проєкт «Кіносвіт»</h1>
-      <p><a href="index.html">На головну</a></p>
+    <!-- Шапка сторінки: той самий каркас, що на index.html і catalog.html -->
+    <header id="top">
+      <img src="images/logo.png" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
+      <h1>Про проєкт «Кіносвіт»</h1>
+      <nav aria-label="Головне меню">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="index.html#concept">Про кінотеатр</a></li>
+          <li><a href="about.html">Про проєкт</a></li>
+          <li><a href="form.html">Бронювання</a></li>
+        </ul>
+      </nav>
     </header>
 
     <main>
-      <!-- Зміст сторінки -->
-      <nav id="contents">
+      <!-- Зміст сторінки: перелік розділів як звичайний список, без вкладеного nav -->
+      <section id="contents">
         <h2>Зміст</h2>
         <ul>
           <li><a href="#goal">Мета проєкту</a></li>
@@ -24,7 +33,7 @@
           <li><a href="#tech">Технології</a></li>
           <li><a href="#author">Автор</a></li>
         </ul>
-      </nav>
+      </section>
 
       <!-- Секція: мета проєкту -->
       <section id="goal">
@@ -79,6 +88,7 @@
     <!-- Підвал сторінки -->
     <footer>
       <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
+      <p>Виконав: Капітан Єгор, група 1</p>
     </footer>
   </body>
 </html>
