@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&subset=cyrillic&display=swap');
+
+/*
+ * Проєкт:   Кінотеатр «Кіносвіт»
+ * Варіант:  4
+ * Автор:    Капітан Єгор, група 1
+ * Дата:     03.10.2026
+ */
+
+:root {
+  --color-brand: hsl(225 24% 11%);
+  --color-accent: hsl(39 94% 59%);
+  --color-bg: hsl(225 28% 7%);
+  --color-surface: hsl(225 22% 12%);
+  --color-surface-raised: hsl(225 19% 16%);
+  --color-text: hsl(38 25% 92%);
+  --color-muted: hsl(220 10% 67%);
+  --color-rating: hsl(42 100% 63%);
+  --color-duration: hsl(190 65% 72%);
+  --radius: 14px;
+  --space: 1rem;
+  --shadow: 0 8px 24px rgb(0 0 0 / 28%);
+  /* Одна гарнітура на весь сайт (2 накреслення: 400 і 700) + системний моноширинний fallback. */
+  --font-body: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 106.25%; /* 17px при стандартних 16px браузера */
+  line-height: 1.65;
+}
+
+p {
+  max-width: 65ch;
+}
+
+body > header,
+body > footer {
+  padding: var(--space) max(var(--space), calc((100% - 1100px) / 2));
+  background: var(--color-brand);
+}
+
+body > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space);
+  border-bottom: 1px solid var(--color-surface-raised);
+}
+
+body > header > img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-accent);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.375rem;
+}
+
+body > header h1 {
+  margin: 0;
+}
+
+nav {
+  width: 100%;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-brand);
+}
+
+main,
+body > aside {
+  width: min(1100px, calc(100% - 2 * var(--space)));
+  margin: 2rem auto;
+}
+
+main > img {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+section,
+article,
+body > aside,
+form,
+#contents {
+  margin-block: 1.5rem;
+  padding: calc(var(--space) * 1.5);
+  border: 1px solid var(--color-surface-raised);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  /* Якщо --shadow не оголошено, браузер використає тінь із запасного значення. */
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+article > header {
+  padding: 0;
+  background: transparent;
+}
+
+article img,
+figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+blockquote {
+  margin-inline: 0;
+  padding: var(--space);
+  border-left: 4px solid var(--color-accent);
+  background: var(--color-surface-raised);
+  color: var(--color-muted);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--color-text);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-surface-raised);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--color-surface-raised);
+}
+
+caption {
+  padding: var(--space);
+  color: var(--color-muted);
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  border: 1px solid var(--color-surface);
+  text-align: left;
+}
+
+thead {
+  background: var(--color-brand);
+}
+
+th {
+  color: var(--color-accent);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rating {
+  color: var(--color-rating);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.duration {
+  color: var(--color-duration);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+time,
+small,
+figcaption {
+  color: var(--color-muted);
+}
+
+details {
+  margin-block: 0.75rem;
+  padding: var(--space);
+  border-radius: var(--radius);
+  background: var(--color-surface-raised);
+}
+
+summary,
+dt,
+legend {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+dd {
+  margin-bottom: 0.5rem;
+}
+
+fieldset {
+  margin-block: var(--space);
+  padding: var(--space);
+  border: 1px solid var(--color-surface-raised);
+  border-radius: var(--radius);
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--color-muted);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--color-accent);
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-brand);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+  background: var(--color-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+body > footer {
+  margin-top: auto;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+body > footer p {
+  margin: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  body > header {
+    justify-content: center;
+    text-align: center;
+  }
+
+  nav ul {
+    justify-content: center;
+  }
+
+  section,
+  article,
+  body > aside,
+  form,
+  #contents {
+    padding: var(--space);
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
