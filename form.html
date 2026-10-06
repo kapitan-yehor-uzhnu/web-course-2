@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/styles.css" />
     <title>Бронювання квитка — Кінотеатр «Кіносвіт»</title>
-    <link rel="icon" href="images/favicon.png" />
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
     <header>
-      <img src="images/logo.png" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
+      <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
       <h1>Кінотеатр «Кіносвіт»</h1>
       <nav aria-label="Головне меню">
         <ul>
           <li><a href="index.html">Головна</a></li>
+          <li><a href="index.html#poster-banner">Афіша тижня</a></li>
           <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="form.html" class="current">Бронювання</a></li>
           <li><a href="index.html#concept">Про кінотеатр</a></li>
           <li><a href="about.html">Про проєкт</a></li>
-          <li><a href="form.html">Бронювання</a></li>
         </ul>
       </nav>
     </header>
@@ -91,7 +92,7 @@
               id="visit-date"
               name="visit_date"
               required
-              min="2026-09-27"
+              min="2026-10-07"
               max="2026-12-31"
             />
           </p>
@@ -104,10 +105,17 @@
             <label for="session">Фільм і сеанс</label><br />
             <select id="session" name="session" required>
               <option value="">— оберіть —</option>
-              <option value="night-journeys">«Нічні подорожі крізь зоряні простори» — 20.09, 19:00</option>
-              <option value="last-lighthouse">«Останній маяк» — 21.09, 18:30</option>
-              <option value="coffee-rain">«Кава з видом на дощ» — 22.09, 20:00</option>
-              <option value="city-flight">«Політ над містом» — 23.09, 17:00</option>
+              <option value="interstellar">«Інтерстеллар» — 07.10, 19:00</option>
+              <option value="inception">«Початок» — 08.10, 18:30</option>
+              <option value="titanic">«Титанік» — 09.10, 20:00</option>
+              <option value="avatar">«Аватар» — 10.10, 17:00</option>
+              <option value="dark-knight">«Темний лицар» — 11.10, 19:30</option>
+              <option value="blade-runner-2049">«Той, що біжить по лезу 2049» — 12.10, 20:00</option>
+              <option value="dune">«Дюна» — 13.10, 18:00</option>
+              <option value="matrix">«Матриця» — 14.10, 19:00</option>
+              <option value="mad-max">«Шалений Макс: Дорога гніву» — 15.10, 21:00</option>
+              <option value="gravity">«Гравітація» — 16.10, 17:30</option>
+              <option value="heart-of-the-beast">«Серце звіра» — 17.10, 19:00</option>
             </select>
           </p>
 

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <!-- Одне зерно попкорну: кілька кіл. Спершу товстий контур, зверху — заливка,
+         тому внутрішні лінії між колами зникають і лишається «хмаринка». -->
+    <g id="kernel">
+      <g fill="#c99a26">
+        <circle cx="0" cy="-16" r="21" />
+        <circle cx="-19" cy="0" r="20" />
+        <circle cx="19" cy="-2" r="20" />
+        <circle cx="-8" cy="17" r="19" />
+        <circle cx="12" cy="16" r="18" />
+      </g>
+      <g fill="#f8de8a">
+        <circle cx="0" cy="-16" r="15" />
+        <circle cx="-19" cy="0" r="14" />
+        <circle cx="19" cy="-2" r="14" />
+        <circle cx="-8" cy="17" r="13" />
+        <circle cx="12" cy="16" r="12" />
+        <circle cx="0" cy="2" r="16" />
+      </g>
+      <path d="M -10 -4 q 8 -9 18 -3" fill="none" stroke="#c99a26" stroke-width="5" stroke-linecap="round" />
+    </g>
+    <clipPath id="bucket">
+      <path d="M 135 210 L 465 210 L 428 530 Q 300 556 172 530 Z" />
+    </clipPath>
+  </defs>
+
+  <!-- фон -->
+  <rect width="600" height="600" rx="90" fill="#d9dadc" />
+
+  <!-- попкорн: задні зерна першими, передні — поверх -->
+  <use xlink:href="#kernel" href="#kernel" transform="translate(235 120) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(300 95) rotate(20) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(365 118) rotate(-15) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(185 165) rotate(35) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(420 160) rotate(60) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(268 160) rotate(-30) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(335 158) rotate(45) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(180 190) rotate(-10) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(422 190) rotate(15) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(220 205) rotate(70) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(300 200) scale(1.35)" />
+  <use xlink:href="#kernel" href="#kernel" transform="translate(385 205) rotate(-50) scale(1.35)" />
+
+  <!-- відро в смужку -->
+  <g clip-path="url(#bucket)">
+    <rect x="100" y="200" width="400" height="360" fill="#ffffff" />
+    <g fill="#e52d2d">
+      <path d="M 135 210 L 178 210 L 196 560 L 165 560 Z" />
+      <path d="M 220 210 L 262 210 L 268 560 L 232 560 Z" />
+      <path d="M 304 210 L 346 210 L 340 560 L 304 560 Z" />
+      <path d="M 388 210 L 430 210 L 412 560 L 376 560 Z" />
+      <path d="M 466 210 L 500 210 L 470 560 L 440 560 Z" />
+    </g>
+    <!-- тінь справа й світлий відблиск -->
+    <path d="M 410 210 L 480 210 L 440 560 L 330 560 Q 405 470 410 210 Z" fill="#6e0d0d" opacity="0.2" />
+    <path d="M 360 230 Q 362 420 300 528" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.35" />
+  </g>
+  <path d="M 135 210 L 465 210 L 428 530 Q 300 556 172 530 Z" fill="none" stroke="#8e1616" stroke-width="9" stroke-linejoin="round" />
+
+  <!-- білий обідок -->
+  <path d="M 120 196 Q 300 172 480 196 L 480 214 Q 300 236 120 214 Z" fill="#ffffff" stroke="#8e1616" stroke-width="9" stroke-linejoin="round" />
+</svg>

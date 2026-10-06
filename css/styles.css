@@ -46,6 +46,9 @@ p {
   max-width: 65ch;
 }
 
+/* ===== Наскрізна шапка й горизонтальне меню (пункт 5) ===== */
+
+/* 5.5 Шапка й підвал однакові на всіх сторінках: спільний фон і відступи */
 body > header,
 body > footer {
   padding: var(--space) max(var(--space), calc((100% - 1100px) / 2));
@@ -90,31 +93,48 @@ body > header h1 {
   margin: 0;
 }
 
-nav {
+body > header nav {
   width: 100%;
 }
 
-nav ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+/* 5.2 Список <ul> → горизонтальне меню: без маркерів і лівого відступу.
+   5.3 Фон меню кольором --color-brand */
+body > header nav ul {
   margin: 0;
-  padding: 0;
+  padding-left: 0;
+  border: 1px solid var(--color-surface-raised);
+  border-radius: var(--radius);
+  background: var(--color-brand);
   list-style: none;
 }
 
-nav a {
+/* 5.2 Пункти меню стають в один рядок */
+body > header nav li {
   display: inline-block;
-  padding: 0.45rem 0.75rem;
+}
+
+/* 5.2 inline-block + padding: клікабельна вся область пункту, а не лише текст.
+   :any-link — щоб це правило не перебивалося загальними a:link / a:visited нижче */
+body > header nav a:any-link {
+  display: inline-block;
+  padding: 0.6rem 1rem;
   border-radius: var(--radius);
   color: var(--color-text);
   text-decoration: none;
 }
 
-nav a:hover,
-nav a:focus-visible {
+/* 5.3 Зміна фону пункту при наведенні (і при фокусі з клавіатури) */
+body > header nav a:hover,
+body > header nav a:focus-visible {
+  background: var(--color-surface-raised);
+  color: var(--color-accent);
+}
+
+/* 5.4 Поточна сторінка: клас current переїжджає між сторінками, вигляд — контрастний */
+body > header nav a.current {
   background: var(--color-accent);
   color: var(--color-brand);
+  font-weight: 700;
 }
 
 main,
@@ -157,6 +177,15 @@ figure img {
   border-radius: var(--radius);
 }
 
+#poster-banner figure {
+  margin: 0;
+}
+
+#poster-banner img {
+  display: block;
+  width: 100%;
+}
+
 blockquote {
   margin-inline: 0;
   padding: var(--space);
@@ -165,22 +194,126 @@ blockquote {
   color: var(--color-muted);
 }
 
-a {
-  color: var(--color-accent);
-}
-
-a:hover,
-a:focus-visible {
-  color: var(--color-text);
-}
-
 hr {
   border: 0;
   border-top: 1px solid var(--color-surface-raised);
 }
 
+/* ===================================================================
+   Обов'язковий набір селекторів (пункт 8)
+   =================================================================== */
+
+/* --- 8.5 Стани посилань у порядку LVHFA (:link → :visited → :hover → :focus-visible → :active) ---
+   Порядок критичний, бо всі п'ять правил мають однакову специфічність і перемагає нижче
+   записане, тож у іншому порядку, наприклад, :visited перекрив би :hover. */
+a:link {
+  color: var(--color-accent);
+}
+
+a:visited {
+  color: hsl(30 60% 68%);
+}
+
+a:hover {
+  color: var(--color-text);
+}
+
+a:focus-visible {
+  color: var(--color-text);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+a:active {
+  color: hsl(39 94% 45%);
+}
+
+/* --- 8.4 Атрибутний селектор + 8.2 псевдоелемент ::after ---
+   a[href^="http"] — посилання, адреса яких починається з http, тобто зовнішні
+   (на Вікіпедію на головній). Після них додаємо декоративну стрілку. */
+a[href^="http"]::after {
+  content: " ↗";
+  font-size: 0.85em;
+}
+
+/* --- 8.1 Псевдокласи (нові, яких не було в пунктах 5–7) --- */
+
+/* :first-child — перший крок у списку «Як забронювати квиток» (catalog.html).
+   У секції два списки <ol> (кроки 1–5 і 6–7), тому беремо лише перший із них
+   (:first-of-type) — інакше підсвітився б і крок 6 */
+#booking-steps ol:first-of-type > li:first-child {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* :last-child — останній абзац у підвалі («Виконав: …») дрібнішим шрифтом */
+body > footer p:last-child {
+  font-size: 0.875rem;
+}
+
+/* :checked — підпис обраного залу та обраних додаткових послуг (form.html) */
+label:has(> input:checked) {
+  color: var(--color-accent);
+}
+
+/* :target — секція about.html, до якої перейшли зі змісту (#goal, #tech, …) */
+section:target {
+  border-color: var(--color-accent);
+}
+
+/* --- 8.2 Псевдоелементи --- */
+
+/* ::before — декоративні лапки перед цитатою на головній */
+blockquote::before {
+  content: "❝";
+  display: block;
+  color: var(--color-accent);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* ::marker — номери кроків бронювання кольором акценту */
+#booking-steps li::marker {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ::first-letter — велика перша літера абзацу в секції «Наші зали» (index.html).
+   Не перший абзац «Про проєкт»: він починається з «, а лапка теж входить у ::first-letter */
+#halls > p::first-letter {
+  float: left;
+  margin-right: 0.4rem;
+  color: var(--color-accent);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* --- 8.3 Комбінатори --- */
+
+/* > (дитина): стиль отримують лише <ul>, які є прямими дітьми <aside>
+   на головній (список порад), а не вкладені глибше списки */
+body > aside > ul {
+  padding-left: 1.25rem;
+}
+
+/* + (наступний сусід): абзац, що стоїть одразу після заголовка <h2>, —
+   прибираємо йому верхній відступ, щоб текст був ближче до заголовка */
+h2 + p {
+  margin-top: 0;
+}
+
+/* ~ (усі наступні сусіди): усі абзаци, що йдуть після першого списку <ol>
+   у секції «Як забронювати квиток» (пояснення між двома списками) */
+#booking-steps ol ~ p {
+  color: var(--color-muted);
+}
+
+/* ===== Таблиця каталогу (LR2) — лише селектори за структурою, без класів ===== */
+
 table {
   width: 100%;
+  /* collapse: сусідні комірки ділять одну спільну лінію, інакше рамки подвоюються */
   border-collapse: collapse;
   overflow: hidden;
   border-radius: var(--radius);
@@ -188,20 +321,17 @@ table {
 }
 
 caption {
-  padding: var(--space);
-  color: var(--color-muted);
+  padding: 0 0 0.75rem;
+  color: var(--color-text);
+  font-weight: 700;
   text-align: left;
 }
 
 th,
 td {
   padding: 0.75rem;
-  border: 1px solid var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-muted) 25%, transparent);
   text-align: left;
-}
-
-thead {
-  background: var(--color-brand);
 }
 
 th {
@@ -209,6 +339,51 @@ th {
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+/* Контрастна шапка */
+thead th {
+  background: var(--color-brand);
+}
+
+/* Числові колонки «Рік» і «Тривалість» праворуч.
+   У кожному рядку tbody: 1 — th з назвою, 2 — жанр, 3 — рік, 4 — тривалість
+   (комірки з rowspan стоять у кінці рядка, тож порядок не зсувається).
+   У другому рядку шапки «Рік» і «Тривалість» — перші дві комірки. */
+tbody td:nth-child(3),
+tbody td:nth-child(4),
+thead tr:nth-child(2) th:nth-child(-n + 2) {
+  text-align: right;
+}
+
+/* Зебра: even — це те саме, що 2n.
+   n пробігає 0, 1, 2, 3, … → 2n дає 0, 2, 4, 6, …
+   Рядка з номером 0 немає, тому фон отримують 2-й, 4-й, 6-й, … рядки tbody,
+   а непарні (1-й, 3-й, …) лишаються з фоном таблиці --color-surface-raised. */
+tbody tr:nth-child(even) {
+  background: var(--color-surface);
+}
+
+/* Об'єднані комірки (режисер, кінокомпанія) охоплюють кілька рядків,
+   тому даємо їм власний фон, щоб зебра не «розрізала» їх навпіл */
+tbody td[rowspan] {
+  background: var(--color-surface-raised);
+}
+
+/* Підсвітка рядка під курсором.
+   Об'єднана комірка (rowspan) належить лише першому рядку, який вона охоплює,
+   тому підсвічуємо її окремо: якщо курсор на рядку, що стоїть на k рядків нижче,
+   а сама комірка охоплює більше ніж k рядків (:not відкидає коротші rowspan). */
+tbody tr:hover,
+tbody tr:hover > td[rowspan],
+tbody tr:has(+ tr:hover) > td[rowspan],
+tbody tr:has(+ tr + tr:hover) > td[rowspan]:not([rowspan="2"]),
+tbody tr:has(+ tr + tr + tr:hover) > td[rowspan]:not([rowspan="2"], [rowspan="3"]),
+tbody tr:has(+ tr + tr + tr + tr:hover) > td[rowspan]:not([rowspan="2"], [rowspan="3"], [rowspan="4"]),
+tbody tr:has(+ tr + tr + tr + tr + tr:hover) > td[rowspan]:not([rowspan="2"], [rowspan="3"], [rowspan="4"], [rowspan="5"]),
+tbody tr:has(+ tr + tr + tr + tr + tr + tr:hover) > td[rowspan]:not([rowspan="2"], [rowspan="3"], [rowspan="4"], [rowspan="5"], [rowspan="6"]),
+tbody tr:has(+ tr + tr + tr + tr + tr + tr + tr:hover) > td[rowspan]:not([rowspan="2"], [rowspan="3"], [rowspan="4"], [rowspan="5"], [rowspan="6"], [rowspan="7"]) {
+  background: color-mix(in srgb, var(--color-accent) 18%, var(--color-surface));
 }
 
 .rating {
@@ -247,11 +422,39 @@ dd {
   margin-bottom: 0.5rem;
 }
 
+/* ===== Форма бронювання (LR3) ===== */
+
 fieldset {
   margin-block: var(--space);
-  padding: var(--space);
+  padding: var(--space) calc(var(--space) * 1.5) calc(var(--space) * 1.5);
   border: 1px solid var(--color-surface-raised);
   border-radius: var(--radius);
+}
+
+legend {
+  padding-inline: 0.5rem;
+  font-size: 1.1rem;
+}
+
+label {
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Підписи до прапорців і перемикачів — звичайним шрифтом */
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+  font-weight: 400;
+}
+
+/* Обов'язкові поля: зірочка після підпису через ::after, без тексту в розмітці.
+   1) підпис, після якого (через <br>) іде обов'язкове поле;
+   2) підпис, всередині якого лежить обов'язковий прапорець (згода). */
+label:has(+ br + :is(input, select, textarea)[required])::after,
+label:has(> input[required])::after {
+  content: " *";
+  color: hsl(0 85% 65%);
 }
 
 input,
@@ -267,25 +470,90 @@ button {
   font: inherit;
 }
 
+/* Усі текстові поля, списки й textarea однакової ширини */
+input:not([type="checkbox"], [type="radio"]),
+select,
+textarea {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   accent-color: var(--color-accent);
 }
 
+/* Стан полів під час введення.
+   Чому :focus:invalid, а не просто :invalid?
+   :invalid спрацьовує одразу після завантаження: порожнє поле з required
+   вже вважається невалідним. Якщо прибрати :focus, уся форма була б червоною
+   ще до того, як користувач щось ввів, — це лякає й нічого не підказує.
+   З :focus колір з'являється лише в тому полі, де зараз курсор,
+   і змінюється просто під час друку: червоний — поки значення не підходить,
+   зелений — коли воно стало правильним.
+   Підсвічуємо так лише обов'язкові поля ([required]): необов'язкове порожнє поле
+   завжди «валідне» і без цього обмеження ставало б зеленим від самого кліку. */
+input[required]:not([type="checkbox"], [type="radio"]):focus:invalid,
+select[required]:focus:invalid,
+textarea[required]:focus:invalid {
+  border-color: hsl(0 85% 65%);
+  outline-color: hsl(0 85% 65%);
+  background: hsl(0 45% 18%);
+}
+
+input[required]:not([type="checkbox"], [type="radio"]):focus:valid,
+select[required]:focus:valid,
+textarea[required]:focus:valid {
+  border-color: hsl(140 55% 55%);
+  outline-color: hsl(140 55% 55%);
+  background: hsl(140 35% 15%);
+}
+
+/* Кнопки: розрізняємо за атрибутом type, без класів */
 button,
-input[type="submit"],
-input[type="reset"] {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-  color: var(--color-brand);
+a.button {
   cursor: pointer;
   font-weight: 700;
 }
 
-button:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover {
+/* Акцентна — відправити */
+button[type="submit"],
+a.button {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-brand);
+}
+
+button[type="submit"]:hover,
+a.button:hover,
+a.button:focus-visible {
   background: var(--color-text);
+  color: var(--color-brand);
+}
+
+/* Нейтральна — скинути */
+button[type="reset"] {
+  border-color: var(--color-muted);
+  background: transparent;
+  color: var(--color-muted);
+}
+
+button[type="reset"]:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+/* Посилання, оформлене як кнопка */
+a.button {
+  display: inline-block;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--color-accent);
+  border-radius: calc(var(--radius) / 2);
+  text-decoration: none;
 }
 
 :focus-visible {
@@ -293,6 +561,7 @@ input[type="reset"]:hover {
   outline-offset: 3px;
 }
 
+/* 5.5 Підвал — однаковий на всіх сторінках */
 body > footer {
   margin-top: auto;
   color: var(--color-muted);
@@ -303,14 +572,44 @@ body > footer p {
   margin: 0.25rem;
 }
 
+/* ===================================================================
+   Демонстрація специфічності (пункт 9)
+   =================================================================== */
+/* Елемент: заголовок картки фільму на головній —
+   <section id="concept"> → <article> → <header> → <h3>«Інтерстеллар»</h3>.
+
+   Претенденти на колір заголовка картки:
+
+   h3                        → (0,0,1)  0 id, 0 класів/псевдокласів, 1 тег (h3)
+   article:first-of-type h3  → (0,1,2)  0 id, 1 псевдоклас (:first-of-type), 2 теги (article, h3)
+   #concept h3               → (1,0,1)  1 id (#concept), 0 класів, 1 тег (h3)  ← перемагає
+
+   Порівнюємо трійки зліва направо, як номер версії:
+   у #concept h3 одиниця в першій колонці (id), а в інших двох там 0,
+   тому кількість класів і тегів далі вже не має значення.
+   Скільки б класів чи псевдокласів я не додав, вони не наздоженуть один id —
+   саме тому id для стилів не використовують: перебити таке правило потім дуже важко.
+*/
+/* h3                       { color: var(--color-accent); } */
+/* article:first-of-type h3 { color: var(--color-muted); } */
+#concept h3                 { color: var(--color-duration); }
+
+/* Inline-стиль у розмітці переміг би всі три правила:
+   <h3 style="color: hotpink;">«Інтерстеллар»</h3>
+   Атрибут style має вищий рівень, ніж будь-який селектор (його специфічність
+   записують як (1,0,0,0) — окрема колонка перед id), тож навіть #concept h3 програє.
+   Це поганий спосіб виграти: стиль змішується з розміткою, його не можна
+   перевикористати чи змінити з styles.css (лише через !important), і щоб змінити колір,
+   доведеться правити кожну сторінку окремо. */
+
 @media (max-width: 600px) {
   body > header {
     justify-content: center;
     text-align: center;
   }
 
-  nav ul {
-    justify-content: center;
+  body > header nav ul {
+    text-align: center;
   }
 
   section,

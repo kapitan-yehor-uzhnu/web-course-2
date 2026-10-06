@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <!-- біло-чорні смуги для верхньої й нижньої планок -->
+    <pattern id="stripes" width="80" height="60" patternUnits="userSpaceOnUse" patternTransform="skewX(-35)">
+      <rect width="80" height="60" fill="#151515" />
+      <rect width="40" height="60" fill="#ffffff" />
+    </pattern>
+  </defs>
+
+  <!-- фон -->
+  <rect width="800" height="600" fill="#ffffff" />
+  <circle cx="400" cy="300" r="300" fill="#dcdedf" />
+
+  <!-- нижня (нерухома) планка зі смугами -->
+  <rect x="205" y="190" width="420" height="58" fill="url(#stripes)" stroke="#151515" stroke-width="8" />
+
+  <!-- верхня планка, відкрита під кутом -->
+  <g transform="rotate(-13 215 180)">
+    <rect x="205" y="122" width="430" height="56" rx="6" fill="url(#stripes)" stroke="#151515" stroke-width="8" />
+  </g>
+  <!-- шарнір -->
+  <rect x="195" y="160" width="70" height="88" rx="10" fill="#151515" />
+  <circle cx="215" cy="182" r="6" fill="#9a9a9a" />
+  <circle cx="215" cy="226" r="6" fill="#9a9a9a" />
+  <circle cx="245" cy="226" r="6" fill="#9a9a9a" />
+
+  <!-- дошка -->
+  <rect x="195" y="248" width="430" height="270" rx="8" fill="#151515" />
+
+  <!-- сітка -->
+  <g stroke="#ffffff" stroke-width="3">
+    <line x1="210" y1="300" x2="610" y2="300" />
+    <line x1="315" y1="300" x2="315" y2="382" />
+    <line x1="470" y1="300" x2="470" y2="382" />
+    <line x1="210" y1="382" x2="610" y2="382" />
+    <line x1="430" y1="382" x2="430" y2="414" />
+    <line x1="210" y1="414" x2="610" y2="414" />
+    <line x1="210" y1="446" x2="610" y2="446" />
+    <line x1="210" y1="474" x2="610" y2="474" />
+  </g>
+
+  <!-- підписи -->
+  <g fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="19">
+    <text x="212" y="292">PRODUCTION:</text>
+    <text x="232" y="322">SCENE</text>
+    <text x="370" y="322">TAKE</text>
+    <text x="514" y="322">ROLL</text>
+    <text x="212" y="405">DATE:</text>
+    <text x="440" y="405">SOUND:</text>
+    <text x="212" y="437">DIR:</text>
+    <text x="212" y="467">CAM:</text>
+  </g>
+
+  <!-- кольорові мітки -->
+  <rect x="215" y="484" width="88" height="24" fill="#3cae4a" />
+  <rect x="318" y="484" width="88" height="24" fill="#f2d43a" />
+  <rect x="421" y="484" width="88" height="24" fill="#d8392f" />
+  <rect x="524" y="484" width="88" height="24" fill="#3a78d0" />
+</svg>
