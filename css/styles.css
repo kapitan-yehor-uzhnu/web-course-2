@@ -17,6 +17,12 @@
   --color-muted: hsl(220 10% 67%);
   --color-rating: hsl(42 100% 63%);
   --color-duration: hsl(190 65% 72%);
+  --color-visited: hsl(30 60% 68%);
+  --color-active: hsl(39 94% 45%);
+  --color-error: hsl(0 85% 65%);
+  --color-error-bg: hsl(0 45% 18%);
+  --color-success: hsl(140 55% 55%);
+  --color-success-bg: hsl(140 35% 15%);
   --radius: 14px;
   --space: 1rem;
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
@@ -211,7 +217,7 @@ a:link {
 }
 
 a:visited {
-  color: hsl(30 60% 68%);
+  color: var(--color-visited);
 }
 
 a:hover {
@@ -225,7 +231,7 @@ a:focus-visible {
 }
 
 a:active {
-  color: hsl(39 94% 45%);
+  color: var(--color-active);
 }
 
 /* --- 8.4 Атрибутний селектор + 8.2 псевдоелемент ::after ---
@@ -233,7 +239,7 @@ a:active {
    (на Вікіпедію на головній). Після них додаємо декоративну стрілку. */
 a[href^="http"]::after {
   content: " ↗";
-  font-size: 0.85em;
+  font-size: 0.85rem;
 }
 
 /* --- 8.1 Псевдокласи (нові, яких не було в пунктах 5–7) --- */
@@ -392,7 +398,8 @@ tbody tr:has(+ tr + tr + tr + tr + tr + tr + tr:hover) > td[rowspan]:not([rowspa
   white-space: nowrap;
 }
 
-.duration {
+/* Тривалість — 4-та комірка рядка tbody (без класу в розмітці) */
+tbody td:nth-child(4) {
   color: var(--color-duration);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -454,7 +461,7 @@ label:has(> input[type="radio"]) {
 label:has(+ br + :is(input, select, textarea)[required])::after,
 label:has(> input[required])::after {
   content: " *";
-  color: hsl(0 85% 65%);
+  color: var(--color-error);
 }
 
 input,
@@ -495,22 +502,22 @@ input[type="radio"] {
    З :focus колір з'являється лише в тому полі, де зараз курсор,
    і змінюється просто під час друку: червоний — поки значення не підходить,
    зелений — коли воно стало правильним.
-   Підсвічуємо так лише обов'язкові поля ([required]): необов'язкове порожнє поле
-   завжди «валідне» і без цього обмеження ставало б зеленим від самого кліку. */
-input[required]:not([type="checkbox"], [type="radio"]):focus:invalid,
-select[required]:focus:invalid,
-textarea[required]:focus:invalid {
-  border-color: hsl(0 85% 65%);
-  outline-color: hsl(0 85% 65%);
-  background: hsl(0 45% 18%);
+   Зелений не вмикається для порожнього поля з підказкою (:placeholder-shown):
+   необов'язкове порожнє поле завжди «валідне» і інакше ставало б зеленим від самого кліку. */
+input:focus:invalid,
+select:focus:invalid,
+textarea:focus:invalid {
+  border-color: var(--color-error);
+  outline-color: var(--color-error);
+  background: var(--color-error-bg);
 }
 
-input[required]:not([type="checkbox"], [type="radio"]):focus:valid,
-select[required]:focus:valid,
-textarea[required]:focus:valid {
-  border-color: hsl(140 55% 55%);
-  outline-color: hsl(140 55% 55%);
-  background: hsl(140 35% 15%);
+input:focus:valid:not(:placeholder-shown),
+select:focus:valid,
+textarea:focus:valid:not(:placeholder-shown) {
+  border-color: var(--color-success);
+  outline-color: var(--color-success);
+  background: var(--color-success-bg);
 }
 
 /* Кнопки: розрізняємо за атрибутом type, без класів */
@@ -599,7 +606,7 @@ body > footer p {
    Атрибут style має вищий рівень, ніж будь-який селектор (його специфічність
    записують як (1,0,0,0) — окрема колонка перед id), тож навіть #concept h3 програє.
    Це поганий спосіб виграти: стиль змішується з розміткою, його не можна
-   перевикористати чи змінити з styles.css (лише через !important), і щоб змінити колір,
+   перевикористати чи змінити з styles.css (лише через позначку important), і щоб змінити колір,
    доведеться правити кожну сторінку окремо. */
 
 @media (max-width: 600px) {
