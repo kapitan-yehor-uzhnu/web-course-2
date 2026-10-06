@@ -26,8 +26,34 @@
   --radius: 14px;
   --space: 1rem;
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
+  --neu-dark: rgb(0 0 0 / 55%);
+  --neu-light: rgb(255 255 255 / 6%);
   /* Одна гарнітура на весь сайт (2 накреслення: 400 і 700) + системний моноширинний fallback. */
   --font-body: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* ===== Бонус 1. Світла тема — другий набір тих самих змінних =====
+   Сайт за замовчуванням темний, тому другою темою зроблено світлу.
+   Щоб увімкнути: <body class="light-theme">. */
+body.light-theme {
+  --color-brand: hsl(40 30% 90%);
+  --color-accent: hsl(28 90% 42%);
+  --color-bg: hsl(40 33% 96%);
+  --color-surface: hsl(40 40% 99%);
+  --color-surface-raised: hsl(40 22% 91%);
+  --color-text: hsl(225 30% 14%);
+  --color-muted: hsl(222 10% 40%);
+  --color-rating: hsl(35 90% 38%);
+  --color-duration: hsl(195 75% 30%);
+  --color-visited: hsl(22 55% 38%);
+  --color-active: hsl(28 90% 30%);
+  --color-error: hsl(0 70% 45%);
+  --color-error-bg: hsl(0 85% 95%);
+  --color-success: hsl(140 55% 30%);
+  --color-success-bg: hsl(140 50% 93%);
+  --shadow: 0 6px 18px rgb(0 0 0 / 10%);
+  --neu-dark: rgb(0 0 0 / 14%);
+  --neu-light: rgb(255 255 255 / 95%);
 }
 
 * {
@@ -431,28 +457,30 @@ dd {
 
 /* ===== Форма бронювання (LR3) ===== */
 
+/* Бонус 4. Вкладеність (nesting): legend описано всередині fieldset,
+   а варіант підпису для прапорців — усередині label через & */
 fieldset {
   margin-block: var(--space);
   padding: var(--space) calc(var(--space) * 1.5) calc(var(--space) * 1.5);
   border: 1px solid var(--color-surface-raised);
   border-radius: var(--radius);
-}
 
-legend {
-  padding-inline: 0.5rem;
-  font-size: 1.1rem;
+  & legend {
+    padding-inline: 0.5rem;
+    font-size: 1.1rem;
+  }
 }
 
 label {
   color: var(--color-text);
   font-weight: 700;
   cursor: pointer;
-}
 
-/* Підписи до прапорців і перемикачів — звичайним шрифтом */
-label:has(> input[type="checkbox"]),
-label:has(> input[type="radio"]) {
-  font-weight: 400;
+  /* Підписи до прапорців і перемикачів — звичайним шрифтом */
+  &:has(> input[type="checkbox"]),
+  &:has(> input[type="radio"]) {
+    font-weight: 400;
+  }
 }
 
 /* Обов'язкові поля: зірочка після підпису через ::after, без тексту в розмітці.
@@ -608,6 +636,53 @@ body > footer p {
    Це поганий спосіб виграти: стиль змішується з розміткою, його не можна
    перевикористати чи змінити з styles.css (лише через позначку important), і щоб змінити колір,
    доведеться правити кожну сторінку окремо. */
+
+/* ===================================================================
+   Бонусні завдання 2, 3, 5
+   =================================================================== */
+
+/* --- Бонус 2. :has() як «батьківський селектор» ---
+   Картка фільму на головній, у якій є ілюстрація (<img>), отримує акцентну рамку.
+   Картка без зображення («Титанік») лишається зі звичайною рамкою. */
+article:has(img) {
+  border: 2px solid var(--color-accent);
+}
+
+/* --- Бонус 3. Нюморфічна картка: блок «Корисні поради» на головній ---
+   Фон блока = фон сторінки; об'єм дають дві протилежні тіні:
+   темна знизу-справа і світла зверху-зліва. На :active тіні стають inset — картка «втискається». */
+body > aside {
+  border-color: transparent;
+  background: var(--color-bg);
+  box-shadow:
+    10px 10px 22px var(--neu-dark),
+    -10px -10px 22px var(--neu-light);
+  transition: box-shadow 0.2s;
+}
+
+body > aside:active {
+  box-shadow:
+    inset 8px 8px 18px var(--neu-dark),
+    inset -8px -8px 18px var(--neu-light);
+}
+
+/* --- Бонус 5. Власні маркери списку на головній через ::marker --- */
+body > aside li::marker {
+  color: var(--color-accent);
+  font-size: 1.25rem;
+}
+
+/* Для порівняння — той самий ефект через list-style: none + ::before (не застосовано):
+body > aside ul { list-style: none; }
+body > aside li::before {
+  content: "•";
+  display: inline-block;
+  width: 1.25rem;
+  margin-left: -1.25rem;
+  color: var(--color-accent);
+  font-size: 1.25rem;
+}
+*/
 
 @media (max-width: 600px) {
   body > header {
