@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <clipPath id="frame">
+      <rect width="600" height="600" rx="70" />
+    </clipPath>
+    <radialGradient id="screen-glow" cx="0.5" cy="0.45" r="0.65">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#dfe6ee" />
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe9a8" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#ffe9a8" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="curtain" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4a1726" />
+      <stop offset="0.5" stop-color="#6a2335" />
+      <stop offset="1" stop-color="#4a1726" />
+    </linearGradient>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <!-- стіна й підлога -->
+    <rect width="600" height="600" fill="#262735" />
+    <rect y="330" width="600" height="270" fill="#1d1c26" />
+
+    <!-- бокові панелі біля екрана -->
+    <rect x="95" y="105" width="28" height="235" fill="#7a5640" />
+    <rect x="477" y="105" width="28" height="235" fill="#7a5640" />
+
+    <!-- стеля-арка -->
+    <path d="M 0 0 H 600 V 112 Q 300 40 0 112 Z" fill="#5c6e8a" />
+    <path d="M 0 0 H 600 V 30 Q 300 -10 0 30 Z" fill="#7d8ea8" />
+    <path d="M 0 112 Q 300 40 600 112" fill="none" stroke="#3d4a60" stroke-width="6" />
+
+    <!-- прожектори й промені -->
+    <path d="M 150 70 L 180 70 L 215 170 L 115 170 Z" fill="url(#beam)" />
+    <path d="M 285 62 L 315 62 L 350 165 L 250 165 Z" fill="url(#beam)" />
+    <path d="M 420 70 L 450 70 L 485 170 L 385 170 Z" fill="url(#beam)" />
+    <g fill="#fff3c4" stroke="#8a8f99" stroke-width="3">
+      <ellipse cx="165" cy="70" rx="20" ry="7" />
+      <ellipse cx="300" cy="62" rx="20" ry="7" />
+      <ellipse cx="435" cy="70" rx="20" ry="7" />
+    </g>
+
+    <!-- екран -->
+    <rect x="123" y="120" width="354" height="200" rx="6" fill="#141520" />
+    <rect x="131" y="128" width="338" height="184" rx="4" fill="url(#screen-glow)" stroke="#b9c0ca" stroke-width="4" />
+
+    <!-- ліва куліса зі складками -->
+    <path d="M 0 95 H 100 Q 92 200 112 330 H 0 Z" fill="url(#curtain)" />
+    <g fill="none" stroke="#3a1020" stroke-width="5" stroke-linecap="round">
+      <path d="M 25 100 Q 20 210 30 330" />
+      <path d="M 55 100 Q 48 210 62 330" />
+      <path d="M 82 100 Q 76 210 92 330" />
+    </g>
+    <path d="M 0 262 Q 55 250 108 268" fill="none" stroke="#d4aa4f" stroke-width="7" stroke-linecap="round" />
+
+    <!-- права куліса (дзеркально) -->
+    <g transform="translate(600 0) scale(-1 1)">
+      <path d="M 0 95 H 100 Q 92 200 112 330 H 0 Z" fill="url(#curtain)" />
+      <g fill="none" stroke="#3a1020" stroke-width="5" stroke-linecap="round">
+        <path d="M 25 100 Q 20 210 30 330" />
+        <path d="M 55 100 Q 48 210 62 330" />
+        <path d="M 82 100 Q 76 210 92 330" />
+      </g>
+      <path d="M 0 262 Q 55 250 108 268" fill="none" stroke="#d4aa4f" stroke-width="7" stroke-linecap="round" />
+    </g>
+
+    <!-- ряди крісел: дальні першими, ближні поверх -->
+    <g>
+      <rect x="3.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="78.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="8.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="16.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="15.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="88.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="163.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="93.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="101.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="100.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="173.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="248.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="178.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="186.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="185.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="258.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="333.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="263.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="271.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="270.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="343.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="418.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="348.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="356.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="355.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="428.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="503.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="433.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="441.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="440.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="513.1" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="588.0" y="367.9" width="8.9" height="37.2" rx="4.4" fill="#3a1414" />
+      <rect x="518.0" y="340.0" width="74.0" height="62.0" rx="13.3" fill="#9e2a2b" />
+      <rect x="526.9" y="348.7" width="56.2" height="49.6" rx="9.3" fill="#7d1f22" />
+      <rect x="525.4" y="343.1" width="59.2" height="4.3" rx="2.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="1.1" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="106.4" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="8.0" y="382.0" width="104.0" height="90.0" rx="18.7" fill="#9e2a2b" />
+      <rect x="20.5" y="394.6" width="79.0" height="72.0" rx="13.1" fill="#7d1f22" />
+      <rect x="18.4" y="386.5" width="83.2" height="6.3" rx="3.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="121.1" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="226.4" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="128.0" y="382.0" width="104.0" height="90.0" rx="18.7" fill="#9e2a2b" />
+      <rect x="140.5" y="394.6" width="79.0" height="72.0" rx="13.1" fill="#7d1f22" />
+      <rect x="138.4" y="386.5" width="83.2" height="6.3" rx="3.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="241.1" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="346.4" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="248.0" y="382.0" width="104.0" height="90.0" rx="18.7" fill="#9e2a2b" />
+      <rect x="260.5" y="394.6" width="79.0" height="72.0" rx="13.1" fill="#7d1f22" />
+      <rect x="258.4" y="386.5" width="83.2" height="6.3" rx="3.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="361.1" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="466.4" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="368.0" y="382.0" width="104.0" height="90.0" rx="18.7" fill="#9e2a2b" />
+      <rect x="380.5" y="394.6" width="79.0" height="72.0" rx="13.1" fill="#7d1f22" />
+      <rect x="378.4" y="386.5" width="83.2" height="6.3" rx="3.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="481.1" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="586.4" y="422.5" width="12.5" height="54.0" rx="6.2" fill="#3a1414" />
+      <rect x="488.0" y="382.0" width="104.0" height="90.0" rx="18.7" fill="#9e2a2b" />
+      <rect x="500.5" y="394.6" width="79.0" height="72.0" rx="13.1" fill="#7d1f22" />
+      <rect x="498.4" y="386.5" width="83.2" height="6.3" rx="3.2" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="8.8" y="525.5" width="20.4" height="114.0" rx="10.2" fill="#3a1414" />
+      <rect x="180.8" y="525.5" width="20.4" height="114.0" rx="10.2" fill="#3a1414" />
+      <rect x="20.0" y="440.0" width="170.0" height="190.0" rx="30.6" fill="#9e2a2b" />
+      <rect x="40.4" y="466.6" width="129.2" height="152.0" rx="21.4" fill="#7d1f22" />
+      <rect x="37.0" y="449.5" width="136.0" height="13.3" rx="6.7" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="203.8" y="525.5" width="20.4" height="114.0" rx="10.2" fill="#3a1414" />
+      <rect x="375.8" y="525.5" width="20.4" height="114.0" rx="10.2" fill="#3a1414" />
+      <rect x="215.0" y="440.0" width="170.0" height="190.0" rx="30.6" fill="#9e2a2b" />
+      <rect x="235.4" y="466.6" width="129.2" height="152.0" rx="21.4" fill="#7d1f22" />
+      <rect x="232.0" y="449.5" width="136.0" height="13.3" rx="6.7" fill="#c4474a" opacity="0.7" />
+    </g>
+    <g>
+      <rect x="398.8" y="525.5" width="20.4" height="114.0" rx="10.2" fill="#3a1414" />
+      <rect x="570.8" y="525.5" width="20.4" height="114.0" rx="10.2" fill="#3a1414" />
+      <rect x="410.0" y="440.0" width="170.0" height="190.0" rx="30.6" fill="#9e2a2b" />
+      <rect x="430.4" y="466.6" width="129.2" height="152.0" rx="21.4" fill="#7d1f22" />
+      <rect x="427.0" y="449.5" width="136.0" height="13.3" rx="6.7" fill="#c4474a" opacity="0.7" />
+    </g>
+
+    <!-- підстаканники між передніми кріслами -->
+    <ellipse cx="197" cy="490" rx="13" ry="6" fill="#1b1b1b" /><rect x="184" y="490" width="26" height="14" fill="#2a2a2a" />
+    <ellipse cx="403" cy="490" rx="13" ry="6" fill="#1b1b1b" /><rect x="390" y="490" width="26" height="14" fill="#2a2a2a" />
+  </g>
+</svg>

@@ -3,19 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
     <title>Кіносвіт — кінотеатр</title>
-    <link rel="icon" href="images/favicon.png" />
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
     <header>
-      <img src="images/logo.png" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
+      <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
       <h1>Кінотеатр «Кіносвіт»</h1>
       <nav aria-label="Головне меню">
         <ul>
-          <li><a href="index.html">Головна</a></li>
-          <li><a href="catalog.html">Каталог</a></li>
-          <li><a href="index.html#concept">Про кінотеатр</a></li>
+          <li><a href="index.html" class="current">Головна</a></li>
           <li><a href="index.html#poster-banner">Афіша тижня</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="form.html">Бронювання</a></li>
+          <li><a href="index.html#concept">Про кінотеатр</a></li>
           <li><a href="about.html">Про проєкт</a></li>
         </ul>
       </nav>
@@ -23,7 +25,7 @@
 
     <main>
       <img
-        src="images/cinema-hall.png"
+        src="images/cinema-hall.svg"
         alt="Зала кінотеатру «Кіносвіт» з великим світним екраном і рядами червоних крісел"
         width="298"
         height="298"
@@ -66,20 +68,20 @@
 
         <article>
           <header>
-            <h3>«Нічні подорожі крізь зоряні простори»</h3>
+            <h3>«Інтерстеллар»</h3>
           </header>
           <img
-            src="images/popcorn-bucket.png"
+            src="images/popcorn-bucket.svg"
             alt="Смугастий паперовий стаканчик попкорну — традиційна закуска перед переглядом фільму"
             width="298"
             height="298"
             loading="lazy"
           />
-          <p>s
-            Науково-фантастична драма про екіпаж міжзоряного корабля, який
-            прокидається за рік до прибуття на нову домівку людства. Фільм
-            поєднує масштабні космічні пейзажі з камерною історією про
-            довіру та самотність.
+          <p>
+            Науково-фантастична драма Крістофера Нолана про колишнього пілота
+            Купера, який разом із командою науковців вирушає крізь червоточину
+            шукати нову домівку для людства. Фільм поєднує масштабні космічні
+            пейзажі з камерною історією про батька й доньку.
           </p>
           <p>
             Показ супроводжується об'ємним звуком Dolby Atmos у Залі №1 —
@@ -89,19 +91,19 @@
           <footer>
             <p>
               Сеанс №A-102 · Ціна квитка: 180 грн · Вільних місць: 24 ·
-              Прем'єра: <time datetime="2026-09-20">20 вересня 2026</time>
+              Повторний прокат з <time datetime="2026-09-20">20 вересня 2026</time>
             </p>
           </footer>
         </article>
 
         <article>
           <header>
-            <h3>«Кава з видом на дощ»</h3>
+            <h3>«Титанік»</h3>
           </header>
           <p>
-            Легка романтична комедія про власницю маленької кав'ярні та
-            мандрівного фотографа, які випадково опиняються сусідами по
-            столику в дощовий вівторок.
+            Романтична драма Джеймса Кемерона про художника Джека та
+            аристократку Роуз, які знайомляться на борту «Титаніка» під час
+            його першого й останнього рейсу.
           </p>
           <footer>
             <p>
@@ -129,7 +131,16 @@
 
       <section id="poster-banner">
         <h2>Постер-банер</h2>
-        <p>Новинка тижня: «Нічні подорожі крізь зоряні простори»</p>
+        <figure>
+          <img
+            src="images/poster-banner.svg"
+            alt="Постер фільму «Серце звіра»: нічні засніжені гори Аляски, північне сяйво, місяць і силует німецької вівчарки"
+            width="1200"
+            height="500"
+            loading="lazy"
+          />
+          <figcaption>Фільм тижня: «Серце звіра»</figcaption>
+        </figure>
       </section>
     </main>
 

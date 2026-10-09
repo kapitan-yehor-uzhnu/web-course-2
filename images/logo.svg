@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="456" viewBox="0 0 460 456">
+  <defs>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#26406f" />
+      <stop offset="1" stop-color="#1a2d55" />
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb347" />
+      <stop offset="1" stop-color="#f07a12" />
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffd27a" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#f39a2b" stop-opacity="0.25" />
+    </linearGradient>
+    <clipPath id="globe">
+      <circle cx="230" cy="160" r="84" />
+    </clipPath>
+  </defs>
+
+  <!-- фон: темна підкладка й синя картка -->
+  <rect width="460" height="456" fill="#141f38" />
+  <rect x="22" y="22" width="416" height="412" rx="24" fill="url(#card)" stroke="#33508a" stroke-width="2" />
+
+  <!-- помаранчеві дуги навколо глобуса -->
+  <path d="M 140 245 A 112 112 0 1 1 336 210" fill="none" stroke="url(#orange)" stroke-width="16" stroke-linecap="round" />
+  <path d="M 158 268 A 128 128 0 0 1 112 130" fill="none" stroke="url(#orange)" stroke-width="7" stroke-linecap="round" opacity="0.8" />
+
+  <!-- промінь світла від камери до глобуса -->
+  <path d="M 214 268 L 246 268 L 290 205 L 170 205 Z" fill="url(#beam)" />
+
+  <!-- глобус: світло-блакитний океан, білі материки з синім контуром -->
+  <circle cx="230" cy="160" r="84" fill="#c9d8ee" />
+  <g clip-path="url(#globe)" fill="#ffffff" stroke="#1a2d55" stroke-width="4" stroke-linejoin="round">
+    <!-- Північна Америка -->
+    <path d="M 150 95 Q 175 80 205 92 Q 214 110 198 122 Q 190 140 172 146 Q 160 160 168 176 Q 150 170 146 150 Q 136 128 150 95 Z" />
+    <!-- Південна Америка -->
+    <path d="M 180 180 Q 198 182 204 200 Q 200 222 188 244 Q 178 230 176 210 Q 172 192 180 180 Z" />
+    <!-- Європа -->
+    <path d="M 232 92 Q 252 84 270 96 Q 266 110 252 112 Q 244 122 232 116 Q 226 104 232 92 Z" />
+    <!-- Африка -->
+    <path d="M 238 128 Q 262 124 276 140 Q 280 160 266 182 Q 256 200 248 196 Q 240 176 236 158 Q 230 142 238 128 Z" />
+    <!-- Азія -->
+    <path d="M 274 96 Q 300 98 312 118 Q 308 136 290 138 Q 280 126 272 116 Z" />
+  </g>
+  <circle cx="230" cy="160" r="84" fill="none" stroke="#ffffff" stroke-width="5" />
+
+  <!-- кіноплівка, що огортає глобус -->
+  <path d="M 128 196 Q 230 236 336 150" fill="none" stroke="#ffffff" stroke-width="31" stroke-linecap="round" />
+  <path d="M 128 196 Q 230 236 336 150" fill="none" stroke="#1a2d55" stroke-width="24" stroke-linecap="round" />
+  <path d="M 131 191 Q 231 230 331 148" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="6 6" />
+  <path d="M 127 201 Q 229 242 340 152" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="6 6" />
+
+  <!-- кінокамера -->
+  <rect x="176" y="268" width="88" height="54" rx="9" fill="#ffffff" />
+  <path d="M 264 284 L 292 270 L 292 320 L 264 306 Z" fill="#ffffff" />
+  <g stroke="#1a2d55" stroke-width="6" stroke-linecap="round">
+    <line x1="190" y1="284" x2="232" y2="284" />
+    <line x1="190" y1="296" x2="226" y2="296" />
+    <line x1="190" y1="308" x2="214" y2="308" />
+  </g>
+  <circle cx="248" cy="282" r="5" fill="#1a2d55" />
+
+  <!-- назва -->
+  <g fill="#ffffff" font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif" text-anchor="middle">
+    <text x="230" y="382" font-size="60" font-weight="900" letter-spacing="1">КІНОСВІТ</text>
+    <text x="230" y="418" font-size="30" font-weight="700" font-family="Arial, Helvetica, sans-serif">кінотеатр</text>
+  </g>
+</svg>
