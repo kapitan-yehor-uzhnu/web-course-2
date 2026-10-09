@@ -86,36 +86,47 @@
           </p>
 
           <p>
-            <label for="visit-date">Дата візиту</label><br />
+            <label for="visit-date">Дата візиту (сеансу)</label><br />
             <input
               type="date"
               id="visit-date"
               name="visit_date"
               required
-              min="2026-10-07"
+              min="2026-10-09"
               max="2026-12-31"
             />
           </p>
         </fieldset>
 
         <fieldset>
-          <legend>Деталі бронювання</legend>
+          <legend>Сеанс і квитки</legend>
 
           <p>
-            <label for="session">Фільм і сеанс</label><br />
-            <select id="session" name="session" required>
+            <label for="film">Фільм</label><br />
+            <select id="film" name="film" required>
               <option value="">— оберіть —</option>
-              <option value="interstellar">«Інтерстеллар» — 07.10, 19:00</option>
-              <option value="inception">«Початок» — 08.10, 18:30</option>
-              <option value="titanic">«Титанік» — 09.10, 20:00</option>
-              <option value="avatar">«Аватар» — 10.10, 17:00</option>
-              <option value="dark-knight">«Темний лицар» — 11.10, 19:30</option>
-              <option value="blade-runner-2049">«Той, що біжить по лезу 2049» — 12.10, 20:00</option>
-              <option value="dune">«Дюна» — 13.10, 18:00</option>
-              <option value="matrix">«Матриця» — 14.10, 19:00</option>
-              <option value="mad-max">«Шалений Макс: Дорога гніву» — 15.10, 21:00</option>
-              <option value="gravity">«Гравітація» — 16.10, 17:30</option>
-              <option value="heart-of-the-beast">«Серце звіра» — 17.10, 19:00</option>
+              <option value="interstellar">«Інтерстеллар»</option>
+              <option value="inception">«Початок»</option>
+              <option value="titanic">«Титанік»</option>
+              <option value="avatar">«Аватар»</option>
+              <option value="dark-knight">«Темний лицар»</option>
+              <option value="blade-runner-2049">«Той, що біжить по лезу 2049»</option>
+              <option value="dune">«Дюна»</option>
+              <option value="matrix">«Матриця»</option>
+              <option value="mad-max">«Шалений Макс: Дорога гніву»</option>
+              <option value="gravity">«Гравітація»</option>
+              <option value="heart-of-the-beast">«Серце звіра»</option>
+            </select>
+          </p>
+
+          <p>
+            <label for="session-time">Час сеансу</label><br />
+            <select id="session-time" name="session_time" required>
+              <option value="">— оберіть —</option>
+              <option value="10:00">10:00</option>
+              <option value="13:30">13:30</option>
+              <option value="17:00">17:00</option>
+              <option value="20:30">20:30</option>
             </select>
           </p>
 
@@ -132,40 +143,27 @@
             />
           </p>
 
-          <p>Зал:</p>
+          <p>Тип квитка:</p>
           <p>
-            <label for="hall-great">
-              <input type="radio" id="hall-great" name="hall" value="great" checked />
-              Великий зал
+            <label for="ticket-regular">
+              <input type="radio" id="ticket-regular" name="ticket_type" value="regular" checked />
+              Звичайний
             </label>
           </p>
           <p>
-            <label for="hall-chamber">
-              <input type="radio" id="hall-chamber" name="hall" value="chamber" />
-              Камерний зал
+            <label for="ticket-student">
+              <input type="radio" id="ticket-student" name="ticket_type" value="student" />
+              Студентський
             </label>
           </p>
           <p>
-            <label for="hall-family">
-              <input type="radio" id="hall-family" name="hall" value="family" />
-              Родинний зал
+            <label for="ticket-child">
+              <input type="radio" id="ticket-child" name="ticket_type" value="child" />
+              Дитячий
             </label>
           </p>
 
-          <p>
-            <label for="seat">Місце</label><br />
-            <select id="seat" name="seat" required>
-              <option value="">— оберіть —</option>
-              <option value="A1">Ряд A, місце 1</option>
-              <option value="A2">Ряд A, місце 2</option>
-              <option value="A3">Ряд A, місце 3</option>
-              <option value="B1">Ряд B, місце 1</option>
-              <option value="B2">Ряд B, місце 2</option>
-              <option value="B3">Ряд B, місце 3</option>
-            </select>
-          </p>
-
-          <p>Додаткові послуги:</p>
+          <p>Додаткові опції:</p>
           <p>
             <label for="extra-popcorn">
               <input type="checkbox" id="extra-popcorn" name="extras" value="popcorn" />
@@ -179,9 +177,9 @@
             </label>
           </p>
           <p>
-            <label for="extra-drink">
-              <input type="checkbox" id="extra-drink" name="extras" value="drink" />
-              Напій (кола/сік)
+            <label for="extra-aisle">
+              <input type="checkbox" id="extra-aisle" name="extras" value="aisle-seat" />
+              Місце біля проходу
             </label>
           </p>
         </fieldset>
@@ -190,8 +188,9 @@
           <legend>Додатково</legend>
 
           <p>
-            <label for="gift-code">Номер подарункового сертифіката (якщо є)</label><br />
-            <!-- pattern="CIN-\d{4}-[A-Z]\d{2}"
+            <label for="booking-code">Код бронювання (якщо змінюєте вже зроблене бронювання)</label><br />
+            <!-- Код бронювання глядач отримує в листі-підтвердженні після першого бронювання.
+                 pattern="CIN-\d{4}-[A-Z]\d{2}"
                  CIN       — буквальний префікс "CIN"
                  -         — буквальний дефіс
                  \d{4}     — рівно чотири цифри (рік)
@@ -201,11 +200,11 @@
                  Разом: CIN-2026-A17 -->
             <input
               type="text"
-              id="gift-code"
-              name="gift_code"
+              id="booking-code"
+              name="booking_code"
               placeholder="CIN-2026-A17"
               pattern="CIN-\d{4}-[A-Z]\d{2}"
-              title="Формат: CIN, дефіс, рік із чотирьох цифр, дефіс, одна велика літера ряду і двозначний номер місця, наприклад CIN-2026-A17"
+              title="Код із листа-підтвердження. Формат: CIN, дефіс, рік із чотирьох цифр, дефіс, велика літера ряду і двозначний номер місця, наприклад CIN-2026-A17"
             />
           </p>
 

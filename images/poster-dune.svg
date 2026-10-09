@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="600" viewBox="0 0 450 600">
+  <!-- Постер «Дюна» — вертикальний 3:4 -->
+  <defs>
+    <linearGradient id="dune-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3d7a3" />
+      <stop offset="1" stop-color="#e9a45c" />
+    </linearGradient>
+  </defs>
+  <rect width="450" height="600" fill="url(#dune-sky)" />
+  <!-- два місяці Арракіса -->
+  <circle cx="330" cy="110" r="38" fill="#fff3dc" opacity="0.9" />
+  <circle cx="385" cy="160" r="16" fill="#fff3dc" opacity="0.8" />
+  <!-- піщаний черв'як виринає з дюни -->
+  <path d="M 60 420 Q 70 250 170 230 Q 250 220 260 300" fill="none" stroke="#8a5a2b" stroke-width="44" stroke-linecap="round" />
+  <circle cx="262" cy="305" r="24" fill="#3b2412" />
+  <!-- дюни -->
+  <path d="M 0 400 Q 120 340 240 390 T 450 370 L 450 600 L 0 600 Z" fill="#d98a3d" />
+  <path d="M 0 470 Q 160 420 300 465 T 450 455 L 450 600 L 0 600 Z" fill="#b86a2a" />
+  <!-- маленька фігура на гребені -->
+  <g fill="#3b2412">
+    <circle cx="340" cy="434" r="5" />
+    <path d="M 335 440 L 345 440 L 348 462 L 332 462 Z" />
+  </g>
+  <text x="225" y="555" fill="#fff3dc" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700" text-anchor="middle" letter-spacing="14">ДЮНА</text>
+</svg>

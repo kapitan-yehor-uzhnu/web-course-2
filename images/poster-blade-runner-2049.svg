@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <!-- Постер «Той, що біжить по лезу 2049» — горизонтальний 16:9 -->
+  <defs>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b1d0e" />
+      <stop offset="0.55" stop-color="#d9772b" />
+      <stop offset="1" stop-color="#f3b45a" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#haze)" />
+  <!-- далекі хмарочоси -->
+  <g fill="#8a3f16" opacity="0.6">
+    <rect x="20" y="120" width="50" height="240" /><rect x="90" y="80" width="40" height="280" />
+    <rect x="150" y="140" width="60" height="220" /><rect x="430" y="100" width="45" height="260" />
+    <rect x="495" y="60" width="55" height="300" /><rect x="570" y="130" width="50" height="230" />
+  </g>
+  <!-- ближні будівлі -->
+  <g fill="#4a1f0a">
+    <rect x="0" y="210" width="80" height="150" /><rect x="110" y="180" width="70" height="180" />
+    <rect x="470" y="190" width="80" height="170" /><rect x="570" y="220" width="70" height="140" />
+  </g>
+  <!-- силует фігури в плащі -->
+  <g fill="#1d0c05">
+    <circle cx="320" cy="228" r="13" />
+    <path d="M 302 244 L 338 244 L 350 330 L 290 330 Z" />
+    <rect x="300" y="328" width="14" height="22" /><rect x="326" y="328" width="14" height="22" />
+  </g>
+  <rect y="350" width="640" height="10" fill="#1d0c05" />
+  <!-- назва — у центральній третині, яка лишається видимою після обрізання object-fit -->
+  <text x="320" y="52" fill="#fff4e0" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" text-anchor="middle" letter-spacing="1">ТОЙ, ЩО БІЖИТЬ</text>
+  <text x="320" y="80" fill="#fff4e0" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" text-anchor="middle" letter-spacing="1">ПО ЛЕЗУ</text>
+  <text x="320" y="124" fill="#fff4e0" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" text-anchor="middle" letter-spacing="6">2049</text>
+</svg>
