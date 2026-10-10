@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="640" height="360" viewBox="0 0 640 360">
   <!-- Постер «Той, що біжить по лезу 2049» — горизонтальний 16:9 -->
   <defs>
     <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">

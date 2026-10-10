@@ -50,6 +50,7 @@
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
   --neu-dark: rgb(0 0 0 / 55%);
   --neu-light: rgb(255 255 255 / 6%);
+  --banner-text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
   /* Одна гарнітура на весь сайт (2 накреслення: 400 і 700) + системний моноширинний fallback. */
   --font-body: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -76,6 +77,7 @@ body.light-theme {
   --shadow: 0 6px 18px rgb(0 0 0 / 10%);
   --neu-dark: rgb(0 0 0 / 14%);
   --neu-light: rgb(255 255 255 / 95%);
+  --banner-text-shadow: 0 1px 2px rgb(255 255 255 / 80%);
 }
 
 html {
@@ -103,6 +105,23 @@ body > header,
 body > footer {
   padding: var(--space-md) max(var(--space-md), calc((100% - var(--container-width)) / 2));
   background: var(--color-brand);
+}
+
+/* ===== Липка шапка (LR5) =====
+   Селектор body > header, а не просто header: інакше липкими стали б і заголовки
+   <header> усередині карток фільмів на головній.
+   Фон --color-brand непрозорий, тож прокручений вміст не просвічує крізь шапку.
+   Вертикальні відступи — var(--space-sm), горизонтальні вирівнюють вміст шапки
+   по ширині основного контейнера, як і раніше. */
+body > header {
+  position: sticky;
+  top: 0;
+  /* z-index працює лише для позиціонованих елементів (position ≠ static), тому
+     шапці потрібні обидва: position: sticky створює їй власний шар, а z-index: 10
+     піднімає цей шар над картками з position: relative, які інакше, ідучи в коді
+     пізніше, малювалися б поверх шапки під час прокручування. */
+  z-index: 10;
+  padding-block: var(--space-sm);
 }
 
 body > header {
@@ -151,16 +170,17 @@ body > header nav {
    5.3 Фон меню кольором --color-brand */
 body > header nav ul {
   margin: 0;
-  padding-left: 0;
+  padding: 0;
   border: 1px solid var(--color-surface-raised);
   border-radius: var(--radius);
   background: var(--color-brand);
   list-style: none;
 }
 
-/* 5.2 Пункти меню стають в один рядок */
+/* 5.2 Пункти меню стають в один рядок, з невеликим проміжком між «плитками» */
 body > header nav li {
   display: inline-block;
+  margin: var(--space-xs) 0 var(--space-xs) var(--space-xs);
 }
 
 /* 5.2 inline-block + padding: клікабельна вся область пункту, а не лише текст.
@@ -168,7 +188,10 @@ body > header nav li {
 body > header nav a:any-link {
   display: inline-block;
   padding: var(--space-sm) var(--space-md);
+  /* «Плитка»: власний фон і рамка, щоб пункт було видно як кнопку, а не голий текст */
+  border: 1px solid var(--color-surface-raised);
   border-radius: var(--radius);
+  background: var(--color-surface);
   color: var(--color-text);
   text-decoration: none;
 }
@@ -655,6 +678,122 @@ body > footer p {
    перевикористати чи змінити з styles.css (лише через позначку important), і щоб змінити колір,
    доведеться правити кожну сторінку окремо. */
 
+/* ===== Градієнтний банер на головній (LR5) ===== */
+.banner {
+  /* Не ширше 900px на широкому екрані й по центру */
+  width: min(100%, 900px);
+  margin: 0 auto;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg);
+  border-radius: var(--radius);
+  /* Читабельність на всій довжині градієнта: темний текст (--color-bg) зливався
+     з темним початком (--color-brand), а помаранчевий заголовок — з помаранчевим кінцем.
+     Тому текст світлий, а темна тінь не дає світлим літерам розчинитися
+     на яскравому кінці градієнта. */
+  color: var(--color-text);
+  text-shadow: var(--banner-text-shadow);
+  background-image: linear-gradient(120deg, var(--color-brand), var(--color-accent));
+}
+
+/* Заголовок банера бере колір банера, а не загальний помаранчевий колір h2 */
+.banner h2 {
+  margin: 0 0 var(--space-sm);
+  color: inherit;
+}
+
+.banner p {
+  margin: 0;
+}
+
+/* ===== Картки каталогу ===== */
+
+/* Контейнер карток. Поки що без Flexbox і Grid: картки — це inline-block,
+   тож стають у рядок, як слова в тексті, і переносяться, коли місце закінчується. */
+.cards {
+  margin-top: var(--space-md);
+}
+
+.card {
+  display: inline-block;
+  vertical-align: top;
+  width: var(--card-width);
+  margin: 0 var(--space-md) var(--space-lg) 0;
+  /* Відступи лише в .card__body: зображення має йти від краю до краю,
+     тому скидаємо padding, який article отримує від загального правила */
+  padding: 0;
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow);
+  /* overflow: hidden обрізає вміст (передусім зображення) по заокруглених кутах
+     border-radius, інакше прямокутні кути картинки вилазили б за межі картки. */
+  overflow: hidden;
+}
+
+/* Постер у картці: однакова висота для всіх карток, хоч вихідні файли різних пропорцій.
+   object-fit: cover заповнює всю рамку 100% × 170px, зберігаючи пропорції, а зайве обрізає;
+   object-position: center — обрізається порівну з обох боків, центр картинки лишається видимим. */
+.card__img {
+  /* img за замовчуванням рядковий (inline) елемент і стоїть на базовій лінії тексту,
+     тож під ним лишається кілька зайвих пікселів «під хвостики» літер;
+     display: block прибирає цей проміжок, і картинка щільно прилягає до .card__body */
+  display: block;
+  width: 100%;
+  height: 170px;
+  /* Скидаємо заокруглення із загального правила для article img:
+     кути картки й так обрізає overflow: hidden, а знизу картинка має бути прямою */
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Експеримент: без position: relative обидва бейджі злетіли у правий верхній кут
+   самої сторінки, поверх шапки, і лягли один на одного. Абсолютно позиціонований
+   елемент рахує top/right від найближчого предка з position, відмінним від static;
+   коли такого предка немає, точкою відліку стає початковий блок (сама сторінка),
+   тож бейджі й опинилися в її куті. */
+.card {
+  position: relative;
+}
+
+/* Бейдж «Прем'єра» / «Хіт прокату» — у правому верхньому куті картки, поверх постера.
+   position: absolute виймає його з потоку: картка не розтягується, текст не зсувається. */
+.card__badge {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-size: 0.8rem;
+  border-radius: 999px;
+}
+
+.card__body {
+  padding: var(--space-md);
+}
+
+/* Назва — рівно один рядок; те, що не вміщається, замінюють три крапки.
+   Потрібні всі три властивості разом: nowrap не дає тексту переноситися,
+   overflow: hidden ховає те, що вилізло за край, а text-overflow: ellipsis
+   малює «…» на місці обрізаного. */
+.card__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Відступ лише знизу: якщо в сусідніх елементів є і нижній, і верхній margin,
+     вони схлопуються (діє більший), і реальну відстань важко передбачити.
+     Коли margin тільки знизу, відстань між рядками картки — рівно var(--space-sm). */
+  margin: 0 0 var(--space-sm);
+  line-height: 1.3;
+}
+
+.card__meta,
+.card__id {
+  margin: 0 0 var(--space-sm);
+  line-height: 1.5;
+}
+
 /* ===================================================================
    Бонусні завдання 2, 3, 5
    =================================================================== */
@@ -725,3 +864,20 @@ body > aside li::before {
     overflow-x: auto;
   }
 }
+
+/* ===== Демонстрація: схлопування відступів ===== */
+
+/* Схлопування вертикальних відступів (margin collapse).
+   Якщо розкоментувати цей блок, відстань між рядками «рік · режисер» і «Код сеансу»
+   у картці буде НЕ 24+16=40px, а 24px: два вертикальні відступи, що стикаються,
+   не додаються, а зливаються в один — більший із двох (перевірено в DevTools).
+   Горизонтальні відступи так не поводяться, вони завжди додаються.
+   Саме тому в цій роботі всі вертикальні відступи задані тільки в один бік — знизу.
+
+   Чому приклад не на самих .card: картки тут — inline-block, а відступи
+   рядкових блоків не схлопуються ніколи. Те саме правило для .card дало 56px
+   (24 + 16 та ще й висота рядка), а якби картки були звичайними блоками — 24px.
+
+.card__meta { margin-bottom: 24px; }
+.card__meta + .card__id { margin-top: 16px; }
+*/
