@@ -8,7 +8,7 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <header>
+    <header id="top">
       <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
       <h1>Кінотеатр «Кіносвіт»</h1>
       <nav aria-label="Головне меню">
@@ -40,6 +40,11 @@
             <div class="card__body">
               <h3 class="card__title">Серце звіра</h3>
               <p class="card__meta">2026 · реж. Девід Ейр</p>
+              <p class="card__excerpt">
+                Колишній солдат і його пес-вівчарка лишаються самі серед
+                засніжених гір Аляски після аварії літака й мусять
+                протриматися до приходу рятувальників.
+              </p>
               <p class="card__id">Код сеансу: CIN-2026-A07</p>
             </div>
           </article>
@@ -55,6 +60,11 @@
             <div class="card__body">
               <h3 class="card__title">Той, що біжить по лезу 2049 (Blade Runner 2049)</h3>
               <p class="card__meta">2017 · реж. Дені Вільнев</p>
+              <p class="card__excerpt">
+                Офіцер поліції К натрапляє на давно поховану таємницю, яка
+                може зруйнувати крихкий порядок суспільства, і вирушає на
+                пошуки зниклого Ріка Декарда.
+              </p>
               <p class="card__id">Код сеансу: CIN-2026-B12</p>
             </div>
           </article>
@@ -70,11 +80,16 @@
             <div class="card__body">
               <h3 class="card__title">Шалений Макс: Дорога гніву (Mad Max: Fury Road)</h3>
               <p class="card__meta">2015 · реж. Джордж Міллер</p>
+              <p class="card__excerpt">
+                У випаленій пустелі Макс і Імператор Фуріоса тікають на
+                бойовій вантажівці від тирана Безсмертного Джо, рятуючи його
+                полонених дружин.
+              </p>
               <p class="card__id">Код сеансу: CIN-2026-C03</p>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card card--glass">
             <span class="card__badge">Хіт прокату</span>
             <img
               class="card__img"
@@ -86,6 +101,11 @@
             <div class="card__body">
               <h3 class="card__title">Дюна</h3>
               <p class="card__meta">2021 · реж. Дені Вільнев</p>
+              <p class="card__excerpt">
+                Юний Пол Атрід разом із родиною прибуває на пустельну планету
+                Арракіс — єдине джерело найціннішої речовини у Всесвіті, за
+                яку точиться смертельна боротьба.
+              </p>
               <p class="card__id">Код сеансу: CIN-2026-D21</p>
             </div>
           </article>
@@ -372,5 +392,7 @@
       <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
       <p>Виконав: Капітан Єгор, група 1</p>
     </footer>
+
+    <a class="to-top" href="#top" aria-label="Нагору">↑</a>
   </body>
 </html>
