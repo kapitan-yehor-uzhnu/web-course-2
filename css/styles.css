@@ -45,7 +45,7 @@
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --radius: 14px;
-  --container-width: 1100px;
+  --container-width: 1200px;
   /* Макет (LR6): кожен gap і кожна ширина треку сітки — лише через ці змінні */
   --gap: 1.25rem; /* єдиний проміжок для всіх сіток і flex-рядів */
   --min-col: 240px; /* мінімальна ширина колонки каталогу */
@@ -91,7 +91,15 @@ html {
   scroll-padding-top: 11rem;
 }
 
+/* ===== Притиснутий футер (LR6) =====
+   body — flex-колонка заввишки щонайменше з вікно: шапка, вміст, підвал.
+   Росте вміст — .layout на index/catalog або main на form/about — через flex: 1:
+   він забирає собі все вільне місце по висоті, і підвал опиняється внизу вікна.
+   height: 100% тут не підходить: він дорівнював би висоті вікна завжди, тож на довгій
+   сторінці вміст вилазив би з блока, а flex: 1 лише додає місце, коли його не вистачає. */
 body {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   margin: 0;
   background: var(--color-bg);
@@ -107,9 +115,9 @@ p {
 
 /* ===== Наскрізна шапка й горизонтальне меню (пункт 5) ===== */
 
-/* 5.5 Шапка й підвал однакові на всіх сторінках: спільний фон і відступи */
-body > header,
-body > footer {
+/* 5.5 Шапка однакова на всіх сторінках: фон на всю ширину,
+   а вміст вирівняно по ширині основного контейнера */
+body > header {
   padding: var(--space-md) max(var(--space-md), calc((100% - var(--container-width)) / 2));
   background: var(--color-brand);
 }
@@ -136,15 +144,24 @@ body > header {
   scroll-margin-top: 1000vh;
 }
 
-body > header {
+/* Шапка на Flexbox (LR6): два блоки — назва з логотипом ліворуч і меню праворуч.
+   Розсуває їх justify-content: space-between, а не float чи порожні відступи. */
+.site-header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-md);
+  justify-content: space-between;
+  gap: var(--gap);
   border-bottom: 1px solid var(--color-surface-raised);
 }
 
-body > header > img {
+/* Логотип і назва сайту — один блок, теж рядком через flex */
+.site-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.site-header__brand img {
   width: 76px;
   height: 76px;
   object-fit: contain;
@@ -174,13 +191,16 @@ body > header h1 {
   margin: 0;
 }
 
-body > header nav {
-  width: 100%;
-}
-
-/* 5.2 Список <ul> → горизонтальне меню: без маркерів і лівого відступу.
-   5.3 Фон меню кольором --color-brand */
-body > header nav ul {
+/* Меню на Flexbox: пункти стоять рядком, проміжки між ними дає gap на ul,
+   тож у li більше немає ні inline-block, ні margin.
+   Якщо поруч із назвою місця на всі пункти не вистачає, вони переносяться
+   на другий рядок, але лишаються притиснутими праворуч (flex-end).
+   Фон меню — --color-brand (LR4). */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-sm);
   margin: 0;
   padding: 0;
   border-radius: var(--radius);
@@ -188,16 +208,10 @@ body > header nav ul {
   list-style: none;
 }
 
-/* 5.2 Пункти меню стають в один рядок, з невеликим проміжком між «плитками» */
-body > header nav li {
-  display: inline-block;
-  margin: 0 var(--space-xs) var(--space-xs) 0;
-}
-
-/* 5.2 inline-block + padding: клікабельна вся область пункту, а не лише текст.
+/* Посилання — «плитки»: display: block і padding, тож клікабельна вся область пункту.
    :any-link — щоб це правило не перебивалося загальними a:link / a:visited нижче */
-body > header nav a:any-link {
-  display: inline-block;
+.menu a:any-link {
+  display: block;
   padding: var(--space-sm) var(--space-md);
   /* «Плитка»: власний фон і рамка, щоб пункт було видно як кнопку, а не голий текст */
   border: 1px solid var(--color-surface-raised);
@@ -208,21 +222,28 @@ body > header nav a:any-link {
 }
 
 /* 5.3 Зміна фону пункту при наведенні (і при фокусі з клавіатури) */
-body > header nav a:hover,
-body > header nav a:focus-visible {
+.menu a:hover,
+.menu a:focus-visible {
   background: var(--color-surface-raised);
   color: var(--color-accent);
 }
 
 /* 5.4 Поточна сторінка: клас current переїжджає між сторінками, вигляд — контрастний */
-body > header nav a.current {
+.menu a.current {
   background: var(--color-accent);
   color: var(--color-brand);
   font-weight: 700;
 }
 
-main,
-body > aside {
+/* На form.html і about.html .layout немає — росте сам <main> */
+body > main {
+  flex: 1;
+}
+
+/* Основний вміст: на catalog.html і index.html — сітка .layout,
+   на form.html і about.html — просто <main> одною колонкою */
+.layout,
+body > main {
   width: min(var(--container-width), calc(100% - 2 * var(--space-md)));
   /* Вертикальні відступи — тільки знизу; відступ від шапки дає padding, а не margin */
   margin: 0 auto var(--space-xl);
@@ -237,9 +258,121 @@ main > img {
   object-fit: cover;
 }
 
+/* ===== Макет сторінки (LR6): grid-template-areas =====
+   Шапка лишається ПОЗА .layout: липкий елемент «їздить» лише в межах свого
+   батька, і всередині сітки він був би заперт у своєму короткому рядку. */
+.layout {
+  /* Росте на всю вільну висоту body (див. «Притиснутий футер») */
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+  grid-template-areas:
+    "nav  main side"
+    "foot foot foot";
+  /* Самого flex: 1 мало: рядки сітки за замовчуванням auto, і рядок foot лишився б
+     одразу під вмістом. 1fr віддає все зайве місце рядку з вмістом, foot — по вмісту */
+  grid-template-rows: 1fr auto;
+  gap: var(--gap);
+  /* Бічні колонки не розтягуються на всю висоту каталогу, а мають висоту свого вмісту */
+  align-items: start;
+}
+
+/* Головна: дві колонки — вміст і поради, без бічної навігації */
+.layout--home {
+  grid-template-columns: 1fr var(--sidebar);
+  grid-template-areas:
+    "main side"
+    "foot foot";
+}
+
+.layout__nav    { grid-area: nav; }
+.layout__main   { grid-area: main; }
+.layout__aside  { grid-area: side; }
+.layout__footer { grid-area: foot; }
+
+/* Елемент сітки за замовчуванням не стискається вужче за свій вміст (min-width: auto),
+   тож широка таблиця розсунула б колонку 1fr. min-width: 0 дозволяє колонці
+   лишатися своєї ширини, а таблиця прокручується всередині своєї секції */
+.layout__main {
+  min-width: 0;
+}
+
+#movies-table {
+  overflow-x: auto;
+}
+
+/* Рубрики бічної навігації — стовпчик «плиток» */
+.layout__nav h2,
+.layout__aside h2 {
+  margin: 0 0 var(--space-md);
+  font-size: 1.25rem;
+}
+
+.layout__nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.layout__nav a:any-link {
+  display: block;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: calc(var(--radius) / 2);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.layout__nav a:hover,
+.layout__nav a:focus-visible {
+  background: var(--color-surface-raised);
+  color: var(--color-accent);
+}
+
+.layout__aside ol {
+  margin: 0 0 var(--space-md);
+  padding-left: var(--space-lg);
+}
+
+.layout__aside li {
+  margin-bottom: var(--space-xs);
+}
+
+.layout__aside p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+/* На вузькому екрані три колонки не вміщаються — зони стають одна під одною.
+   HTML не змінюється, переписується лише схема */
+@media (max-width: 900px) {
+  /* Росте рядок main, решта — по вмісту */
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "nav"
+      "main"
+      "side"
+      "foot";
+    grid-template-rows: auto 1fr auto auto;
+  }
+
+  .layout--home {
+    grid-template-areas:
+      "main"
+      "side"
+      "foot";
+    grid-template-rows: 1fr auto auto;
+  }
+}
+
 section,
 article,
-body > aside,
+.layout__nav,
+.layout__aside,
 form,
 #contents {
   margin-block: 0 var(--space-lg);
@@ -333,7 +466,7 @@ a[href^="http"]::after {
 }
 
 /* :last-child — останній абзац у підвалі («Виконав: …») дрібнішим шрифтом */
-body > footer p:last-child {
+.site-footer p:last-child {
   font-size: 0.875rem;
 }
 
@@ -377,9 +510,9 @@ blockquote::before {
 
 /* --- 8.3 Комбінатори --- */
 
-/* > (дитина): стиль отримують лише <ul>, які є прямими дітьми <aside>
-   на головній (список порад), а не вкладені глибше списки */
-body > aside > ul {
+/* > (дитина): стиль отримують лише <ul>, які є прямими дітьми блока порад
+   на головній, а не вкладені глибше списки */
+.tips > ul {
   padding-left: var(--space-lg);
 }
 
@@ -649,14 +782,23 @@ a.button {
   outline-offset: 3px;
 }
 
-/* 5.5 Підвал — однаковий на всіх сторінках */
-body > footer {
-  margin-top: auto;
+/* 5.5 Підвал — однаковий на всіх сторінках: на catalog.html і index.html він —
+   зона foot сітки макета, на form.html і about.html — звичайний блок по центру */
+.site-footer {
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  background: var(--color-brand);
   color: var(--color-muted);
   text-align: center;
 }
 
-body > footer p {
+body > .site-footer {
+  width: min(var(--container-width), calc(100% - 2 * var(--space-md)));
+  margin-inline: auto;
+  margin-bottom: var(--space-md);
+}
+
+.site-footer p {
   margin: 0 0 var(--space-xs);
 }
 
@@ -732,6 +874,10 @@ body > footer p {
 }
 
 .card {
+  /* Нутрощі картки — flex-колонка: зображення, текст і кнопка йдуть одне під одним,
+     а кнопку можна притиснути до низу через margin-top: auto */
+  display: flex;
+  flex-direction: column;
   /* margin обнуляємо: article отримує нижній відступ від загального правила,
      а в сітці відстань між картками задає лише gap */
   margin: 0;
@@ -809,6 +955,95 @@ body > footer p {
 .card__id {
   margin: 0 0 var(--space-sm);
   line-height: 1.5;
+}
+
+/* Рядок дій унизу картки: «Забронювати», а в першій картці ще й «Швидкий перегляд».
+   margin-top: auto забирає собі все вільне місце над рядком — так само, як
+   margin: 0 auto ділить вільне місце з боків і центрує блок, — тож рядок
+   опиняється в самому низу, на одній лінії в усіх картках ряду.
+   Притискаємо обгортку, а не кожну кнопку, щоб дві кнопки не билися за це місце. */
+.card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin: auto var(--space-md) var(--space-md);
+}
+
+/* Обидві кнопки ділять рядок порівну, а у вузькій картці переносяться одна під одну */
+.card__actions > * {
+  flex: 1 1 auto;
+}
+
+.card__action:any-link {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--color-accent);
+  color: var(--color-brand);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.card__action:hover,
+.card__action:focus-visible {
+  background: var(--color-text);
+  color: var(--color-brand);
+}
+
+/* «Швидкий перегляд» — другорядна дія, тому лише з рамкою, без заливки */
+.card__preview {
+  border-color: var(--color-accent);
+  background: transparent;
+  color: var(--color-accent);
+}
+
+.card__preview:hover,
+.card__preview:focus-visible {
+  background: var(--color-surface);
+}
+
+/* ===== Модальне вікно на <dialog> (LR6) =====
+   z-index тут не потрібен: showModal() виносить вікно у верхній шар (top layer),
+   який браузер малює поверх усієї сторінки, зокрема й липкої шапки, —
+   а шапка в LR5 жила у звичайному потоці, тому її доводилося піднімати z-index. */
+dialog {
+  width: min(90%, 420px);
+  padding: var(--space-lg);
+  border: none;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 35%);
+}
+
+/* Затемнення тла малює сам браузер — це псевдоелемент ::backdrop, окремого блока в HTML немає */
+dialog::backdrop {
+  background: rgb(0 0 0 / 55%);
+}
+
+/* Сам <dialog> не забороняє прокручувати сторінку позаду (перевірено: коліщатко
+   над затемненням гортало каталог). :modal — вікно, відкрите через showModal();
+   поки воно є на сторінці, ховаємо прокручування всього документа. */
+html:has(dialog:modal) {
+  overflow: hidden;
+}
+
+dialog h2 {
+  margin: 0 0 var(--space-xs);
+}
+
+dialog .details__id {
+  margin: 0 0 var(--space-md);
+  color: var(--color-muted);
+}
+
+dialog dl {
+  margin: 0 0 var(--space-lg);
+}
+
+dialog dd {
+  margin: 0 0 var(--space-sm);
 }
 
 /* ===================================================================
@@ -903,7 +1138,7 @@ body > header h1 {
 /* --- Бонус 3. Нюморфічна картка: блок «Корисні поради» на головній ---
    Фон блока = фон сторінки; об'єм дають дві протилежні тіні:
    темна знизу-справа і світла зверху-зліва. На :active тіні стають inset — картка «втискається». */
-body > aside {
+.tips {
   border-color: transparent;
   background: var(--color-bg);
   box-shadow:
@@ -912,21 +1147,21 @@ body > aside {
   transition: box-shadow 0.2s;
 }
 
-body > aside:active {
+.tips:active {
   box-shadow:
     inset 8px 8px 18px var(--neu-dark),
     inset -8px -8px 18px var(--neu-light);
 }
 
 /* --- Бонус 5. Власні маркери списку на головній через ::marker --- */
-body > aside li::marker {
+.tips li::marker {
   color: var(--color-accent);
   font-size: 1.25rem;
 }
 
 /* Для порівняння — той самий ефект через list-style: none + ::before (не застосовано):
-body > aside ul { list-style: none; }
-body > aside li::before {
+.tips ul { list-style: none; }
+.tips li::before {
   content: "•";
   display: inline-block;
   width: var(--space-lg);
@@ -945,17 +1180,22 @@ body > aside li::before {
 
   body > header {
     position: static;
-    justify-content: center;
+  }
+
+  /* На вузькому екрані назва й меню вже не вміщаються поруч — ставимо їх стовпчиком */
+  .site-header {
+    flex-direction: column;
     text-align: center;
   }
 
-  body > header nav ul {
-    text-align: center;
+  .menu {
+    justify-content: center;
   }
 
   section,
   article,
-  body > aside,
+  .layout__nav,
+  .layout__aside,
   form,
   #contents {
     padding: var(--space-md);
@@ -976,9 +1216,9 @@ body > aside li::before {
    Горизонтальні відступи так не поводяться, вони завжди додаються.
    Саме тому в цій роботі всі вертикальні відступи задані тільки в один бік — знизу.
 
-   Чому приклад не на самих .card: картки тут — inline-block, а відступи
-   рядкових блоків не схлопуються ніколи. Те саме правило для .card дало 56px
-   (24 + 16 та ще й висота рядка), а якби картки були звичайними блоками — 24px.
+   Чому приклад не на самих .card: картки — елементи сітки (у LR5 були inline-block),
+   а відступи grid- і inline-block-елементів не схлопуються ніколи. У LR5 те саме
+   правило для .card дало 56px (24 + 16 та ще й висота рядка), а не 24px.
 
 .card__meta { margin-bottom: 24px; }
 .card__meta + .card__id { margin-top: 16px; }

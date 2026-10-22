@@ -8,11 +8,13 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <header id="top">
-      <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
-      <h1>Кінотеатр «Кіносвіт»</h1>
+    <header id="top" class="site-header">
+      <div class="site-header__brand">
+        <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
+        <h1>Кінотеатр «Кіносвіт»</h1>
+      </div>
       <nav aria-label="Головне меню">
-        <ul>
+        <ul class="menu">
           <li><a href="index.html">Головна</a></li>
           <li><a href="index.html#poster-banner">Афіша тижня</a></li>
           <li><a href="catalog.html" class="current">Каталог</a></li>
@@ -23,523 +25,615 @@
       </nav>
     </header>
 
-    <main>
-      <!-- Картки фільмів (LR5) -->
-      <section class="catalog">
-        <h2>Каталог</h2>
-        <div class="cards">
-          <article class="card">
-            <span class="card__badge">Прем'єра</span>
-            <img
-              class="card__img"
-              src="images/poster-heart-of-the-beast.svg"
-              alt="Постер «Серце звіра»: засніжені гори Аляски під північним сяйвом і силует німецької вівчарки"
-              width="400"
-              height="600"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Серце звіра</h3>
-              <p class="card__meta">2026 · реж. Девід Ейр</p>
-              <p class="card__excerpt">
-                Колишній солдат і його пес-вівчарка лишаються самі серед
-                засніжених гір Аляски після аварії літака й мусять
-                протриматися до приходу рятувальників.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-A07</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-blade-runner-2049.svg"
-              alt="Постер «Той, що біжить по лезу 2049»: самотня фігура в плащі серед хмарочосів у помаранчевому смогу"
-              width="640"
-              height="360"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Той, що біжить по лезу 2049 (Blade Runner 2049)</h3>
-              <p class="card__meta">2017 · реж. Дені Вільнев</p>
-              <p class="card__excerpt">
-                Офіцер поліції К натрапляє на давно поховану таємницю, яка
-                може зруйнувати крихкий порядок суспільства, і вирушає на
-                пошуки зниклого Ріка Декарда.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-B12</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-mad-max.svg"
-              alt="Постер «Шалений Макс: Дорога гніву»: бойова вантажівка мчить пустелею, здіймаючи хмару пилу"
-              width="500"
-              height="500"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Шалений Макс: Дорога гніву (Mad Max: Fury Road)</h3>
-              <p class="card__meta">2015 · реж. Джордж Міллер</p>
-              <p class="card__excerpt">
-                У випаленій пустелі Макс і Імператор Фуріоса тікають на
-                бойовій вантажівці від тирана Безсмертного Джо, рятуючи його
-                полонених дружин.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-C03</p>
-            </div>
-          </article>
-
-          <article class="card card--glass">
-            <span class="card__badge">Хіт прокату</span>
-            <img
-              class="card__img"
-              src="images/poster-dune.svg"
-              alt="Постер «Дюна»: піщаний черв'як виринає з дюн під двома місяцями Арракіса"
-              width="450"
-              height="600"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Дюна</h3>
-              <p class="card__meta">2021 · реж. Дені Вільнев</p>
-              <p class="card__excerpt">
-                Юний Пол Атрід разом із родиною прибуває на пустельну планету
-                Арракіс — єдине джерело найціннішої речовини у Всесвіті, за
-                яку точиться смертельна боротьба.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-D21</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-interstellar.svg"
-              alt="Постер «Інтерстеллар»: чорна діра з сяйливим диском над полем кукурудзи"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Інтерстеллар</h3>
-              <p class="card__meta">2014 · реж. Крістофер Нолан</p>
-              <p class="card__excerpt">
-                Колишній пілот Купер разом із командою науковців вирушає крізь
-                червоточину, щоб знайти нову домівку для людства, поки Земля
-                потерпає від посухи.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-E05</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-inception.svg"
-              alt="Постер «Початок»: перевернуте місто нависає над іншим, посередині — дзиґа"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Початок</h3>
-              <p class="card__meta">2010 · реж. Крістофер Нолан</p>
-              <p class="card__excerpt">
-                Домінік Кобб викрадає секрети зі снів, а тепер мусить зробити
-                протилежне — непомітно вкласти ідею в підсвідомість спадкоємця
-                корпорації.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-F14</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-dark-knight.svg"
-              alt="Постер «Темний лицар»: прожектор із силуетом кажана над нічними хмарочосами Готема"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Темний лицар</h3>
-              <p class="card__meta">2008 · реж. Крістофер Нолан</p>
-              <p class="card__excerpt">
-                Бетмен, комісар Гордон і прокурор Гарві Дент очищають Готем
-                від злочинності, доки в місті не з'являється Джокер, що сіє
-                хаос заради хаосу.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-G09</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-matrix.svg"
-              alt="Постер «Матриця»: зелені символи цифрового дощу на чорному тлі"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Матриця</h3>
-              <p class="card__meta">1999 · реж. Лана і Ліллі Вачовскі</p>
-              <p class="card__excerpt">
-                Хакер Нео дізнається, що звичний світ — лише симуляція,
-                створена машинами, і приєднується до повстанців Морфеуса, щоб
-                вирватися з неї.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-H18</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-gravity.svg"
-              alt="Постер «Гравітація»: астронавтка з обірваним тросом дрейфує над блакитним краєм Землі"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Гравітація</h3>
-              <p class="card__meta">2013 · реж. Альфонсо Куарон</p>
-              <p class="card__excerpt">
-                Після зіткнення з уламками на орбіті інженерка Раян Стоун
-                лишається сама у відкритому космосі й мусить дістатися до
-                найближчої станції.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-J02</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-titanic.svg"
-              alt="Постер «Титанік»: силует лайнера з чотирма трубами на тлі заходу сонця над океаном"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Титанік</h3>
-              <p class="card__meta">1997 · реж. Джеймс Кемерон</p>
-              <p class="card__excerpt">
-                Художник Джек і аристократка Роуз знайомляться на борту
-                «Титаніка» під час його першого рейсу, який закінчиться
-                зіткненням з айсбергом.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-K11</p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img
-              class="card__img"
-              src="images/poster-avatar.svg"
-              alt="Постер «Аватар»: летючі гори Пандори з ліанами й біолюмінесцентні вогники"
-              width="400"
-              height="600"
-              loading="lazy"
-            />
-            <div class="card__body">
-              <h3 class="card__title">Аватар</h3>
-              <p class="card__meta">2009 · реж. Джеймс Кемерон</p>
-              <p class="card__excerpt">
-                Колишній морський піхотинець Джейк Саллі в тілі аватара
-                потрапляє до народу наві на Пандорі й мусить обрати, на чиєму
-                він боці.
-              </p>
-              <p class="card__id">Код сеансу: CIN-2026-L06</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <hr />
-
-      <!-- Ієрархія розділів каталогу -->
-      <section id="sections">
-        <h2>Розділи каталогу</h2>
+    <div class="layout">
+      <!-- Бічна навігація: рубрики сторінки каталогу -->
+      <nav class="layout__nav" aria-label="Рубрики каталогу">
+        <h2>Рубрики</h2>
         <ul>
-          <li>
-            Жанри фільмів
-            <ul>
-              <li>Бойовики</li>
-              <li>Комедії</li>
-              <li>Драми</li>
-              <li>Фантастика</li>
-            </ul>
-          </li>
-          <li>
-            Формати показу
-            <ul>
-              <li>2D</li>
-              <li>3D</li>
-              <li>IMAX</li>
-            </ul>
-          </li>
-          <li>
-            Зали кінотеатру
-            <ul>
-              <li>
-                Великий зал
-                <ul>
-                  <li>Партер</li>
-                  <li>Балкон</li>
-                </ul>
-              </li>
-              <li>Камерний зал</li>
-              <li>Родинний зал</li>
-            </ul>
-          </li>
+          <li><a href="#catalog">Афіша фільмів</a></li>
+          <li><a href="#sections">Жанри й формати</a></li>
+          <li><a href="#movies-table">Фільми в прокаті</a></li>
+          <li><a href="#cast">Акторський склад</a></li>
+          <li><a href="#booking-steps">Як забронювати</a></li>
+          <li><a href="#glossary">Глосарій</a></li>
         </ul>
-      </section>
+      </nav>
 
-      <hr />
+      <main class="layout__main">
+        <!-- Картки фільмів (LR5) -->
+        <section id="catalog" class="catalog">
+          <h2>Каталог</h2>
+          <div class="cards">
+            <article class="card">
+              <span class="card__badge">Прем'єра</span>
+              <img
+                class="card__img"
+                src="images/poster-heart-of-the-beast.svg"
+                alt="Постер «Серце звіра»: засніжені гори Аляски під північним сяйвом і силует німецької вівчарки"
+                width="400"
+                height="600"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Серце звіра</h3>
+                <p class="card__meta">2026 · реж. Девід Ейр</p>
+                <p class="card__excerpt">
+                  Колишній солдат і його пес-вівчарка лишаються самі серед
+                  засніжених гір Аляски після аварії літака й мусять
+                  протриматися до приходу рятувальників.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-A07</p>
+              </div>
+              <div class="card__actions">
+                <button id="openDetails" class="card__preview" type="button">Швидкий перегляд</button>
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
 
-      <!-- Таблиця фільмів у прокаті -->
-      <section id="movies-table">
-        <h2>Фільми в прокаті</h2>
-        <table>
-          <caption>Фільми в прокаті кінотеатру «Кіносвіт»</caption>
-          <thead>
-            <tr>
-              <th rowspan="2" scope="col">Назва фільму</th>
-              <th rowspan="2" scope="col">Жанр</th>
-              <th colspan="3" scope="colgroup">Характеристики</th>
-              <th rowspan="2" scope="col">Кінокомпанія</th>
-            </tr>
-            <tr>
-              <th scope="col">Рік</th>
-              <th scope="col">Тривалість</th>
-              <th scope="col">Режисер</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">«Інтерстеллар»</th>
-              <td>Фантастика</td>
-              <td>2014</td>
-              <td>2 год 49 хв</td>
-              <td rowspan="3">Крістофер Нолан</td>
-              <td rowspan="8">«Warner Bros.»</td>
-            </tr>
-            <tr>
-              <th scope="row">«Початок»</th>
-              <td>Трилер</td>
-              <td>2010</td>
-              <td>2 год 28 хв</td>
-            </tr>
-            <tr>
-              <th scope="row">«Темний лицар»</th>
-              <td>Бойовик</td>
-              <td>2008</td>
-              <td>2 год 32 хв</td>
-            </tr>
-            <tr>
-              <th scope="row">«Той, що біжить по лезу 2049»</th>
-              <td>Фантастика</td>
-              <td>2017</td>
-              <td>2 год 44 хв</td>
-              <td rowspan="2">Дені Вільнев</td>
-            </tr>
-            <tr>
-              <th scope="row">«Дюна»</th>
-              <td>Фантастика</td>
-              <td>2021</td>
-              <td>2 год 35 хв</td>
-            </tr>
-            <tr>
-              <th scope="row">«Матриця»</th>
-              <td>Фантастика</td>
-              <td>1999</td>
-              <td>2 год 16 хв</td>
-              <td>Лана і Ліллі Вачовскі</td>
-            </tr>
-            <tr>
-              <th scope="row">«Шалений Макс: Дорога гніву»</th>
-              <td>Бойовик</td>
-              <td>2015</td>
-              <td>2 год 0 хв</td>
-              <td>Джордж Міллер</td>
-            </tr>
-            <tr>
-              <th scope="row">«Гравітація»</th>
-              <td>Фантастика</td>
-              <td>2013</td>
-              <td>1 год 31 хв</td>
-              <td>Альфонсо Куарон</td>
-            </tr>
-            <tr>
-              <th scope="row">«Титанік»</th>
-              <td>Драма</td>
-              <td>1997</td>
-              <td>3 год 14 хв</td>
-              <td>Джеймс Кемерон</td>
-              <td rowspan="2">«20th Century Fox»</td>
-            </tr>
-            <tr>
-              <th scope="row">«Аватар»</th>
-              <td>Фантастика</td>
-              <td>2009</td>
-              <td>2 год 42 хв</td>
-              <td>Джеймс Кемерон</td>
-            </tr>
-            <tr>
-              <th scope="row">«Серце звіра»</th>
-              <td>Пригоди</td>
-              <td>2026</td>
-              <td>1 год 41 хв</td>
-              <td>Девід Ейр</td>
-              <td>«Paramount Pictures»</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          <a href="form.html" class="button">Забронювати квиток</a>
-        </p>
-      </section>
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-blade-runner-2049.svg"
+                alt="Постер «Той, що біжить по лезу 2049»: самотня фігура в плащі серед хмарочосів у помаранчевому смогу"
+                width="640"
+                height="360"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Той, що біжить по лезу 2049 (Blade Runner 2049)</h3>
+                <p class="card__meta">2017 · реж. Дені Вільнев</p>
+                <p class="card__excerpt">
+                  Офіцер поліції К натрапляє на давно поховану таємницю, яка
+                  може зруйнувати крихкий порядок суспільства, і вирушає на
+                  пошуки зниклого Ріка Декарда.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-B12</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
 
-      <hr />
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-mad-max.svg"
+                alt="Постер «Шалений Макс: Дорога гніву»: бойова вантажівка мчить пустелею, здіймаючи хмару пилу"
+                width="500"
+                height="500"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Шалений Макс: Дорога гніву (Mad Max: Fury Road)</h3>
+                <p class="card__meta">2015 · реж. Джордж Міллер</p>
+                <p class="card__excerpt">
+                  У випаленій пустелі Макс і Імператор Фуріоса тікають на
+                  бойовій вантажівці від тирана Безсмертного Джо, рятуючи його
+                  полонених дружин.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-C03</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
 
-      <!-- Акторський склад фільмів із таблиці -->
-      <section id="cast">
-        <h2>Характеристики</h2>
-        <figure>
-          <img
-            src="images/movie-clapperboard.svg"
-            alt="Чорно-біла кіношна хлопавка, якою позначають початок зйомки сцени"
-            width="800"
-            height="600"
-            loading="lazy"
-          />
-          <figcaption>
-            Хлопавка — символ кіновиробництва: нею відмічають початок кожного
-            дубля під час зйомок фільмів, представлених у нашому каталозі.
-          </figcaption>
-        </figure>
-        <details open>
-          <summary>Акторський склад: «Інтерстеллар»</summary>
-          <p>
-            Метью Макконахі, Енн Гетевей, Джессіка Честейн.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Початок»</summary>
-          <p>
-            Леонардо Ді Капріо, Джозеф Гордон-Левітт, Елліот Пейдж.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Титанік»</summary>
-          <p>
-            Леонардо Ді Капріо, Кейт Вінслет, Біллі Зейн.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Аватар»</summary>
-          <p>
-            Сем Вортінгтон, Зої Салдана, Сігурні Вівер.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Темний лицар»</summary>
-          <p>
-            Крістіан Бейл, Гіт Леджер, Аарон Екгарт.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Той, що біжить по лезу 2049»</summary>
-          <p>
-            Раян Гослінг, Гаррісон Форд, Ана де Армас.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Дюна»</summary>
-          <p>
-            Тімоті Шаламе, Ребекка Фергюсон, Оскар Айзек.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Матриця»</summary>
-          <p>
-            Кіану Рівз, Лоуренс Фішберн, Керрі-Енн Мосс.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Шалений Макс: Дорога гніву»</summary>
-          <p>
-            Том Гарді, Шарліз Терон, Ніколас Голт.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Гравітація»</summary>
-          <p>
-            Сандра Буллок, Джордж Клуні, Ед Гарріс.
-          </p>
-        </details>
-        <details>
-          <summary>Акторський склад: «Серце звіра»</summary>
-          <p>
-            Бред Пітт, Дж. К. Сіммонс, Анна Ламбе.
-          </p>
-        </details>
-      </section>
+            <article class="card card--glass">
+              <span class="card__badge">Хіт прокату</span>
+              <img
+                class="card__img"
+                src="images/poster-dune.svg"
+                alt="Постер «Дюна»: піщаний черв'як виринає з дюн під двома місяцями Арракіса"
+                width="450"
+                height="600"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Дюна</h3>
+                <p class="card__meta">2021 · реж. Дені Вільнев</p>
+                <p class="card__excerpt">
+                  Юний Пол Атрід разом із родиною прибуває на пустельну планету
+                  Арракіс — єдине джерело найціннішої речовини у Всесвіті, за
+                  яку точиться смертельна боротьба.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-D21</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
 
-      <hr />
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-interstellar.svg"
+                alt="Постер «Інтерстеллар»: чорна діра з сяйливим диском над полем кукурудзи"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Інтерстеллар</h3>
+                <p class="card__meta">2014 · реж. Крістофер Нолан</p>
+                <p class="card__excerpt">
+                  Колишній пілот Купер разом із командою науковців вирушає крізь
+                  червоточину, щоб знайти нову домівку для людства, поки Земля
+                  потерпає від посухи.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-E05</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
 
-      <!-- Порядок дій при бронюванні квитка -->
-      <section id="booking-steps">
-        <h2>Як забронювати квиток</h2>
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-inception.svg"
+                alt="Постер «Початок»: перевернуте місто нависає над іншим, посередині — дзиґа"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Початок</h3>
+                <p class="card__meta">2010 · реж. Крістофер Нолан</p>
+                <p class="card__excerpt">
+                  Домінік Кобб викрадає секрети зі снів, а тепер мусить зробити
+                  протилежне — непомітно вкласти ідею в підсвідомість спадкоємця
+                  корпорації.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-F14</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-dark-knight.svg"
+                alt="Постер «Темний лицар»: прожектор із силуетом кажана над нічними хмарочосами Готема"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Темний лицар</h3>
+                <p class="card__meta">2008 · реж. Крістофер Нолан</p>
+                <p class="card__excerpt">
+                  Бетмен, комісар Гордон і прокурор Гарві Дент очищають Готем
+                  від злочинності, доки в місті не з'являється Джокер, що сіє
+                  хаос заради хаосу.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-G09</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-matrix.svg"
+                alt="Постер «Матриця»: зелені символи цифрового дощу на чорному тлі"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Матриця</h3>
+                <p class="card__meta">1999 · реж. Лана і Ліллі Вачовскі</p>
+                <p class="card__excerpt">
+                  Хакер Нео дізнається, що звичний світ — лише симуляція,
+                  створена машинами, і приєднується до повстанців Морфеуса, щоб
+                  вирватися з неї.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-H18</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-gravity.svg"
+                alt="Постер «Гравітація»: астронавтка з обірваним тросом дрейфує над блакитним краєм Землі"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Гравітація</h3>
+                <p class="card__meta">2013 · реж. Альфонсо Куарон</p>
+                <p class="card__excerpt">
+                  Після зіткнення з уламками на орбіті інженерка Раян Стоун
+                  лишається сама у відкритому космосі й мусить дістатися до
+                  найближчої станції.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-J02</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-titanic.svg"
+                alt="Постер «Титанік»: силует лайнера з чотирма трубами на тлі заходу сонця над океаном"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Титанік</h3>
+                <p class="card__meta">1997 · реж. Джеймс Кемерон</p>
+                <p class="card__excerpt">
+                  Художник Джек і аристократка Роуз знайомляться на борту
+                  «Титаніка» під час його першого рейсу, який закінчиться
+                  зіткненням з айсбергом.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-K11</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img
+                class="card__img"
+                src="images/poster-avatar.svg"
+                alt="Постер «Аватар»: летючі гори Пандори з ліанами й біолюмінесцентні вогники"
+                width="400"
+                height="600"
+                loading="lazy"
+              />
+              <div class="card__body">
+                <h3 class="card__title">Аватар</h3>
+                <p class="card__meta">2009 · реж. Джеймс Кемерон</p>
+                <p class="card__excerpt">
+                  Колишній морський піхотинець Джейк Саллі в тілі аватара
+                  потрапляє до народу наві на Пандорі й мусить обрати, на чиєму
+                  він боці.
+                </p>
+                <p class="card__id">Код сеансу: CIN-2026-L06</p>
+              </div>
+              <div class="card__actions">
+                <a class="card__action" href="form.html">Забронювати</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Модальне вікно з деталями першого фільму каталогу -->
+        <dialog id="details">
+          <h2>Серце звіра</h2>
+          <p class="details__id">Код сеансу: CIN-2026-A07</p>
+          <p>
+            Колишній солдат і його пес-вівчарка лишаються самі серед засніжених
+            гір Аляски після аварії літака й мусять протриматися до приходу
+            рятувальників.
+          </p>
+          <dl>
+            <dt>Режисер</dt>
+            <dd>Девід Ейр</dd>
+            <dt>Рік</dt>
+            <dd>2026, прем'єра</dd>
+            <dt>Тривалість</dt>
+            <dd>1 год 41 хв</dd>
+            <dt>Жанр</dt>
+            <dd>Пригоди, драма, трилер</dd>
+            <dt>У головних ролях</dt>
+            <dd>Бред Пітт, Дж. К. Сіммонс, Анна Ламбе</dd>
+          </dl>
+          <button id="closeDetails" type="button">Закрити</button>
+        </dialog>
+
+        <hr />
+
+        <!-- Ієрархія розділів каталогу -->
+        <section id="sections">
+          <h2>Розділи каталогу</h2>
+          <ul>
+            <li>
+              Жанри фільмів
+              <ul>
+                <li>Бойовики</li>
+                <li>Комедії</li>
+                <li>Драми</li>
+                <li>Фантастика</li>
+              </ul>
+            </li>
+            <li>
+              Формати показу
+              <ul>
+                <li>2D</li>
+                <li>3D</li>
+                <li>IMAX</li>
+              </ul>
+            </li>
+            <li>
+              Зали кінотеатру
+              <ul>
+                <li>
+                  Великий зал
+                  <ul>
+                    <li>Партер</li>
+                    <li>Балкон</li>
+                  </ul>
+                </li>
+                <li>Камерний зал</li>
+                <li>Родинний зал</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <hr />
+
+        <!-- Таблиця фільмів у прокаті -->
+        <section id="movies-table">
+          <h2>Фільми в прокаті</h2>
+          <table>
+            <caption>Фільми в прокаті кінотеатру «Кіносвіт»</caption>
+            <thead>
+              <tr>
+                <th rowspan="2" scope="col">Назва фільму</th>
+                <th rowspan="2" scope="col">Жанр</th>
+                <th colspan="3" scope="colgroup">Характеристики</th>
+                <th rowspan="2" scope="col">Кінокомпанія</th>
+              </tr>
+              <tr>
+                <th scope="col">Рік</th>
+                <th scope="col">Тривалість</th>
+                <th scope="col">Режисер</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">«Інтерстеллар»</th>
+                <td>Фантастика</td>
+                <td>2014</td>
+                <td>2 год 49 хв</td>
+                <td rowspan="3">Крістофер Нолан</td>
+                <td rowspan="8">«Warner Bros.»</td>
+              </tr>
+              <tr>
+                <th scope="row">«Початок»</th>
+                <td>Трилер</td>
+                <td>2010</td>
+                <td>2 год 28 хв</td>
+              </tr>
+              <tr>
+                <th scope="row">«Темний лицар»</th>
+                <td>Бойовик</td>
+                <td>2008</td>
+                <td>2 год 32 хв</td>
+              </tr>
+              <tr>
+                <th scope="row">«Той, що біжить по лезу 2049»</th>
+                <td>Фантастика</td>
+                <td>2017</td>
+                <td>2 год 44 хв</td>
+                <td rowspan="2">Дені Вільнев</td>
+              </tr>
+              <tr>
+                <th scope="row">«Дюна»</th>
+                <td>Фантастика</td>
+                <td>2021</td>
+                <td>2 год 35 хв</td>
+              </tr>
+              <tr>
+                <th scope="row">«Матриця»</th>
+                <td>Фантастика</td>
+                <td>1999</td>
+                <td>2 год 16 хв</td>
+                <td>Лана і Ліллі Вачовскі</td>
+              </tr>
+              <tr>
+                <th scope="row">«Шалений Макс: Дорога гніву»</th>
+                <td>Бойовик</td>
+                <td>2015</td>
+                <td>2 год 0 хв</td>
+                <td>Джордж Міллер</td>
+              </tr>
+              <tr>
+                <th scope="row">«Гравітація»</th>
+                <td>Фантастика</td>
+                <td>2013</td>
+                <td>1 год 31 хв</td>
+                <td>Альфонсо Куарон</td>
+              </tr>
+              <tr>
+                <th scope="row">«Титанік»</th>
+                <td>Драма</td>
+                <td>1997</td>
+                <td>3 год 14 хв</td>
+                <td>Джеймс Кемерон</td>
+                <td rowspan="2">«20th Century Fox»</td>
+              </tr>
+              <tr>
+                <th scope="row">«Аватар»</th>
+                <td>Фантастика</td>
+                <td>2009</td>
+                <td>2 год 42 хв</td>
+                <td>Джеймс Кемерон</td>
+              </tr>
+              <tr>
+                <th scope="row">«Серце звіра»</th>
+                <td>Пригоди</td>
+                <td>2026</td>
+                <td>1 год 41 хв</td>
+                <td>Девід Ейр</td>
+                <td>«Paramount Pictures»</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <a href="form.html" class="button">Забронювати квиток</a>
+          </p>
+        </section>
+
+        <hr />
+
+        <!-- Акторський склад фільмів із таблиці -->
+        <section id="cast">
+          <h2>Характеристики</h2>
+          <figure>
+            <img
+              src="images/movie-clapperboard.svg"
+              alt="Чорно-біла кіношна хлопавка, якою позначають початок зйомки сцени"
+              width="800"
+              height="600"
+              loading="lazy"
+            />
+            <figcaption>
+              Хлопавка — символ кіновиробництва: нею відмічають початок кожного
+              дубля під час зйомок фільмів, представлених у нашому каталозі.
+            </figcaption>
+          </figure>
+          <details open>
+            <summary>Акторський склад: «Інтерстеллар»</summary>
+            <p>
+              Метью Макконахі, Енн Гетевей, Джессіка Честейн.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Початок»</summary>
+            <p>
+              Леонардо Ді Капріо, Джозеф Гордон-Левітт, Елліот Пейдж.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Титанік»</summary>
+            <p>
+              Леонардо Ді Капріо, Кейт Вінслет, Біллі Зейн.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Аватар»</summary>
+            <p>
+              Сем Вортінгтон, Зої Салдана, Сігурні Вівер.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Темний лицар»</summary>
+            <p>
+              Крістіан Бейл, Гіт Леджер, Аарон Екгарт.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Той, що біжить по лезу 2049»</summary>
+            <p>
+              Раян Гослінг, Гаррісон Форд, Ана де Армас.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Дюна»</summary>
+            <p>
+              Тімоті Шаламе, Ребекка Фергюсон, Оскар Айзек.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Матриця»</summary>
+            <p>
+              Кіану Рівз, Лоуренс Фішберн, Керрі-Енн Мосс.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Шалений Макс: Дорога гніву»</summary>
+            <p>
+              Том Гарді, Шарліз Терон, Ніколас Голт.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Гравітація»</summary>
+            <p>
+              Сандра Буллок, Джордж Клуні, Ед Гарріс.
+            </p>
+          </details>
+          <details>
+            <summary>Акторський склад: «Серце звіра»</summary>
+            <p>
+              Бред Пітт, Дж. К. Сіммонс, Анна Ламбе.
+            </p>
+          </details>
+        </section>
+
+        <hr />
+
+        <!-- Порядок дій при бронюванні квитка -->
+        <section id="booking-steps">
+          <h2>Як забронювати квиток</h2>
+          <ol>
+            <li>Оберіть фільм і сеанс в афіші.</li>
+            <li>Виберіть зал і бажані місця на схемі залу.</li>
+            <li>Вкажіть кількість квитків і додайте їх у кошик.</li>
+            <li>Введіть контактні дані для отримання підтвердження.</li>
+            <li>Оплатіть замовлення онлайн або на касі кінотеатру.</li>
+          </ol>
+          <p>
+            Після оплати бронювання переходить у статус «підтверджено», і
+            залишається лише отримати квиток та скористатися ним у день сеансу:
+          </p>
+          <ol start="6">
+            <li>Отримайте електронний квиток на пошту або в застосунку.</li>
+            <li>Покажіть QR-код квитка на вході до залу.</li>
+          </ol>
+        </section>
+
+        <hr />
+
+        <!-- Глосарій термінів кінотеатру -->
+        <section id="glossary">
+          <h2>Глосарій термінів</h2>
+          <dl>
+            <dt>Сеанс</dt>
+            <dd>Один показ фільму в конкретному залі у визначений час.</dd>
+            <dd>У розкладі сеанс позначається кодом виду A-102.</dd>
+
+            <dt>Бронювання</dt>
+            <dd>Тимчасове закріплення обраних місць за клієнтом до моменту оплати.</dd>
+
+            <dt>IMAX</dt>
+            <dt>3D</dt>
+            <dd>Формати показу з розширеними можливостями зображення та звуку.</dd>
+
+            <dt>Афіша</dt>
+            <dd>Перелік фільмів, що демонструються в кінотеатрі цього тижня.</dd>
+          </dl>
+        </section>
+      </main>
+
+      <!-- Бічна колонка: найвищі середні оцінки глядачів (з variant04.json) -->
+      <aside class="layout__aside">
+        <h2>Топ глядачів</h2>
         <ol>
-          <li>Оберіть фільм і сеанс в афіші.</li>
-          <li>Виберіть зал і бажані місця на схемі залу.</li>
-          <li>Вкажіть кількість квитків і додайте їх у кошик.</li>
-          <li>Введіть контактні дані для отримання підтвердження.</li>
-          <li>Оплатіть замовлення онлайн або на касі кінотеатру.</li>
+          <li>«Темний лицар» <span class="rating">9.5</span></li>
+          <li>«Інтерстеллар» <span class="rating">9.4</span></li>
+          <li>«Матриця» <span class="rating">9.1</span></li>
+          <li>«Початок» <span class="rating">8.9</span></li>
+          <li>«Дюна» <span class="rating">8.6</span></li>
         </ol>
-        <p>
-          Після оплати бронювання переходить у статус «підтверджено», і
-          залишається лише отримати квиток та скористатися ним у день сеансу:
-        </p>
-        <ol start="6">
-          <li>Отримайте електронний квиток на пошту або в застосунку.</li>
-          <li>Покажіть QR-код квитка на вході до залу.</li>
-        </ol>
-      </section>
+        <p>Скоро прем'єра: «Серце звіра» — оцінок ще немає.</p>
+      </aside>
 
-      <hr />
-
-      <!-- Глосарій термінів кінотеатру -->
-      <section id="glossary">
-        <h2>Глосарій термінів</h2>
-        <dl>
-          <dt>Сеанс</dt>
-          <dd>Один показ фільму в конкретному залі у визначений час.</dd>
-          <dd>У розкладі сеанс позначається кодом виду A-102.</dd>
-
-          <dt>Бронювання</dt>
-          <dd>Тимчасове закріплення обраних місць за клієнтом до моменту оплати.</dd>
-
-          <dt>IMAX</dt>
-          <dt>3D</dt>
-          <dd>Формати показу з розширеними можливостями зображення та звуку.</dd>
-
-          <dt>Афіша</dt>
-          <dd>Перелік фільмів, що демонструються в кінотеатрі цього тижня.</dd>
-        </dl>
-      </section>
-    </main>
-
-    <footer>
-      <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
-      <p>Виконав: Капітан Єгор, група 1</p>
-    </footer>
+      <footer class="layout__footer site-footer">
+        <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
+        <p>Виконав: Капітан Єгор, група 1</p>
+      </footer>
+    </div>
 
     <a class="to-top" href="#top" aria-label="Нагору">↑</a>
+
+    <script>
+      const dlg = document.getElementById("details");
+      document.getElementById("openDetails").addEventListener("click", () => dlg.showModal());
+      document.getElementById("closeDetails").addEventListener("click", () => dlg.close());
+    </script>
   </body>
 </html>
