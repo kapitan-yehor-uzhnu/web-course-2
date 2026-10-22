@@ -498,14 +498,15 @@ blockquote::before {
 }
 
 /* ::first-letter — велика перша літера абзацу в секції «Наші зали» (index.html).
-   Не перший абзац «Про проєкт»: він починається з «, а лапка теж входить у ::first-letter */
+   Не перший абзац «Про проєкт»: він починається з «, а лапка теж входить у ::first-letter.
+   У LR6 float заборонено, тому буквицю на два рядки робить initial-letter
+   (браузер, який його не знає, просто покаже першу літеру кольором акценту) */
 #halls > p::first-letter {
-  float: left;
+  -webkit-initial-letter: 2;
+  initial-letter: 2;
   margin-right: var(--space-sm);
   color: var(--color-accent);
-  font-size: 3rem;
   font-weight: 700;
-  line-height: 1;
 }
 
 /* --- 8.3 Комбінатори --- */
@@ -798,8 +799,10 @@ body > .site-footer {
   margin-bottom: var(--space-md);
 }
 
+/* margin-inline: auto — абзаци мають max-width: 65ch, і без цього вузький блок
+   абзацу стояв би ліворуч, а рядки різного розміру шрифту — зі зсувом */
 .site-footer p {
-  margin: 0 0 var(--space-xs);
+  margin: 0 auto var(--space-xs);
 }
 
 /* ===================================================================
@@ -1163,7 +1166,7 @@ body > header h1 {
 .tips ul { list-style: none; }
 .tips li::before {
   content: "•";
-  display: inline-block;
+  display: inline-flex;
   width: var(--space-lg);
   margin-left: calc(-1 * var(--space-lg));
   color: var(--color-accent);
