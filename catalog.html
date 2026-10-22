@@ -21,6 +21,9 @@
           <li><a href="form.html">Бронювання</a></li>
           <li><a href="index.html#concept">Про кінотеатр</a></li>
           <li><a href="about.html">Про проєкт</a></li>
+          <li>
+            <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
+          </li>
         </ul>
       </nav>
     </header>
@@ -44,7 +47,7 @@
         <section id="catalog" class="catalog">
           <h2>Каталог</h2>
           <div class="cards">
-            <article class="card">
+            <article data-genres="пригоди драма трилер" class="card">
               <span class="card__badge">Прем'єра</span>
               <img
                 class="card__img"
@@ -69,7 +72,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="фантастика драма трилер" class="card">
               <img
                 class="card__img"
                 src="images/poster-blade-runner-2049.svg"
@@ -92,7 +95,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="бойовик пригоди фантастика" class="card">
               <img
                 class="card__img"
                 src="images/poster-mad-max.svg"
@@ -115,7 +118,7 @@
               </div>
             </article>
 
-            <article class="card card--glass">
+            <article data-genres="фантастика пригоди драма" class="card card--glass card--pinned">
               <span class="card__badge">Хіт прокату</span>
               <img
                 class="card__img"
@@ -139,7 +142,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="фантастика драма пригоди" class="card">
               <img
                 class="card__img"
                 src="images/poster-interstellar.svg"
@@ -163,7 +166,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="фантастика бойовик трилер" class="card">
               <img
                 class="card__img"
                 src="images/poster-inception.svg"
@@ -187,7 +190,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="бойовик кримінал драма" class="card">
               <img
                 class="card__img"
                 src="images/poster-dark-knight.svg"
@@ -211,7 +214,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="фантастика бойовик" class="card">
               <img
                 class="card__img"
                 src="images/poster-matrix.svg"
@@ -235,7 +238,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="фантастика трилер драма" class="card">
               <img
                 class="card__img"
                 src="images/poster-gravity.svg"
@@ -259,7 +262,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="драма мелодрама історичний" class="card">
               <img
                 class="card__img"
                 src="images/poster-titanic.svg"
@@ -283,7 +286,7 @@
               </div>
             </article>
 
-            <article class="card">
+            <article data-genres="фантастика пригоди бойовик" class="card">
               <img
                 class="card__img"
                 src="images/poster-avatar.svg"
@@ -327,9 +330,13 @@
             <dd>1 год 41 хв</dd>
             <dt>Жанр</dt>
             <dd>Пригоди, драма, трилер</dd>
-            <dt>У головних ролях</dt>
-            <dd>Бред Пітт, Дж. К. Сіммонс, Анна Ламбе</dd>
           </dl>
+          <h3>Акторський склад</h3>
+          <ul class="details__cast">
+            <li>Бред Пітт — Джеймс Белмонт</li>
+            <li>Дж. К. Сіммонс</li>
+            <li>Анна Ламбе</li>
+          </ul>
           <button id="closeDetails" type="button">Закрити</button>
         </dialog>
 
@@ -609,17 +616,37 @@
         </section>
       </main>
 
-      <!-- Бічна колонка: найвищі середні оцінки глядачів (з variant04.json) -->
+      <!-- Бічна колонка: фільтр карток за жанром. Працює без JavaScript —
+           через :has() у CSS: обраний перемикач ховає картки інших жанрів -->
       <aside class="layout__aside">
-        <h2>Топ глядачів</h2>
-        <ol>
-          <li>«Темний лицар» <span class="rating">9.5</span></li>
-          <li>«Інтерстеллар» <span class="rating">9.4</span></li>
-          <li>«Матриця» <span class="rating">9.1</span></li>
-          <li>«Початок» <span class="rating">8.9</span></li>
-          <li>«Дюна» <span class="rating">8.6</span></li>
-        </ol>
-        <p>Скоро прем'єра: «Серце звіра» — оцінок ще немає.</p>
+        <h2>Фільтр за жанром</h2>
+        <fieldset class="genre-filter">
+          <legend>Жанр</legend>
+          <label for="genre-all">
+            <input type="radio" id="genre-all" name="genre" value="all" checked />
+            Усі фільми
+          </label>
+          <label for="genre-scifi">
+            <input type="radio" id="genre-scifi" name="genre" value="фантастика" />
+            Фантастика
+          </label>
+          <label for="genre-drama">
+            <input type="radio" id="genre-drama" name="genre" value="драма" />
+            Драма
+          </label>
+          <label for="genre-action">
+            <input type="radio" id="genre-action" name="genre" value="бойовик" />
+            Бойовик
+          </label>
+          <label for="genre-thriller">
+            <input type="radio" id="genre-thriller" name="genre" value="трилер" />
+            Трилер
+          </label>
+          <label for="genre-adventure">
+            <input type="radio" id="genre-adventure" name="genre" value="пригоди" />
+            Пригоди
+          </label>
+        </fieldset>
       </aside>
 
       <footer class="layout__footer site-footer">

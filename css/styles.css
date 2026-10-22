@@ -50,6 +50,8 @@
   --gap: 1.25rem; /* єдиний проміжок для всіх сіток і flex-рядів */
   --min-col: 240px; /* мінімальна ширина колонки каталогу */
   --sidebar: 260px; /* ширина бічної колонки макета */
+  --gallery-row: 120px; /* висота рядка галереї (бонус) */
+  --label-col: 14rem; /* ширина колонки підписів у формі (бонус) */
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
   --neu-dark: rgb(0 0 0 / 55%);
   --neu-light: rgb(255 255 255 / 6%);
@@ -273,8 +275,6 @@ main > img {
      одразу під вмістом. 1fr віддає все зайве місце рядку з вмістом, foot — по вмісту */
   grid-template-rows: 1fr auto;
   gap: var(--gap);
-  /* Бічні колонки не розтягуються на всю висоту каталогу, а мають висоту свого вмісту */
-  align-items: start;
 }
 
 /* Головна: дві колонки — вміст і поради, без бічної навігації */
@@ -285,7 +285,8 @@ main > img {
     "foot foot";
 }
 
-.layout__nav    { grid-area: nav; }
+/* Бічні колонки не розтягуються на всю висоту каталогу, а мають висоту свого вмісту */
+.layout__nav    { grid-area: nav; align-self: start; }
 .layout__main   { grid-area: main; }
 .layout__aside  { grid-area: side; }
 .layout__footer { grid-area: foot; }
@@ -331,19 +332,33 @@ main > img {
   color: var(--color-accent);
 }
 
-.layout__aside ol {
-  margin: 0 0 var(--space-md);
-  padding-left: var(--space-lg);
-}
-
-.layout__aside li {
-  margin-bottom: var(--space-xs);
-}
-
-.layout__aside p {
+/* Фільтр за жанром (варіант 4): перемикачі стовпчиком, без рамки fieldset з LR3 */
+.genre-filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
   margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.genre-filter legend {
+  padding: 0;
+  margin-bottom: var(--space-sm);
   color: var(--color-muted);
   font-size: 0.875rem;
+}
+
+/* Сам фільтр — без JavaScript. Кожна картка має data-genres зі своїми жанрами
+   з variant04.json. :has() перевіряє, який перемикач обрано, а ~= шукає жанр
+   як окреме слово в списку: картки, де його немає, ховаються.
+   Для «Усі фільми» правила немає — тоді видно все. */
+.layout:has(#genre-scifi:checked) .card:not([data-genres~="фантастика"]),
+.layout:has(#genre-drama:checked) .card:not([data-genres~="драма"]),
+.layout:has(#genre-action:checked) .card:not([data-genres~="бойовик"]),
+.layout:has(#genre-thriller:checked) .card:not([data-genres~="трилер"]),
+.layout:has(#genre-adventure:checked) .card:not([data-genres~="пригоди"]) {
+  display: none;
 }
 
 /* На вузькому екрані три колонки не вміщаються — зони стають одна під одною.
@@ -1049,6 +1064,16 @@ dialog dd {
   margin: 0 0 var(--space-sm);
 }
 
+dialog h3 {
+  margin: 0 0 var(--space-sm);
+  font-size: 1.1rem;
+}
+
+.details__cast {
+  margin: 0 0 var(--space-lg);
+  padding-left: var(--space-lg);
+}
+
 /* ===================================================================
    Бонусні завдання LR5
    =================================================================== */
@@ -1238,3 +1263,135 @@ body > header h1 {
 
 .cards { transform: scale(1); }
 */
+
+/* ===================================================================
+   Бонусні завдання LR6
+   =================================================================== */
+
+/* --- Бонус 1. Перемикач теми ---
+   Кнопка в меню вмикає/вимикає клас light-theme на <body>. Сама тема — це лише
+   блок body.light-theme з перевизначеними змінними (на початку файлу):
+   жодне правило оформлення для неї не продубльоване.
+   Кнопка виглядає як решта «плиток» меню. */
+.theme-toggle {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-accent);
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--color-surface-raised);
+}
+
+/* --- Бонус 2. Щільна галерея ---
+   Чотири колонки, рядки однакової висоти; широкі кадри займають дві колонки,
+   високі — два рядки. grid-auto-flow: row dense дозволяє браузеру
+   заповнювати «дірки», які лишилися перед великими кадрами, меншими кадрами,
+   що стоять у HTML пізніше. */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: var(--gallery-row);
+  grid-auto-flow: row dense;
+  gap: var(--gap);
+}
+
+.gallery__item {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.gallery__item--wide {
+  grid-column: span 2;
+}
+
+.gallery__item--tall {
+  grid-row: span 2;
+}
+
+/* --- Бонус 3. Закріплена картка ---
+   «Дюна» (хіт прокату) у HTML — четверта, але на екрані стоїть першою
+   і займає весь перший ряд сітки: order: -1 ставить її перед картками
+   з order: 0 за замовчуванням, а grid-column: 1 / -1 тягне від першої
+   до останньої лінії сітки. Порядок у HTML (і для екранної читалки) не змінився. */
+.card--pinned {
+  order: -1;
+  grid-column: 1 / -1;
+}
+
+/* --- Бонус 4. Липка бічна колонка ---
+   Фільтр за жанром прокручується разом зі сторінкою, але зупиняється під шапкою
+   (шапка заввишки ~132px, тож top трохи більший).
+   align-self: start обов'язковий: без нього грид-елемент розтягнутий на всю
+   висоту своєї області (рядка з каталогом), тобто вже займає все місце,
+   і «їздити» всередині неї йому нікуди — липкість не спрацьовує. */
+.layout__aside {
+  position: sticky;
+  top: 9rem;
+  align-self: start;
+}
+
+/* --- Бонус 5. Форма у дві колонки на Grid ---
+   Підписи — ліва колонка, поля — права. Кожен fieldset — сітка з двох колонок
+   однакової ширини (--label-col і 1fr), тож підписи всіх трьох груп стоять
+   по одній лінії. Сама форма — теж сітка з двох колонок, щоб кнопку можна було
+   розтягнути на обидві. (subgrid у fieldset пробував — браузер рахує колонки
+   кожної групи по-різному, бо fieldset має власний особливий рендеринг.)
+   Розмітку з LR3 не змінено: <p> навколо пари «підпис + поле» стає
+   display: contents (зникає як коробка, і label з полем стають клітинками сітки),
+   а <br> між ними більше не потрібен. */
+form {
+  display: grid;
+  grid-template-columns: var(--label-col) 1fr;
+  gap: var(--space-md) var(--gap);
+}
+
+form fieldset {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: var(--label-col) 1fr;
+  gap: var(--space-md) var(--gap);
+  align-items: center;
+}
+
+form p {
+  display: contents;
+}
+
+form br {
+  display: none;
+}
+
+/* Перемикачі й прапорці — у правій колонці, під полями */
+form label:has(> input[type="radio"]),
+form label:has(> input[type="checkbox"]) {
+  grid-column: 2;
+}
+
+/* Кнопка відправлення розтягнута на обидві колонки, «Скинути» — під нею */
+form button {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 600px) {
+  /* На телефоні — одна колонка, як на звичайному потоці */
+  form,
+  form fieldset {
+    grid-template-columns: 1fr;
+  }
+
+  form label:has(> input[type="radio"]),
+  form label:has(> input[type="checkbox"]) {
+    grid-column: auto;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
