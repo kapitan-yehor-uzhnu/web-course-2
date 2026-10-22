@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="400" height="600" viewBox="0 0 400 600">
+  <!-- Постер «Початок» — вертикальний 2:3, місто, що загинається над головою -->
+  <rect width="400" height="600" fill="#1d2a3a" />
+  <!-- перевернуте місто зверху -->
+  <g fill="#3c5570">
+    <rect x="10" y="0" width="50" height="170" /><rect x="70" y="0" width="40" height="120" />
+    <rect x="120" y="0" width="60" height="200" /><rect x="190" y="0" width="45" height="140" />
+    <rect x="245" y="0" width="55" height="190" /><rect x="310" y="0" width="35" height="110" />
+    <rect x="350" y="0" width="45" height="160" />
+  </g>
+  <!-- місто знизу -->
+  <g fill="#2b4058">
+    <rect x="0" y="380" width="55" height="220" /><rect x="65" y="430" width="45" height="170" />
+    <rect x="120" y="360" width="60" height="240" /><rect x="190" y="410" width="50" height="190" />
+    <rect x="250" y="350" width="55" height="250" /><rect x="315" y="420" width="40" height="180" />
+    <rect x="360" y="390" width="40" height="210" />
+  </g>
+  <!-- дзиґа -->
+  <g transform="translate(200 300)">
+    <path d="M -28 -10 L 28 -10 L 0 40 Z" fill="#c9cfd8" />
+    <ellipse cx="0" cy="-10" rx="28" ry="8" fill="#e6eaf0" />
+    <rect x="-3" y="-34" width="6" height="24" fill="#c9cfd8" />
+  </g>
+  <text x="200" y="560" fill="#f4eee2" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" text-anchor="middle" letter-spacing="8">ПОЧАТОК</text>
+</svg>

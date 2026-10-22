@@ -8,7 +8,7 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <header>
+    <header id="top">
       <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
       <h1>Кінотеатр «Кіносвіт»</h1>
       <nav aria-label="Головне меню">
@@ -24,6 +24,243 @@
     </header>
 
     <main>
+      <!-- Картки фільмів (LR5) -->
+      <section class="catalog">
+        <h2>Каталог</h2>
+        <div class="cards">
+          <article class="card">
+            <span class="card__badge">Прем'єра</span>
+            <img
+              class="card__img"
+              src="images/poster-heart-of-the-beast.svg"
+              alt="Постер «Серце звіра»: засніжені гори Аляски під північним сяйвом і силует німецької вівчарки"
+              width="400"
+              height="600"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Серце звіра</h3>
+              <p class="card__meta">2026 · реж. Девід Ейр</p>
+              <p class="card__excerpt">
+                Колишній солдат і його пес-вівчарка лишаються самі серед
+                засніжених гір Аляски після аварії літака й мусять
+                протриматися до приходу рятувальників.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-A07</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-blade-runner-2049.svg"
+              alt="Постер «Той, що біжить по лезу 2049»: самотня фігура в плащі серед хмарочосів у помаранчевому смогу"
+              width="640"
+              height="360"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Той, що біжить по лезу 2049 (Blade Runner 2049)</h3>
+              <p class="card__meta">2017 · реж. Дені Вільнев</p>
+              <p class="card__excerpt">
+                Офіцер поліції К натрапляє на давно поховану таємницю, яка
+                може зруйнувати крихкий порядок суспільства, і вирушає на
+                пошуки зниклого Ріка Декарда.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-B12</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-mad-max.svg"
+              alt="Постер «Шалений Макс: Дорога гніву»: бойова вантажівка мчить пустелею, здіймаючи хмару пилу"
+              width="500"
+              height="500"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Шалений Макс: Дорога гніву (Mad Max: Fury Road)</h3>
+              <p class="card__meta">2015 · реж. Джордж Міллер</p>
+              <p class="card__excerpt">
+                У випаленій пустелі Макс і Імператор Фуріоса тікають на
+                бойовій вантажівці від тирана Безсмертного Джо, рятуючи його
+                полонених дружин.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-C03</p>
+            </div>
+          </article>
+
+          <article class="card card--glass">
+            <span class="card__badge">Хіт прокату</span>
+            <img
+              class="card__img"
+              src="images/poster-dune.svg"
+              alt="Постер «Дюна»: піщаний черв'як виринає з дюн під двома місяцями Арракіса"
+              width="450"
+              height="600"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Дюна</h3>
+              <p class="card__meta">2021 · реж. Дені Вільнев</p>
+              <p class="card__excerpt">
+                Юний Пол Атрід разом із родиною прибуває на пустельну планету
+                Арракіс — єдине джерело найціннішої речовини у Всесвіті, за
+                яку точиться смертельна боротьба.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-D21</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-interstellar.svg"
+              alt="Постер «Інтерстеллар»: чорна діра з сяйливим диском над полем кукурудзи"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Інтерстеллар</h3>
+              <p class="card__meta">2014 · реж. Крістофер Нолан</p>
+              <p class="card__excerpt">
+                Колишній пілот Купер разом із командою науковців вирушає крізь
+                червоточину, щоб знайти нову домівку для людства, поки Земля
+                потерпає від посухи.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-E05</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-inception.svg"
+              alt="Постер «Початок»: перевернуте місто нависає над іншим, посередині — дзиґа"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Початок</h3>
+              <p class="card__meta">2010 · реж. Крістофер Нолан</p>
+              <p class="card__excerpt">
+                Домінік Кобб викрадає секрети зі снів, а тепер мусить зробити
+                протилежне — непомітно вкласти ідею в підсвідомість спадкоємця
+                корпорації.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-F14</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-dark-knight.svg"
+              alt="Постер «Темний лицар»: прожектор із силуетом кажана над нічними хмарочосами Готема"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Темний лицар</h3>
+              <p class="card__meta">2008 · реж. Крістофер Нолан</p>
+              <p class="card__excerpt">
+                Бетмен, комісар Гордон і прокурор Гарві Дент очищають Готем
+                від злочинності, доки в місті не з'являється Джокер, що сіє
+                хаос заради хаосу.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-G09</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-matrix.svg"
+              alt="Постер «Матриця»: зелені символи цифрового дощу на чорному тлі"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Матриця</h3>
+              <p class="card__meta">1999 · реж. Лана і Ліллі Вачовскі</p>
+              <p class="card__excerpt">
+                Хакер Нео дізнається, що звичний світ — лише симуляція,
+                створена машинами, і приєднується до повстанців Морфеуса, щоб
+                вирватися з неї.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-H18</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-gravity.svg"
+              alt="Постер «Гравітація»: астронавтка з обірваним тросом дрейфує над блакитним краєм Землі"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Гравітація</h3>
+              <p class="card__meta">2013 · реж. Альфонсо Куарон</p>
+              <p class="card__excerpt">
+                Після зіткнення з уламками на орбіті інженерка Раян Стоун
+                лишається сама у відкритому космосі й мусить дістатися до
+                найближчої станції.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-J02</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-titanic.svg"
+              alt="Постер «Титанік»: силует лайнера з чотирма трубами на тлі заходу сонця над океаном"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Титанік</h3>
+              <p class="card__meta">1997 · реж. Джеймс Кемерон</p>
+              <p class="card__excerpt">
+                Художник Джек і аристократка Роуз знайомляться на борту
+                «Титаніка» під час його першого рейсу, який закінчиться
+                зіткненням з айсбергом.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-K11</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-avatar.svg"
+              alt="Постер «Аватар»: летючі гори Пандори з ліанами й біолюмінесцентні вогники"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <div class="card__body">
+              <h3 class="card__title">Аватар</h3>
+              <p class="card__meta">2009 · реж. Джеймс Кемерон</p>
+              <p class="card__excerpt">
+                Колишній морський піхотинець Джейк Саллі в тілі аватара
+                потрапляє до народу наві на Пандорі й мусить обрати, на чиєму
+                він боці.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-L06</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <hr />
+
       <!-- Ієрархія розділів каталогу -->
       <section id="sections">
         <h2>Розділи каталогу</h2>
@@ -302,5 +539,7 @@
       <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
       <p>Виконав: Капітан Єгор, група 1</p>
     </footer>
+
+    <a class="to-top" href="#top" aria-label="Нагору">↑</a>
   </body>
 </html>
