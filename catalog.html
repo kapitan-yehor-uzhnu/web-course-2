@@ -2,7 +2,7 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/styles.css" />
     <title>Каталог — Кіносвіт</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
@@ -13,18 +13,21 @@
         <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
         <h1>Кінотеатр «Кіносвіт»</h1>
       </div>
-      <nav aria-label="Головне меню">
-        <ul class="menu">
-          <li><a href="index.html">Головна</a></li>
-          <li><a href="index.html#poster-banner">Афіша тижня</a></li>
-          <li><a href="catalog.html" class="current">Каталог</a></li>
-          <li><a href="form.html">Бронювання</a></li>
-          <li><a href="index.html#concept">Про кінотеатр</a></li>
-          <li><a href="about.html">Про проєкт</a></li>
-          <li>
-            <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
-          </li>
-        </ul>
+      <nav class="nav" aria-label="Головне меню">
+        <details>
+          <summary class="nav__toggle">☰ Меню</summary>
+          <ul class="menu nav__list">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="index.html#poster-banner">Афіша тижня</a></li>
+            <li><a href="catalog.html" class="current">Каталог</a></li>
+            <li><a href="form.html">Бронювання</a></li>
+            <li><a href="index.html#concept">Про кінотеатр</a></li>
+            <li><a href="about.html">Про проєкт</a></li>
+            <li>
+              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
+            </li>
+          </ul>
+        </details>
       </nav>
     </header>
 
@@ -385,101 +388,104 @@
         <!-- Таблиця фільмів у прокаті -->
         <section id="movies-table">
           <h2>Фільми в прокаті</h2>
-          <table>
-            <caption>Фільми в прокаті кінотеатру «Кіносвіт»</caption>
-            <thead>
-              <tr>
-                <th rowspan="2" scope="col">Назва фільму</th>
-                <th rowspan="2" scope="col">Жанр</th>
-                <th colspan="3" scope="colgroup">Характеристики</th>
-                <th rowspan="2" scope="col">Кінокомпанія</th>
-              </tr>
-              <tr>
-                <th scope="col">Рік</th>
-                <th scope="col">Тривалість</th>
-                <th scope="col">Режисер</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">«Інтерстеллар»</th>
-                <td>Фантастика</td>
-                <td>2014</td>
-                <td>2 год 49 хв</td>
-                <td rowspan="3">Крістофер Нолан</td>
-                <td rowspan="8">«Warner Bros.»</td>
-              </tr>
-              <tr>
-                <th scope="row">«Початок»</th>
-                <td>Трилер</td>
-                <td>2010</td>
-                <td>2 год 28 хв</td>
-              </tr>
-              <tr>
-                <th scope="row">«Темний лицар»</th>
-                <td>Бойовик</td>
-                <td>2008</td>
-                <td>2 год 32 хв</td>
-              </tr>
-              <tr>
-                <th scope="row">«Той, що біжить по лезу 2049»</th>
-                <td>Фантастика</td>
-                <td>2017</td>
-                <td>2 год 44 хв</td>
-                <td rowspan="2">Дені Вільнев</td>
-              </tr>
-              <tr>
-                <th scope="row">«Дюна»</th>
-                <td>Фантастика</td>
-                <td>2021</td>
-                <td>2 год 35 хв</td>
-              </tr>
-              <tr>
-                <th scope="row">«Матриця»</th>
-                <td>Фантастика</td>
-                <td>1999</td>
-                <td>2 год 16 хв</td>
-                <td>Лана і Ліллі Вачовскі</td>
-              </tr>
-              <tr>
-                <th scope="row">«Шалений Макс: Дорога гніву»</th>
-                <td>Бойовик</td>
-                <td>2015</td>
-                <td>2 год 0 хв</td>
-                <td>Джордж Міллер</td>
-              </tr>
-              <tr>
-                <th scope="row">«Гравітація»</th>
-                <td>Фантастика</td>
-                <td>2013</td>
-                <td>1 год 31 хв</td>
-                <td>Альфонсо Куарон</td>
-              </tr>
-              <tr>
-                <th scope="row">«Титанік»</th>
-                <td>Драма</td>
-                <td>1997</td>
-                <td>3 год 14 хв</td>
-                <td>Джеймс Кемерон</td>
-                <td rowspan="2">«20th Century Fox»</td>
-              </tr>
-              <tr>
-                <th scope="row">«Аватар»</th>
-                <td>Фантастика</td>
-                <td>2009</td>
-                <td>2 год 42 хв</td>
-                <td>Джеймс Кемерон</td>
-              </tr>
-              <tr>
-                <th scope="row">«Серце звіра»</th>
-                <td>Пригоди</td>
-                <td>2026</td>
-                <td>1 год 41 хв</td>
-                <td>Девід Ейр</td>
-                <td>«Paramount Pictures»</td>
-              </tr>
-            </tbody>
-          </table>
+          <!-- Широку таблицю прокручує її обгортка, а не вся сторінка -->
+          <div class="table-wrap">
+            <table>
+              <caption>Фільми в прокаті кінотеатру «Кіносвіт»</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2" scope="col">Назва фільму</th>
+                  <th rowspan="2" scope="col">Жанр</th>
+                  <th colspan="3" scope="colgroup">Характеристики</th>
+                  <th rowspan="2" scope="col">Кінокомпанія</th>
+                </tr>
+                <tr>
+                  <th scope="col">Рік</th>
+                  <th scope="col">Тривалість</th>
+                  <th scope="col">Режисер</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">«Інтерстеллар»</th>
+                  <td>Фантастика</td>
+                  <td>2014</td>
+                  <td>2 год 49 хв</td>
+                  <td rowspan="3">Крістофер Нолан</td>
+                  <td rowspan="8">«Warner Bros.»</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Початок»</th>
+                  <td>Трилер</td>
+                  <td>2010</td>
+                  <td>2 год 28 хв</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Темний лицар»</th>
+                  <td>Бойовик</td>
+                  <td>2008</td>
+                  <td>2 год 32 хв</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Той, що біжить по лезу 2049»</th>
+                  <td>Фантастика</td>
+                  <td>2017</td>
+                  <td>2 год 44 хв</td>
+                  <td rowspan="2">Дені Вільнев</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Дюна»</th>
+                  <td>Фантастика</td>
+                  <td>2021</td>
+                  <td>2 год 35 хв</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Матриця»</th>
+                  <td>Фантастика</td>
+                  <td>1999</td>
+                  <td>2 год 16 хв</td>
+                  <td>Лана і Ліллі Вачовскі</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Шалений Макс: Дорога гніву»</th>
+                  <td>Бойовик</td>
+                  <td>2015</td>
+                  <td>2 год 0 хв</td>
+                  <td>Джордж Міллер</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Гравітація»</th>
+                  <td>Фантастика</td>
+                  <td>2013</td>
+                  <td>1 год 31 хв</td>
+                  <td>Альфонсо Куарон</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Титанік»</th>
+                  <td>Драма</td>
+                  <td>1997</td>
+                  <td>3 год 14 хв</td>
+                  <td>Джеймс Кемерон</td>
+                  <td rowspan="2">«20th Century Fox»</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Аватар»</th>
+                  <td>Фантастика</td>
+                  <td>2009</td>
+                  <td>2 год 42 хв</td>
+                  <td>Джеймс Кемерон</td>
+                </tr>
+                <tr>
+                  <th scope="row">«Серце звіра»</th>
+                  <td>Пригоди</td>
+                  <td>2026</td>
+                  <td>1 год 41 хв</td>
+                  <td>Девід Ейр</td>
+                  <td>«Paramount Pictures»</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <p>
             <a href="form.html" class="button">Забронювати квиток</a>
           </p>

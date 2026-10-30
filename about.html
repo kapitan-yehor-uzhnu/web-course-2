@@ -2,7 +2,7 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/styles.css" />
     <title>Про проєкт — Кіносвіт</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
@@ -13,18 +13,21 @@
         <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
         <h1>Кінотеатр «Кіносвіт»</h1>
       </div>
-      <nav aria-label="Головне меню">
-        <ul class="menu">
-          <li><a href="index.html">Головна</a></li>
-          <li><a href="index.html#poster-banner">Афіша тижня</a></li>
-          <li><a href="catalog.html">Каталог</a></li>
-          <li><a href="form.html">Бронювання</a></li>
-          <li><a href="index.html#concept">Про кінотеатр</a></li>
-          <li><a href="about.html" class="current">Про проєкт</a></li>
-          <li>
-            <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
-          </li>
-        </ul>
+      <nav class="nav" aria-label="Головне меню">
+        <details>
+          <summary class="nav__toggle">☰ Меню</summary>
+          <ul class="menu nav__list">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="index.html#poster-banner">Афіша тижня</a></li>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="form.html">Бронювання</a></li>
+            <li><a href="index.html#concept">Про кінотеатр</a></li>
+            <li><a href="about.html" class="current">Про проєкт</a></li>
+            <li>
+              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
+            </li>
+          </ul>
+        </details>
       </nav>
     </header>
 

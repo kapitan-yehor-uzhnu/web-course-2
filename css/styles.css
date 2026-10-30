@@ -22,6 +22,26 @@
   box-sizing: border-box;
 }
 
+/* ===== Гнучкі медіа (LR7) =====
+   max-width: 100% не дає картинці, відео чи iframe стати ширшими за свій контейнер:
+   без нього файл завширшки, скажімо, 1200px на екрані в 360px лишається 1200px,
+   розпирає батьківські блоки й тягне за собою горизонтальну прокрутку всієї сторінки.
+   height: auto зберігає пропорції, коли ширину зменшено. */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== Адаптив (mobile-first) =====
+   база          — телефон,  ≤ 767px
+   min-width: 768px  — планшет, 768–1023px
+   min-width: 1024px — десктоп, ≥ 1024px
+   Правила поза медіазапитами описують телефон: одна колонка, меню стовпчиком
+   по центру. Усе «широке» — лише всередині @media (min-width: …), і кожен
+   медіазапит стоїть одразу під правилами свого компонента. */
+
 :root {
   --color-brand: hsl(225 24% 11%);
   --color-accent: hsl(39 94% 59%);
@@ -48,8 +68,12 @@
   --container-width: 1200px;
   /* Макет (LR6): кожен gap і кожна ширина треку сітки — лише через ці змінні */
   --gap: 1.25rem; /* єдиний проміжок для всіх сіток і flex-рядів */
-  --min-col: 240px; /* мінімальна ширина колонки каталогу */
-  --sidebar: 260px; /* ширина бічної колонки макета */
+  /* мінімальна ширина колонки каталогу: на телефоні 100% — рівно одна картка в ряд;
+     на планшеті й десктопі її перевизначає медіазапит біля .cards */
+  --min-col: 100%;
+  /* ширина бічної колонки макета на десктопі: 200px — щоб навіть на 1024px
+     у середній колонці вмістилося три картки з кнопкою «Забронювати» */
+  --sidebar: 200px;
   --gallery-row: 120px; /* висота рядка галереї (бонус) */
   --label-col: 14rem; /* ширина колонки підписів у формі (бонус) */
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
@@ -85,12 +109,27 @@ body.light-theme {
   --banner-text-shadow: 0 1px 2px rgb(255 255 255 / 80%);
 }
 
+/* Шапка липка на всіх ширинах, тож при переході за якорем (#poster-banner, #goal…)
+   браузер прокручував би секцію під шапку. --sticky-offset — висота шапки з запасом:
+   scroll-padding-top залишає стільки місця зверху для якорів, і на стільки ж
+   опускається липка бічна колонка. Шапка на різних ширинах різної висоти,
+   тому значення міняють медіазапити. */
 html {
+  --sticky-offset: 11rem; /* телефон: назва і згорнуте меню «☰ Меню», ≈160px */
   scroll-behavior: smooth;
-  /* Шапка липка, тож при переході за якорем (#poster-banner, #goal…) браузер
-     прокручує секцію до самого верху — під шапку. scroll-padding-top залишає
-     зверху місце на висоту шапки (≈160px), і заголовок секції видно повністю. */
-  scroll-padding-top: 11rem;
+  scroll-padding-top: var(--sticky-offset);
+}
+
+@media (min-width: 768px) {
+  html {
+    --sticky-offset: 12rem; /* планшет: назва й меню в рядок, ≈171px */
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    --sticky-offset: 9.5rem; /* десктоп: ≈132px */
+  }
 }
 
 /* ===== Притиснутий футер (LR6) =====
@@ -129,7 +168,8 @@ body > header {
    <header> усередині карток фільмів на головній.
    Фон --color-brand непрозорий, тож прокручений вміст не просвічує крізь шапку.
    Вертикальні відступи — var(--space-sm), горизонтальні вирівнюють вміст шапки
-   по ширині основного контейнера, як і раніше. */
+   по ширині основного контейнера, як і раніше.
+   Шапка липка на всіх трьох розкладках. */
 body > header {
   position: sticky;
   top: 0;
@@ -146,14 +186,24 @@ body > header {
   scroll-margin-top: 1000vh;
 }
 
-/* Шапка на Flexbox (LR6): два блоки — назва з логотипом ліворуч і меню праворуч.
-   Розсуває їх justify-content: space-between, а не float чи порожні відступи. */
+/* Шапка на Flexbox (LR6). Телефон: назва з логотипом і меню стовпчиком по центру. */
 .site-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   gap: var(--gap);
   border-bottom: 1px solid var(--color-surface-raised);
+  text-align: center;
+}
+
+/* Від планшета — два блоки в рядок: назва ліворуч, меню праворуч.
+   Розсуває їх justify-content: space-between, а не float чи порожні відступи. */
+@media (min-width: 768px) {
+  .site-header {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
 /* Логотип і назва сайту — один блок, теж рядком через flex */
@@ -163,7 +213,11 @@ body > header {
   gap: var(--space-md);
 }
 
+/* Логотип має свій фіксований розмір, тому загальне img { max-width: 100% } йому
+   скидаємо: з ним браузер вважав логотип «стискуваним», недооцінював мінімальну
+   ширину блока з назвою, і на планшеті назва заїжджала під меню */
 .site-header__brand img {
+  max-width: none;
   width: 76px;
   height: 76px;
   object-fit: contain;
@@ -177,31 +231,86 @@ h3 {
   line-height: 1.2;
 }
 
+/* Розміри заголовків плавно ростуть із шириною вікна між двома межами
+   (замість фіксованих rem): на телефоні менші, на десктопі — як раніше */
 h1 {
-  font-size: 2.25rem;
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 2.25rem);
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: clamp(1.4rem, 1.1rem + 1.25vw, 1.75rem);
 }
 
 h3 {
-  font-size: 1.375rem;
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.375rem);
 }
 
 body > header h1 {
   margin: 0;
 }
 
-/* Меню на Flexbox: пункти стоять рядком, проміжки між ними дає gap на ul,
-   тож у li більше немає ні inline-block, ні margin.
-   Якщо поруч із назвою місця на всі пункти не вистачає, вони переносяться
-   на другий рядок, але лишаються притиснутими праворуч (flex-end).
+/* ===== Меню, що складається на телефоні (LR7) =====
+   Список меню загорнуто в <details>: на телефоні видно лише кнопку «☰ Меню»
+   (summary), а натискання — мишею, пальцем, Enter чи Space — розгортає список.
+   Усе це вміє сам браузер, без JavaScript. */
+
+/* Телефон: меню займає всю ширину шапки під назвою */
+.nav {
+  align-self: stretch;
+}
+
+/* Загальне правило details з LR2 (акторський склад у каталозі) дає фон і відступи —
+   для меню в шапці вони не потрібні */
+.nav details {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* summary як кнопка: фон, рамка, відступи, курсор-рука і висота не менше 44px —
+   мінімум, у який зручно влучити пальцем */
+.nav__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-weight: 700;
+  cursor: pointer;
+  /* Прибираємо стандартний трикутник summary — його замінює значок ☰ */
+  list-style: none;
+}
+
+.nav__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.nav__toggle:hover {
+  background: var(--color-surface-raised);
+}
+
+/* Видимий фокус для клавіатури: Tab доводить фокус до summary, Enter/Space розгортає */
+.nav__toggle:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.nav details[open] > .nav__toggle {
+  margin-bottom: var(--space-sm);
+}
+
+/* Меню на Flexbox: проміжки між пунктами дає gap на ul,
+   тож у li немає ні inline-block, ні margin.
+   Телефон: пункти стовпчиком, кожен на всю ширину.
    Фон меню — --color-brand (LR4). */
 .menu {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: var(--space-sm);
   margin: 0;
   padding: 0;
@@ -210,10 +319,43 @@ body > header h1 {
   list-style: none;
 }
 
-/* Посилання — «плитки»: display: block і padding, тож клікабельна вся область пункту.
+/* Від планшета кнопка «☰ Меню» не потрібна: меню — горизонтальний ряд праворуч
+   від назви, перенесені пункти теж притиснуті праворуч.
+   <details> у HTML без атрибута open (інакше на телефоні меню відкривалося б
+   розгорнутим і липка шапка закривала б пів екрана), тому вміст закритого
+   <details> показуємо через псевдоелемент ::details-content. Браузер, який його
+   не знає, просто лишить на широкому екрані кнопку «☰ Меню» — меню не зникне. */
+@media (min-width: 768px) {
+  .nav {
+    align-self: auto;
+  }
+
+  .nav details > .nav__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  @supports selector(::details-content) {
+    .nav__toggle {
+      display: none;
+    }
+
+    .nav details::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+}
+
+/* Посилання — «плитки»: padding і висота не менше 44px, тож клікабельна вся область
+   пункту. flex — щоб текст стояв по центру плитки.
    :any-link — щоб це правило не перебивалося загальними a:link / a:visited нижче */
 .menu a:any-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: var(--space-sm) var(--space-md);
   /* «Плитка»: власний фон і рамка, щоб пункт було видно як кнопку, а не голий текст */
   border: 1px solid var(--color-surface-raised);
@@ -263,26 +405,70 @@ main > img {
 /* ===== Макет сторінки (LR6): grid-template-areas =====
    Шапка лишається ПОЗА .layout: липкий елемент «їздить» лише в межах свого
    батька, і всередині сітки він був би заперт у своєму короткому рядку. */
+/* База — телефон: одна колонка, зони одна під одною */
 .layout {
   /* Росте на всю вільну висоту body (див. «Притиснутий футер») */
   flex: 1;
   display: grid;
-  grid-template-columns: var(--sidebar) 1fr var(--sidebar);
-  grid-template-areas:
-    "nav  main side"
-    "foot foot foot";
-  /* Самого flex: 1 мало: рядки сітки за замовчуванням auto, і рядок foot лишився б
-     одразу під вмістом. 1fr віддає все зайве місце рядку з вмістом, foot — по вмісту */
-  grid-template-rows: 1fr auto;
   gap: var(--gap);
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "nav"
+    "main"
+    "side"
+    "foot";
+  /* Самого flex: 1 мало: рядки сітки за замовчуванням auto, і рядок foot лишився б
+     одразу під вмістом. 1fr віддає все зайве місце рядку з вмістом, решта — по вмісту */
+  grid-template-rows: auto 1fr auto auto;
 }
 
-/* Головна: дві колонки — вміст і поради, без бічної навігації */
+/* Головна: без бічної навігації — вміст, поради, підвал */
 .layout--home {
-  grid-template-columns: 1fr var(--sidebar);
   grid-template-areas:
-    "main side"
-    "foot foot";
+    "main"
+    "side"
+    "foot";
+  grid-template-rows: 1fr auto auto;
+}
+
+/* Планшет: дві зони. Рубрики — рядком на всю ширину зверху,
+   під ними каталог (2/3) і фільтр (1/3); на головній — вміст і поради поруч */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "nav  nav"
+      "main side"
+      "foot foot";
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .layout--home {
+    grid-template-areas:
+      "main side"
+      "foot foot";
+    grid-template-rows: 1fr auto;
+  }
+}
+
+/* Десктоп: каталог у три колонки — рубрики, картки, фільтр.
+   Головну треба повторити: правило .layout тут стоїть пізніше за планшетне
+   .layout--home і з такою самою специфічністю перебило б його */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+    grid-template-areas:
+      "nav  main side"
+      "foot foot foot";
+    grid-template-rows: 1fr auto;
+  }
+
+  .layout--home {
+    grid-template-columns: 1fr var(--sidebar);
+    grid-template-areas:
+      "main side"
+      "foot foot";
+  }
 }
 
 /* Бічні колонки не розтягуються на всю висоту каталогу, а мають висоту свого вмісту */
@@ -293,12 +479,14 @@ main > img {
 
 /* Елемент сітки за замовчуванням не стискається вужче за свій вміст (min-width: auto),
    тож широка таблиця розсунула б колонку 1fr. min-width: 0 дозволяє колонці
-   лишатися своєї ширини, а таблиця прокручується всередині своєї секції */
+   лишатися своєї ширини, а таблиця прокручується всередині своєї обгортки */
 .layout__main {
   min-width: 0;
 }
 
-#movies-table {
+/* Обгортка таблиці (LR7): на вузькому екрані вбік прокручується лише таблиця,
+   а не вся сторінка */
+.table-wrap {
   overflow-x: auto;
 }
 
@@ -316,6 +504,21 @@ main > img {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Планшет: рубрики займають рядок на всю ширину, тож стоять горизонтально;
+   на десктопі вони знову у вузькій лівій колонці — стовпчиком */
+@media (min-width: 768px) {
+  .layout__nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout__nav ul {
+    flex-direction: column;
+  }
 }
 
 .layout__nav a:any-link {
@@ -361,29 +564,6 @@ main > img {
   display: none;
 }
 
-/* На вузькому екрані три колонки не вміщаються — зони стають одна під одною.
-   HTML не змінюється, переписується лише схема */
-@media (max-width: 900px) {
-  /* Росте рядок main, решта — по вмісту */
-  .layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "nav"
-      "main"
-      "side"
-      "foot";
-    grid-template-rows: auto 1fr auto auto;
-  }
-
-  .layout--home {
-    grid-template-areas:
-      "main"
-      "side"
-      "foot";
-    grid-template-rows: 1fr auto auto;
-  }
-}
-
 section,
 article,
 .layout__nav,
@@ -391,12 +571,24 @@ article,
 form,
 #contents {
   margin-block: 0 var(--space-lg);
-  padding: var(--space-lg);
+  padding: var(--space-md);
   border: 1px solid var(--color-surface-raised);
   border-radius: var(--radius);
   background: var(--color-surface);
   /* Якщо --shadow не оголошено, браузер використає тінь із запасного значення. */
   box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+/* Від планшета місця більше — внутрішні відступи блоків ширші */
+@media (min-width: 768px) {
+  section,
+  article,
+  .layout__nav,
+  .layout__aside,
+  form,
+  #contents {
+    padding: var(--space-lg);
+  }
 }
 
 article > header {
@@ -891,6 +1083,23 @@ body > .site-footer {
   padding-top: var(--space-sm);
 }
 
+/* Кількістю карток у ряду керуємо лише значенням --min-col, а не числом колонок.
+   Відсоток у minmax() рахується від ширини самої сітки, тож «половина ширини
+   мінус один gap» вміщується рівно двічі, а «третина мінус два gap» — рівно тричі,
+   на будь-якій ширині всередині порогу. На телефоні --min-col: 100% (з :root) —
+   одна картка. */
+@media (min-width: 768px) {
+  .cards {
+    --min-col: calc((100% - var(--gap)) / 2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards {
+    --min-col: calc((100% - 2 * var(--gap)) / 3);
+  }
+}
+
 .card {
   /* Нутрощі картки — flex-колонка: зображення, текст і кнопка йдуть одне під одним,
      а кнопку можна притиснути до низу через margin-top: auto */
@@ -994,10 +1203,13 @@ body > .site-footer {
 
 .card__action:any-link {
   display: block;
-  padding: var(--space-sm) var(--space-md);
+  /* Компактна кнопка: на десктопі в ряду три картки, і на 1024px картка
+     лише ~150px завширшки — з ширшими відступами «Забронювати» обрізалося */
+  padding: var(--space-sm);
   border-radius: calc(var(--radius) / 2);
   background: var(--color-accent);
   color: var(--color-brand);
+  font-size: 0.875rem;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
@@ -1011,9 +1223,11 @@ body > .site-footer {
 
 /* «Швидкий перегляд» — другорядна дія, тому лише з рамкою, без заливки */
 .card__preview {
+  padding: var(--space-sm);
   border-color: var(--color-accent);
   background: transparent;
   color: var(--color-accent);
+  font-size: 0.875rem;
 }
 
 .card__preview:hover,
@@ -1199,42 +1413,6 @@ body > header h1 {
 }
 */
 
-@media (max-width: 600px) {
-  /* На телефоні шапка з шістьма пунктами меню займає майже пів екрана,
-     тому тут вона не липка, а прокручується разом зі сторінкою */
-  html {
-    scroll-padding-top: var(--space-md);
-  }
-
-  body > header {
-    position: static;
-  }
-
-  /* На вузькому екрані назва й меню вже не вміщаються поруч — ставимо їх стовпчиком */
-  .site-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .menu {
-    justify-content: center;
-  }
-
-  section,
-  article,
-  .layout__nav,
-  .layout__aside,
-  form,
-  #contents {
-    padding: var(--space-md);
-  }
-
-  table {
-    display: block;
-    overflow-x: auto;
-  }
-}
-
 /* ===== Демонстрація: схлопування відступів ===== */
 
 /* Схлопування вертикальних відступів (margin collapse).
@@ -1275,6 +1453,9 @@ body > header h1 {
    Кнопка виглядає як решта «плиток» меню. */
 .theme-toggle {
   display: block;
+  /* На телефоні — на всю ширину стовпчика меню і не нижча за 44px, як інші пункти */
+  width: 100%;
+  min-height: 44px;
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-accent);
   border-radius: var(--radius);
@@ -1288,16 +1469,22 @@ body > header h1 {
 }
 
 /* --- Бонус 2. Щільна галерея ---
-   Чотири колонки, рядки однакової висоти; широкі кадри займають дві колонки,
-   високі — два рядки. grid-auto-flow: row dense дозволяє браузеру
-   заповнювати «дірки», які лишилися перед великими кадрами, меншими кадрами,
-   що стоять у HTML пізніше. */
+   На телефоні дві колонки, від планшета — чотири; рядки однакової висоти;
+   широкі кадри займають дві колонки, високі — два рядки.
+   grid-auto-flow: row dense дозволяє браузеру заповнювати «дірки», які лишилися
+   перед великими кадрами, меншими кадрами, що стоять у HTML пізніше. */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: var(--gallery-row);
   grid-auto-flow: row dense;
   gap: var(--gap);
+}
+
+@media (min-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .gallery__item {
@@ -1327,13 +1514,14 @@ body > header h1 {
 
 /* --- Бонус 4. Липка бічна колонка ---
    Фільтр за жанром прокручується разом зі сторінкою, але зупиняється під шапкою
-   (шапка заввишки ~132px, тож top трохи більший).
+   (top — висота шапки з запасом, --sticky-offset).
    align-self: start обов'язковий: без нього грид-елемент розтягнутий на всю
    висоту своєї області (рядка з каталогом), тобто вже займає все місце,
    і «їздити» всередині неї йому нікуди — липкість не спрацьовує. */
 .layout__aside {
   position: sticky;
-  top: 9rem;
+  /* Під шапкою: той самий відступ, що й для якорів (див. html) */
+  top: var(--sticky-offset);
   align-self: start;
 }
 
@@ -1346,16 +1534,17 @@ body > header h1 {
    Розмітку з LR3 не змінено: <p> навколо пари «підпис + поле» стає
    display: contents (зникає як коробка, і label з полем стають клітинками сітки),
    а <br> між ними більше не потрібен. */
+/* Телефон: одна колонка — підпис над полем */
 form {
   display: grid;
-  grid-template-columns: var(--label-col) 1fr;
+  grid-template-columns: 1fr;
   gap: var(--space-md) var(--gap);
 }
 
 form fieldset {
   display: grid;
   grid-column: 1 / -1;
-  grid-template-columns: var(--label-col) 1fr;
+  grid-template-columns: 1fr;
   gap: var(--space-md) var(--gap);
   align-items: center;
 }
@@ -1368,30 +1557,22 @@ form br {
   display: none;
 }
 
-/* Перемикачі й прапорці — у правій колонці, під полями */
-form label:has(> input[type="radio"]),
-form label:has(> input[type="checkbox"]) {
-  grid-column: 2;
-}
-
-/* Кнопка відправлення розтягнута на обидві колонки, «Скинути» — під нею */
+/* Кнопка відправлення розтягнута на всю ширину (на планшеті — на обидві колонки),
+   «Скинути» — під нею */
 form button {
   grid-column: 1 / -1;
 }
 
-@media (max-width: 600px) {
-  /* На телефоні — одна колонка, як на звичайному потоці */
+/* Від планшета — дві колонки: підписи ліворуч, поля праворуч,
+   перемикачі й прапорці — у правій колонці під полями */
+@media (min-width: 768px) {
   form,
   form fieldset {
-    grid-template-columns: 1fr;
+    grid-template-columns: var(--label-col) 1fr;
   }
 
   form label:has(> input[type="radio"]),
   form label:has(> input[type="checkbox"]) {
-    grid-column: auto;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
+    grid-column: 2;
   }
 }
