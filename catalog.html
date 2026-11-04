@@ -49,6 +49,12 @@
         <!-- Картки фільмів (LR5) -->
         <section id="catalog" class="catalog">
           <h2>Каталог</h2>
+          <!-- Індикатор завантаження — заготовка для LR10, коли картки вантажитимуться з мережі.
+               Поки даних із мережі немає, він прихований атрибутом hidden -->
+          <div class="loader" hidden>
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Завантажуємо каталог…</p>
+          </div>
           <div class="cards">
             <article data-genres="пригоди драма трилер" class="card">
               <span class="card__badge">Прем'єра</span>

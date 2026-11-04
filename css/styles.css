@@ -77,6 +77,8 @@ iframe {
   --gallery-row: 120px; /* висота рядка галереї (бонус) */
   --label-col: 14rem; /* ширина колонки підписів у формі (бонус) */
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
+  /* Тінь картки під курсором/фокусом — помітно сильніша за звичайну --shadow */
+  --shadow-hover: 0 14px 28px rgb(0 0 0 / 45%);
   --neu-dark: rgb(0 0 0 / 55%);
   --neu-light: rgb(255 255 255 / 6%);
   --banner-text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
@@ -104,6 +106,7 @@ body.light-theme {
   --color-success: hsl(140 55% 30%);
   --color-success-bg: hsl(140 50% 93%);
   --shadow: 0 6px 18px rgb(0 0 0 / 10%);
+  --shadow-hover: 0 14px 28px rgb(0 0 0 / 18%);
   --neu-dark: rgb(0 0 0 / 14%);
   --neu-light: rgb(255 255 255 / 95%);
   --banner-text-shadow: 0 1px 2px rgb(255 255 255 / 80%);
@@ -1118,6 +1121,21 @@ body > .site-footer {
   /* overflow: hidden обрізає вміст (передусім зображення) по заокруглених кутах
      border-radius, інакше прямокутні кути картинки вилазили б за межі картки. */
   overflow: hidden;
+  /* Перехід стоїть на базовому правилі, а не в :hover — тоді картка плавно
+     і піднімається, і повертається назад, коли курсор чи фокус іде.
+     Анімуємо лише transform і box-shadow: вони не змушують браузер
+     перераховувати розкладку сторінки */
+  transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+/* Картка під курсором і під фокусом клавіатури виглядає однаково.
+   :focus-within — бо фокус отримує не сама картка, а кнопки «Швидкий перегляд»
+   і «Забронювати» всередині неї. На телефоні :hover немає, але картка зрозуміла
+   й без нього: кнопка «Забронювати» видна завжди */
+.card:hover,
+.card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
 }
 
 /* Постер у картці: однакова висота для всіх карток, хоч вихідні файли різних пропорцій.
@@ -1135,6 +1153,14 @@ body > .site-footer {
   border-radius: 0;
   object-fit: cover;
   object-position: center;
+  transition: transform 400ms ease;
+}
+
+/* Вкладений ефект: під час наведення чи фокусу постер трохи наближається.
+   Зайве обрізає overflow: hidden картки */
+.card:hover .card__img,
+.card:focus-within .card__img {
+  transform: scale(1.08);
 }
 
 /* Експеримент: без position: relative обидва бейджі злетіли у правий верхній кут
@@ -1235,6 +1261,42 @@ body > .site-footer {
   background: var(--color-surface);
 }
 
+/* ===== Індикатор завантаження (LR7, заготовка для LR10) =====
+   Блок над сіткою карток прихований атрибутом hidden. display: flex нижче
+   перебив би цей атрибут (у браузера [hidden] має низьку специфічність),
+   тому для прихованого стану окреме правило. */
+.loader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.loader[hidden] {
+  display: none;
+}
+
+.loader p {
+  margin: 0;
+}
+
+/* Кільце, у якого кольоровий лише верхній край, — обертання видно саме по ньому.
+   linear: швидкість однакова на всьому оберті, тож коло крутиться рівно й безперервно.
+   З ease кожен оберт починався б повільно, розганявся й знову гальмував —
+   спінер помітно «смикався» б щоразу, як починається новий оберт. */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 6px solid var(--color-surface-raised);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ===== Модальне вікно на <dialog> (LR6) =====
    z-index тут не потрібен: showModal() виносить вікно у верхній шар (top layer),
    який браузер малює поверх усієї сторінки, зокрема й липкої шапки, —
@@ -1252,6 +1314,30 @@ dialog {
 /* Затемнення тла малює сам браузер — це псевдоелемент ::backdrop, окремого блока в HTML немає */
 dialog::backdrop {
   background: rgb(0 0 0 / 55%);
+}
+
+/* Поява вікна (LR7, варіант А): два окремі сценарії — тло просто проявляється,
+   а саме вікно проявляється, піднімаючись і трохи збільшуючись.
+   Тло швидше (200ms), вікно трохи «доганяє» (280ms). У кадрах — лише opacity й transform */
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* both у animation-fill-mode: до старту анімації елемент уже має стан першого кадру
+   (прозорий), а після кінця лишається в стані останнього. Без цього вікно на мить
+   спалахнуло б повністю видимим перед анімацією або «відскочило» б після неї. */
+dialog[open] {
+  animation: pop 280ms ease-out both;
+}
+
+dialog[open]::backdrop {
+  animation: fade 200ms ease-out both;
 }
 
 /* Сам <dialog> не забороняє прокручувати сторінку позаду (перевірено: коліщатко
@@ -1574,5 +1660,34 @@ form button {
   form label:has(> input[type="radio"]),
   form label:has(> input[type="checkbox"]) {
     grid-column: 2;
+  }
+}
+
+/* ===== Повага до prefers-reduced-motion (LR7) =====
+   Людям, яким рух на екрані шкодить, система передає налаштування «зменшити рух».
+   Анімації й переходи не вимикаємо, а робимо майже миттєвими (0.01ms): так
+   події animationend / transitionend усе одно настають, і нічого не «зависає».
+   !important тут виправданий: правило мусить перемогти будь-яку анімацію на сайті,
+   незалежно від специфічності її селектора. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Тонше правило для карток: замість руху — безпечний відгук кольором рамки й тінню */
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+    border-color: var(--color-accent);
+  }
+
+  .card:hover .card__img,
+  .card:focus-within .card__img {
+    transform: none;
   }
 }
