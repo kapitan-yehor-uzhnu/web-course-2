@@ -68,12 +68,14 @@ iframe {
   --container-width: 1200px;
   /* Макет (LR6): кожен gap і кожна ширина треку сітки — лише через ці змінні */
   --gap: 1.25rem; /* єдиний проміжок для всіх сіток і flex-рядів */
-  /* мінімальна ширина колонки каталогу: на телефоні 100% — рівно одна картка в ряд;
-     на планшеті й десктопі її перевизначає медіазапит біля .cards */
-  --min-col: 100%;
-  /* ширина бічної колонки макета на десктопі: 200px — щоб навіть на 1024px
-     у середній колонці вмістилося три картки з кнопкою «Забронювати» */
-  --sidebar: 200px;
+  /* мінімальна ширина колонки каталогу: на телефоні «половина мінус gap» — рівно
+     два постери в ряд (варіант 4: 5 → 3 → 2); на планшеті й десктопі її
+     перевизначає медіазапит біля .cards */
+  --min-col: calc((100% - var(--gap)) / 2);
+  --sidebar: 200px; /* ширина бічної колонки макета на десктопі */
+  /* ширша бічна колонка головної (поради): там немає карток, а в 200px довгі слова
+     на кшталт «розкуповуються» не вміщалися в рядок */
+  --sidebar-wide: 300px;
   --gallery-row: 120px; /* висота рядка галереї (бонус) */
   --label-col: 14rem; /* ширина колонки підписів у формі (бонус) */
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
@@ -454,20 +456,24 @@ main > img {
   }
 }
 
-/* Десктоп: каталог у три колонки — рубрики, картки, фільтр.
+/* Десктоп: бічна колонка ліворуч — рубрики, під ними фільтр за жанром, —
+   а праворуч каталог на всю решту ширини. Три колонки, як у LR6, тут не підходять:
+   за варіантом на десктопі в ряду п'ять постерів, і між двома бічними колонками
+   на 1024px вони вийшли б по ~76px. Так постер має щонайменше ~128px.
    Головну треба повторити: правило .layout тут стоїть пізніше за планшетне
    .layout--home і з такою самою специфічністю перебило б його */
 @media (min-width: 1024px) {
   .layout {
-    grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+    grid-template-columns: var(--sidebar) 1fr;
     grid-template-areas:
-      "nav  main side"
-      "foot foot foot";
-    grid-template-rows: 1fr auto;
+      "nav  main"
+      "side main"
+      "foot foot";
+    grid-template-rows: auto 1fr auto;
   }
 
   .layout--home {
-    grid-template-columns: 1fr var(--sidebar);
+    grid-template-columns: 1fr var(--sidebar-wide);
     grid-template-areas:
       "main side"
       "foot foot";
@@ -1086,20 +1092,20 @@ body > .site-footer {
   padding-top: var(--space-sm);
 }
 
-/* Кількістю карток у ряду керуємо лише значенням --min-col, а не числом колонок.
-   Відсоток у minmax() рахується від ширини самої сітки, тож «половина ширини
-   мінус один gap» вміщується рівно двічі, а «третина мінус два gap» — рівно тричі,
-   на будь-якій ширині всередині порогу. На телефоні --min-col: 100% (з :root) —
-   одна картка. */
+/* Кількістю постерів у ряду (варіант 4: 2 → 3 → 5) керуємо лише значенням
+   --min-col, а не числом колонок. Відсоток у minmax() рахується від ширини самої
+   сітки, тож «третина ширини мінус два gap» вміщується рівно тричі, а «п'ята
+   частина мінус чотири gap» — рівно п'ять разів, на будь-якій ширині всередині
+   порогу. На телефоні «половина мінус gap» (з :root) — два постери. */
 @media (min-width: 768px) {
   .cards {
-    --min-col: calc((100% - var(--gap)) / 2);
+    --min-col: calc((100% - 2 * var(--gap)) / 3);
   }
 }
 
 @media (min-width: 1024px) {
   .cards {
-    --min-col: calc((100% - 2 * var(--gap)) / 3);
+    --min-col: calc((100% - 4 * var(--gap)) / 5);
   }
 }
 
@@ -1147,7 +1153,9 @@ body > .site-footer {
      display: block прибирає цей проміжок, і картинка щільно прилягає до .card__body */
   display: block;
   width: 100%;
-  height: 170px;
+  /* Постер вертикальних пропорцій (варіант 4) на будь-якій ширині картки */
+  height: auto;
+  aspect-ratio: 2 / 3;
   /* Скидаємо заокруглення із загального правила для article img:
      кути картки й так обрізає overflow: hidden, а знизу картинка має бути прямою */
   border-radius: 0;
@@ -1163,6 +1171,32 @@ body > .site-footer {
   transform: scale(1.08);
 }
 
+/* Варіант 4: під час наведення на постері з'являється затемнення з назвою фільму.
+   Шар лежить точно над постером (та сама ширина й пропорції 2:3) і спершу прозорий;
+   анімуємо лише opacity. aria-hidden у HTML — назву вже є в картці, читалка
+   не повторюватиме її двічі */
+.card__overlay {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2 / 3;
+  padding: var(--space-sm);
+  background: rgb(0 0 0 / 65%);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.card:hover .card__overlay,
+.card:focus-within .card__overlay {
+  opacity: 1;
+}
+
 /* Експеримент: без position: relative обидва бейджі злетіли у правий верхній кут
    самої сторінки, поверх шапки, і лягли один на одного. Абсолютно позиціонований
    елемент рахує top/right від найближчого предка з position, відмінним від static;
@@ -1176,6 +1210,8 @@ body > .site-footer {
    position: absolute виймає його з потоку: картка не розтягується, текст не зсувається. */
 .card__badge {
   position: absolute;
+  /* Над затемненням постера, щоб «Прем'єра» лишалася видимою */
+  z-index: 2;
   top: var(--space-sm);
   right: var(--space-sm);
   padding: var(--space-xs) var(--space-sm);
@@ -1185,8 +1221,19 @@ body > .site-footer {
   border-radius: 999px;
 }
 
+/* Картки вузькі (на десктопі п'ять у ряд, ~130–170px), тож відступи й шрифти компактні */
 .card__body {
-  padding: var(--space-md);
+  padding: var(--space-sm);
+}
+
+.card .card__title {
+  font-size: 1rem;
+}
+
+.card__meta,
+.card__id,
+.card__excerpt {
+  font-size: 0.8rem;
 }
 
 /* Назва — рівно один рядок; те, що не вміщається, замінюють три крапки.
@@ -1219,7 +1266,7 @@ body > .site-footer {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
-  margin: auto var(--space-md) var(--space-md);
+  margin: auto var(--space-sm) var(--space-sm);
 }
 
 /* Обидві кнопки ділять рядок порівну, а у вузькій картці переносяться одна під одну */
@@ -1229,13 +1276,13 @@ body > .site-footer {
 
 .card__action:any-link {
   display: block;
-  /* Компактна кнопка: на десктопі в ряду три картки, і на 1024px картка
-     лише ~150px завширшки — з ширшими відступами «Забронювати» обрізалося */
+  /* Компактна кнопка: на десктопі в ряду п'ять постерів, і на 1024px картка
+     лише ~130px завширшки — з ширшими відступами «Забронювати» обрізалося */
   padding: var(--space-sm);
   border-radius: calc(var(--radius) / 2);
   background: var(--color-accent);
   color: var(--color-brand);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
@@ -1253,7 +1300,7 @@ body > .site-footer {
   border-color: var(--color-accent);
   background: transparent;
   color: var(--color-accent);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 .card__preview:hover,
@@ -1448,7 +1495,6 @@ body > header h1 {
   overflow: hidden;
   margin: 0 0 var(--space-sm);
   color: var(--color-muted);
-  font-size: 0.875rem;
   line-height: 1.5;
 }
 
@@ -1596,6 +1642,12 @@ body > header h1 {
 .card--pinned {
   order: -1;
   grid-column: 1 / -1;
+}
+
+/* На весь ряд постер 2:3 вийшов би завеликим — у закріпленої картки він широкий */
+.card--pinned .card__img,
+.card--pinned .card__overlay {
+  aspect-ratio: 3 / 1;
 }
 
 /* --- Бонус 4. Липка бічна колонка ---
