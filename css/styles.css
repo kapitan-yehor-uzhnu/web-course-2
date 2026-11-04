@@ -45,6 +45,7 @@ iframe {
 :root {
   --color-brand: hsl(225 24% 11%);
   --color-accent: hsl(39 94% 59%);
+  --color-on-accent: hsl(225 24% 11%);
   --color-bg: hsl(225 28% 7%);
   --color-surface: hsl(225 22% 12%);
   --color-surface-raised: hsl(225 19% 16%);
@@ -78,6 +79,7 @@ iframe {
   --sidebar-wide: 300px;
   --gallery-row: 120px; /* висота рядка галереї (бонус) */
   --label-col: 14rem; /* ширина колонки підписів у формі (бонус) */
+  --card-thumb: 120px; /* ширина постера в горизонтальній картці (контейнерний запит) */
   --shadow: 0 8px 24px rgb(0 0 0 / 28%);
   /* Тінь картки під курсором/фокусом — помітно сильніша за звичайну --shadow */
   --shadow-hover: 0 14px 28px rgb(0 0 0 / 45%);
@@ -88,18 +90,56 @@ iframe {
   --font-body: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* ===== Бонус 1. Світла тема — другий набір тих самих змінних =====
-   Сайт за замовчуванням темний, тому другою темою зроблено світлу.
-   Щоб увімкнути: <body class="light-theme">. */
-body.light-theme {
+/* ===== Тема з налаштувань системи (бонус LR7) =====
+   За варіантом «Кіносвіт» темний («темне тло» з LR4), тож :root вище — темна палітра,
+   і саме її бачить людина з темною темою в системі. Якщо в системі світла тема
+   (prefers-color-scheme: light), ті самі змінні отримують світлі значення —
+   жодне правило оформлення не переписується.
+   color-scheme підказує браузеру, якими робити рідні елементи (поля, смуги прокрутки). */
+:root {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --color-brand: hsl(40 30% 90%);
+    --color-accent: hsl(28 90% 35%);
+    --color-on-accent: hsl(0 0% 100%);
+    --color-bg: hsl(40 33% 96%);
+    --color-surface: hsl(40 40% 99%);
+    --color-surface-raised: hsl(40 22% 91%);
+    --color-text: hsl(225 30% 14%);
+    --color-muted: hsl(222 10% 40%);
+    --color-rating: hsl(35 90% 30%);
+    --color-duration: hsl(195 75% 30%);
+    --color-visited: hsl(22 55% 38%);
+    --color-active: hsl(28 90% 30%);
+    --color-error: hsl(0 70% 45%);
+    --color-error-bg: hsl(0 85% 95%);
+    --color-success: hsl(140 55% 30%);
+    --color-success-bg: hsl(140 50% 93%);
+    --shadow: 0 6px 18px rgb(0 0 0 / 10%);
+    --shadow-hover: 0 14px 28px rgb(0 0 0 / 18%);
+    --neu-dark: rgb(0 0 0 / 14%);
+    --neu-light: rgb(255 255 255 / 95%);
+    --banner-text-shadow: 0 1px 2px rgb(255 255 255 / 80%);
+  }
+}
+
+/* Кнопка «Тема» (бонус LR6) вмикає клас alt-theme на <body> — тему, протилежну
+   до системної: на темній системі — світлу… */
+body.alt-theme {
+  color-scheme: light;
   --color-brand: hsl(40 30% 90%);
-  --color-accent: hsl(28 90% 42%);
+  --color-accent: hsl(28 90% 35%);
+  --color-on-accent: hsl(0 0% 100%);
   --color-bg: hsl(40 33% 96%);
   --color-surface: hsl(40 40% 99%);
   --color-surface-raised: hsl(40 22% 91%);
   --color-text: hsl(225 30% 14%);
   --color-muted: hsl(222 10% 40%);
-  --color-rating: hsl(35 90% 38%);
+  --color-rating: hsl(35 90% 30%);
   --color-duration: hsl(195 75% 30%);
   --color-visited: hsl(22 55% 38%);
   --color-active: hsl(28 90% 30%);
@@ -112,6 +152,35 @@ body.light-theme {
   --neu-dark: rgb(0 0 0 / 14%);
   --neu-light: rgb(255 255 255 / 95%);
   --banner-text-shadow: 0 1px 2px rgb(255 255 255 / 80%);
+}
+
+/* …а на світлій системі — темну. Тому кожна палітра записана двічі:
+   один раз для системного налаштування, другий — для кнопки. */
+@media (prefers-color-scheme: light) {
+  body.alt-theme {
+    color-scheme: dark;
+    --color-brand: hsl(225 24% 11%);
+    --color-accent: hsl(39 94% 59%);
+    --color-on-accent: hsl(225 24% 11%);
+    --color-bg: hsl(225 28% 7%);
+    --color-surface: hsl(225 22% 12%);
+    --color-surface-raised: hsl(225 19% 16%);
+    --color-text: hsl(38 25% 92%);
+    --color-muted: hsl(220 10% 67%);
+    --color-rating: hsl(42 100% 63%);
+    --color-duration: hsl(190 65% 72%);
+    --color-visited: hsl(30 60% 68%);
+    --color-active: hsl(39 94% 45%);
+    --color-error: hsl(0 85% 65%);
+    --color-error-bg: hsl(0 45% 18%);
+    --color-success: hsl(140 55% 55%);
+    --color-success-bg: hsl(140 35% 15%);
+    --shadow: 0 8px 24px rgb(0 0 0 / 28%);
+    --shadow-hover: 0 14px 28px rgb(0 0 0 / 45%);
+    --neu-dark: rgb(0 0 0 / 55%);
+    --neu-light: rgb(255 255 255 / 6%);
+    --banner-text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
+  }
 }
 
 /* Шапка липка на всіх ширинах, тож при переході за якорем (#poster-banner, #goal…)
@@ -380,7 +449,7 @@ body > header h1 {
 /* 5.4 Поточна сторінка: клас current переїжджає між сторінками, вигляд — контрастний */
 .menu a.current {
   background: var(--color-accent);
-  color: var(--color-brand);
+  color: var(--color-on-accent);
   font-weight: 700;
 }
 
@@ -565,11 +634,11 @@ main > img {
    з variant04.json. :has() перевіряє, який перемикач обрано, а ~= шукає жанр
    як окреме слово в списку: картки, де його немає, ховаються.
    Для «Усі фільми» правила немає — тоді видно все. */
-.layout:has(#genre-scifi:checked) .card:not([data-genres~="фантастика"]),
-.layout:has(#genre-drama:checked) .card:not([data-genres~="драма"]),
-.layout:has(#genre-action:checked) .card:not([data-genres~="бойовик"]),
-.layout:has(#genre-thriller:checked) .card:not([data-genres~="трилер"]),
-.layout:has(#genre-adventure:checked) .card:not([data-genres~="пригоди"]) {
+.layout:has(#genre-scifi:checked) .cards .card:not([data-genres~="фантастика"]),
+.layout:has(#genre-drama:checked) .cards .card:not([data-genres~="драма"]),
+.layout:has(#genre-action:checked) .cards .card:not([data-genres~="бойовик"]),
+.layout:has(#genre-thriller:checked) .cards .card:not([data-genres~="трилер"]),
+.layout:has(#genre-adventure:checked) .cards .card:not([data-genres~="пригоди"]) {
   display: none;
 }
 
@@ -577,6 +646,7 @@ section,
 article,
 .layout__nav,
 .layout__aside,
+.genre-filter-box,
 form,
 #contents {
   margin-block: 0 var(--space-lg);
@@ -594,6 +664,7 @@ form,
   article,
   .layout__nav,
   .layout__aside,
+  .genre-filter-box,
   form,
   #contents {
     padding: var(--space-lg);
@@ -963,7 +1034,7 @@ button[type="submit"],
 a.button {
   border-color: var(--color-accent);
   background: var(--color-accent);
-  color: var(--color-brand);
+  color: var(--color-on-accent);
 }
 
 button[type="submit"]:hover,
@@ -1216,7 +1287,7 @@ body > .site-footer {
   right: var(--space-sm);
   padding: var(--space-xs) var(--space-sm);
   background: var(--color-accent);
-  color: var(--color-bg);
+  color: var(--color-on-accent);
   font-size: 0.8rem;
   border-radius: 999px;
 }
@@ -1281,7 +1352,7 @@ body > .site-footer {
   padding: var(--space-sm);
   border-radius: calc(var(--radius) / 2);
   background: var(--color-accent);
-  color: var(--color-brand);
+  color: var(--color-on-accent);
   font-size: 0.8rem;
   font-weight: 700;
   text-align: center;
@@ -1314,13 +1385,20 @@ body > .site-footer {
    тому для прихованого стану окреме правило. */
 .loader {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--space-md);
   margin-bottom: var(--space-md);
 }
 
 .loader[hidden] {
   display: none;
+}
+
+/* Спінер і текст «Завантажуємо…» — рядком, під ними скелет карток */
+.loader__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
 }
 
 .loader p {
@@ -1342,6 +1420,56 @@ body > .site-footer {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ===== Бонус LR7. Скелет картки замість порожнього місця =====
+   Скелет зібраний із тих самих класів, що й справжня картка (card__img, card__title,
+   card__meta…), тож має рівно ту саму висоту й форму; текст у ньому прозорий,
+   видно лише сірі блоки, по яких пробігає світла смуга. Фон на 200% ширини
+   зсувається вліво — смуга «їде» зліва направо */
+.skeleton {
+  /* Колір блоків — фон картки з домішкою приглушеного кольору: чистий --color-surface
+     майже зливався з фоном самої картки */
+  --skeleton-base: color-mix(in srgb, var(--color-muted) 25%, var(--color-surface-raised));
+  background: linear-gradient(90deg, var(--skeleton-base) 25%,
+              rgb(255 255 255 / 35%) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  border-radius: calc(var(--radius) / 2);
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+/* Заготовка не реагує на курсор і не показує текст */
+.card--skeleton {
+  pointer-events: none;
+}
+
+.card--skeleton .skeleton {
+  color: transparent;
+}
+
+/* Рядки тексту різної довжини — так заготовка більше схожа на справжній текст */
+.card--skeleton .card__img {
+  border-radius: 0;
+}
+
+.card--skeleton .card__meta {
+  width: 85%;
+}
+
+.card--skeleton .card__id {
+  width: 70%;
+}
+
+/* Заготовка кнопки «Забронювати» — ті самі відступи й шрифт, що в справжньої кнопки */
+.card--skeleton .card__action {
+  display: block;
+  padding: var(--space-sm);
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 /* ===== Модальне вікно на <dialog> (LR6) =====
@@ -1448,7 +1576,7 @@ dialog h3 {
 
 .to-top:link,
 .to-top:visited {
-  color: var(--color-brand);
+  color: var(--color-on-accent);
 }
 
 .to-top:hover,
@@ -1468,13 +1596,13 @@ dialog h3 {
     var(--color-brand);
 }
 
-/* Темна тінь під світлим текстом — щоб його було видно на світлих місцях фото */
-.card--glass .card__body {
-  text-shadow: var(--banner-text-shadow);
-}
-
-.card--glass .card__excerpt {
-  color: var(--color-text);
+/* Фото зали однакове в обох темах, тому текст на ньому завжди світлий із темною
+   тінню, незалежно від теми: темний текст світлої теми на червоних кріслах
+   не читався */
+.card--glass .card__body,
+.card--glass .card__body > * {
+  color: hsl(0 0% 100%);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 90%), 0 0 10px rgb(0 0 0 / 60%);
 }
 
 /* --- Бонус 3. Плавний розмір заголовка сайту через clamp() ---
@@ -1579,8 +1707,8 @@ body > header h1 {
    =================================================================== */
 
 /* --- Бонус 1. Перемикач теми ---
-   Кнопка в меню вмикає/вимикає клас light-theme на <body>. Сама тема — це лише
-   блок body.light-theme з перевизначеними змінними (на початку файлу):
+   Кнопка в меню вмикає/вимикає клас alt-theme на <body> — тему, протилежну
+   до системної. Сама тема — це лише блоки з перевизначеними змінними (на початку файлу):
    жодне правило оформлення для неї не продубльоване.
    Кнопка виглядає як решта «плиток» меню. */
 .theme-toggle {
@@ -1648,6 +1776,86 @@ body > header h1 {
 .card--pinned .card__img,
 .card--pinned .card__overlay {
   aspect-ratio: 3 / 1;
+}
+
+/* ===================================================================
+   Бонус LR7. Контейнерний запит для картки
+   =================================================================== */
+
+/* Бічна колонка каталогу тепер — дві окремі «плитки»: картка «Рекомендуємо»
+   і фільтр за жанром. Сама колонка без рамки й фону, тягнеться на всю висоту
+   свого рядка, а липким лишається тільки фільтр (бонус 4 з LR6): якби лип весь
+   aside разом із карткою, він був би вищий за екран і низ ніколи не було б видно.
+   Подвійний клас — щоб перебити правило липкої колонки .layout__aside (бонус 4 з LR6),
+   яке стоїть у файлі нижче */
+.layout__aside.catalog-aside {
+  position: static;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.recommend,
+.genre-filter-box {
+  margin: 0;
+}
+
+.genre-filter-box {
+  position: sticky;
+  top: var(--sticky-offset);
+}
+
+/* Контейнери — зони, у яких лежать картки: каталог і бічна колонка.
+   Медіазапит знає лише ширину вікна, а контейнерний — ширину своєї зони,
+   тож та сама картка на тому самому екрані може виглядати по-різному */
+.catalog,
+.catalog-aside {
+  container-type: inline-size;
+}
+
+/* Коли зона ширша за 380px, картка стає горизонтальною: постер ліворуч, текст праворуч.
+   Звичайні картки каталогу лишаються вертикальними постерами (варіант: 5 → 3 → 2 у ряд —
+   каталог і так завжди ширший за 380px), тож горизонтальними стають лише ті, що
+   займають усю ширину зони: закріплена «Дюна» і картка «Рекомендуємо» */
+@container (min-width: 380px) {
+  .card--pinned,
+  .catalog-aside .card {
+    display: grid;
+    grid-template-columns: var(--card-thumb) 1fr;
+    grid-template-rows: 1fr auto;
+    column-gap: var(--gap);
+  }
+
+  .card--pinned .card__img,
+  .catalog-aside .card .card__img {
+    grid-row: 1 / -1;
+    align-self: start;
+    aspect-ratio: 2 / 3;
+  }
+
+  .card--pinned .card__overlay,
+  .catalog-aside .card .card__overlay {
+    right: auto;
+    width: var(--card-thumb);
+    aspect-ratio: 2 / 3;
+  }
+
+  .card--pinned .card__body,
+  .card--pinned .card__actions,
+  .catalog-aside .card .card__body,
+  .catalog-aside .card .card__actions {
+    grid-column: 2;
+  }
+
+  .card--pinned .card__actions,
+  .catalog-aside .card .card__actions {
+    margin: 0 var(--space-sm) var(--space-sm) 0;
+  }
 }
 
 /* --- Бонус 4. Липка бічна колонка ---
@@ -1741,5 +1949,94 @@ form button {
   .card:hover .card__img,
   .card:focus-within .card__img {
     transform: none;
+  }
+}
+
+/* ===== Бонус LR7. Стилі для друку =====
+   Папір — не екран: на ньому нема чого натискати й нічого не рухається, тож тут,
+   на відміну від решти файлу, ми не додаємо, а прибираємо — навігацію, бічну
+   колонку, кнопки — і зводимо все до чорного тексту на білому. */
+@media print {
+  /* Палітра на чорно-біле: правила беруть кольори зі змінних, тож досить
+     перевизначити змінні. body.alt-theme — щоб і кнопка «Тема» не впливала на друк */
+  :root,
+  body.alt-theme {
+    color-scheme: light;
+    --color-brand: #fff;
+    --color-accent: #000;
+    --color-on-accent: #fff;
+    --color-bg: #fff;
+    --color-surface: #fff;
+    --color-surface-raised: #fff;
+    --color-text: #000;
+    --color-muted: #000;
+    --color-rating: #000;
+    --color-duration: #000;
+    --color-visited: #000;
+    --color-active: #000;
+  }
+
+  /* Декоративні тіні папір не потребує */
+  *,
+  *::before,
+  *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Навігація, бічна колонка (рубрики, фільтр, поради), кнопки й заготовки на папері марні */
+  .nav,
+  .layout__nav,
+  .layout__aside,
+  .to-top,
+  .loader,
+  .card__actions,
+  .card__overlay {
+    display: none !important;
+  }
+
+  body > header {
+    position: static;
+  }
+
+  /* Без бічних колонок макет — одна колонка: вміст і підвал */
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "main"
+      "foot";
+    grid-template-rows: auto auto;
+  }
+
+  /* Розгортаємо всі <details> (акторський склад): закритий вміст стає видимим */
+  details::details-content {
+    content-visibility: visible;
+    display: contents;
+  }
+
+  /* «Скляна» картка: на папері без фото зали, і текст на ній — чорний */
+  .card--glass {
+    background: var(--color-surface);
+  }
+
+  .card--glass .card__body,
+  .card--glass .card__body > * {
+    color: #000;
+  }
+
+  /* На аркуші ~720px — це «телефонна» ширина, але постерів поміщається п'ять у ряд */
+  .cards {
+    --min-col: calc((100% - 4 * var(--gap)) / 5);
+  }
+
+  /* Картку не розрізає між сторінками */
+  .card,
+  figure {
+    break-inside: avoid;
+  }
+
+  /* На папері посилання не клацнеш — дописуємо адресу зовнішніх посилань */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
   }
 }

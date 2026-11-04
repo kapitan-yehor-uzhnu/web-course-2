@@ -24,7 +24,7 @@
             <li><a href="index.html#concept">Про кінотеатр</a></li>
             <li><a href="about.html">Про проєкт</a></li>
             <li>
-              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
+              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('alt-theme')">Тема</button>
             </li>
           </ul>
         </details>
@@ -41,11 +41,25 @@
           </p>
         </section>
 
+        <!-- Адаптивне зображення: три растрові копії різної ширини (w), а sizes
+             підказує, яку ширину картинка займе на кожному з порогів —
+             телефон: уся ширина мінус поля; планшет: 2/3 (колонка вмісту 2fr);
+             десктоп: ширина макета мінус колонка порад (300px) і проміжок -->
         <img
-          src="images/cinema-hall.svg"
+          src="images/cinema-hall-960.jpg"
+          srcset="
+            images/cinema-hall-480.jpg   480w,
+            images/cinema-hall-960.jpg   960w,
+            images/cinema-hall-1600.jpg 1600w
+          "
+          sizes="
+            (min-width: 1024px) calc(min(1200px, 100vw - 32px) - 320px),
+            (min-width: 768px) calc((100vw - 52px) * 2 / 3),
+            calc(100vw - 32px)
+          "
           alt="Зала кінотеатру «Кіносвіт» з великим світним екраном і рядами червоних крісел"
-          width="298"
-          height="298"
+          width="1600"
+          height="1600"
         />
 
         <section id="concept">

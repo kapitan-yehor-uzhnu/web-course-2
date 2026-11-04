@@ -24,7 +24,7 @@
             <li><a href="index.html#concept">Про кінотеатр</a></li>
             <li><a href="about.html">Про проєкт</a></li>
             <li>
-              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('light-theme')">Тема</button>
+              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('alt-theme')">Тема</button>
             </li>
           </ul>
         </details>
@@ -52,8 +52,73 @@
           <!-- Індикатор завантаження — заготовка для LR10, коли картки вантажитимуться з мережі.
                Поки даних із мережі немає, він прихований атрибутом hidden -->
           <div class="loader" hidden>
-            <div class="spinner" aria-hidden="true"></div>
-            <p>Завантажуємо каталог…</p>
+            <div class="loader__status">
+              <div class="spinner" aria-hidden="true"></div>
+              <p>Завантажуємо каталог…</p>
+            </div>
+            <!-- Скелет: сірі заготовки карток тієї самої форми, поки дані ще вантажаться -->
+            <div class="cards" aria-hidden="true">
+              <article class="card card--skeleton">
+                <div class="card__img skeleton"></div>
+                <div class="card__body">
+                  <p class="card__title skeleton">Назва фільму</p>
+                  <p class="card__meta skeleton">2026 · реж. Ім'я Режисера</p>
+                  <p class="card__excerpt skeleton">Короткий опис фільму, який займає рівно два рядки в картці каталогу</p>
+                  <p class="card__id skeleton">Код сеансу: CIN-2026-A00</p>
+                </div>
+                <div class="card__actions">
+                  <span class="card__action skeleton">Забронювати</span>
+                </div>
+              </article>
+              <article class="card card--skeleton">
+                <div class="card__img skeleton"></div>
+                <div class="card__body">
+                  <p class="card__title skeleton">Назва фільму</p>
+                  <p class="card__meta skeleton">2026 · реж. Ім'я Режисера</p>
+                  <p class="card__excerpt skeleton">Короткий опис фільму, який займає рівно два рядки в картці каталогу</p>
+                  <p class="card__id skeleton">Код сеансу: CIN-2026-A00</p>
+                </div>
+                <div class="card__actions">
+                  <span class="card__action skeleton">Забронювати</span>
+                </div>
+              </article>
+              <article class="card card--skeleton">
+                <div class="card__img skeleton"></div>
+                <div class="card__body">
+                  <p class="card__title skeleton">Назва фільму</p>
+                  <p class="card__meta skeleton">2026 · реж. Ім'я Режисера</p>
+                  <p class="card__excerpt skeleton">Короткий опис фільму, який займає рівно два рядки в картці каталогу</p>
+                  <p class="card__id skeleton">Код сеансу: CIN-2026-A00</p>
+                </div>
+                <div class="card__actions">
+                  <span class="card__action skeleton">Забронювати</span>
+                </div>
+              </article>
+              <article class="card card--skeleton">
+                <div class="card__img skeleton"></div>
+                <div class="card__body">
+                  <p class="card__title skeleton">Назва фільму</p>
+                  <p class="card__meta skeleton">2026 · реж. Ім'я Режисера</p>
+                  <p class="card__excerpt skeleton">Короткий опис фільму, який займає рівно два рядки в картці каталогу</p>
+                  <p class="card__id skeleton">Код сеансу: CIN-2026-A00</p>
+                </div>
+                <div class="card__actions">
+                  <span class="card__action skeleton">Забронювати</span>
+                </div>
+              </article>
+              <article class="card card--skeleton">
+                <div class="card__img skeleton"></div>
+                <div class="card__body">
+                  <p class="card__title skeleton">Назва фільму</p>
+                  <p class="card__meta skeleton">2026 · реж. Ім'я Режисера</p>
+                  <p class="card__excerpt skeleton">Короткий опис фільму, який займає рівно два рядки в картці каталогу</p>
+                  <p class="card__id skeleton">Код сеансу: CIN-2026-A00</p>
+                </div>
+                <div class="card__actions">
+                  <span class="card__action skeleton">Забронювати</span>
+                </div>
+              </article>
+            </div>
           </div>
           <div class="cards">
             <article data-genres="пригоди драма трилер" class="card">
@@ -641,35 +706,67 @@
 
       <!-- Бічна колонка: фільтр карток за жанром. Працює без JavaScript —
            через :has() у CSS: обраний перемикач ховає картки інших жанрів -->
-      <aside class="layout__aside">
-        <h2>Фільтр за жанром</h2>
-        <fieldset class="genre-filter">
-          <legend>Жанр</legend>
-          <label for="genre-all">
-            <input type="radio" id="genre-all" name="genre" value="all" checked />
-            Усі фільми
-          </label>
-          <label for="genre-scifi">
-            <input type="radio" id="genre-scifi" name="genre" value="фантастика" />
-            Фантастика
-          </label>
-          <label for="genre-drama">
-            <input type="radio" id="genre-drama" name="genre" value="драма" />
-            Драма
-          </label>
-          <label for="genre-action">
-            <input type="radio" id="genre-action" name="genre" value="бойовик" />
-            Бойовик
-          </label>
-          <label for="genre-thriller">
-            <input type="radio" id="genre-thriller" name="genre" value="трилер" />
-            Трилер
-          </label>
-          <label for="genre-adventure">
-            <input type="radio" id="genre-adventure" name="genre" value="пригоди" />
-            Пригоди
-          </label>
-        </fieldset>
+      <aside class="layout__aside catalog-aside">
+        <!-- Та сама картка, що й у каталозі: у вузькій колонці вона вертикальна,
+             а коли колонка ширша за 380px (телефон) — горизонтальна (контейнерний запит) -->
+        <section class="recommend">
+          <h2>Рекомендуємо</h2>
+          <article class="card">
+            <img
+              class="card__img"
+              src="images/poster-interstellar.svg"
+              alt="Постер «Інтерстеллар»: чорна діра з сяйливим диском над полем кукурудзи"
+              width="400"
+              height="600"
+              loading="lazy"
+            />
+            <span class="card__overlay" aria-hidden="true">Інтерстеллар</span>
+            <div class="card__body">
+              <h3 class="card__title">Інтерстеллар</h3>
+              <p class="card__meta">2014 · реж. Крістофер Нолан</p>
+              <p class="card__excerpt">
+                Колишній пілот Купер разом із командою науковців вирушає крізь
+                червоточину, щоб знайти нову домівку для людства, поки Земля
+                потерпає від посухи.
+              </p>
+              <p class="card__id">Код сеансу: CIN-2026-E05</p>
+            </div>
+            <div class="card__actions">
+              <a class="card__action" href="form.html">Забронювати</a>
+            </div>
+          </article>
+        </section>
+
+        <div class="genre-filter-box">
+          <h2>Фільтр за жанром</h2>
+          <fieldset class="genre-filter">
+            <legend>Жанр</legend>
+            <label for="genre-all">
+              <input type="radio" id="genre-all" name="genre" value="all" checked />
+              Усі фільми
+            </label>
+            <label for="genre-scifi">
+              <input type="radio" id="genre-scifi" name="genre" value="фантастика" />
+              Фантастика
+            </label>
+            <label for="genre-drama">
+              <input type="radio" id="genre-drama" name="genre" value="драма" />
+              Драма
+            </label>
+            <label for="genre-action">
+              <input type="radio" id="genre-action" name="genre" value="бойовик" />
+              Бойовик
+            </label>
+            <label for="genre-thriller">
+              <input type="radio" id="genre-thriller" name="genre" value="трилер" />
+              Трилер
+            </label>
+            <label for="genre-adventure">
+              <input type="radio" id="genre-adventure" name="genre" value="пригоди" />
+              Пригоди
+            </label>
+          </fieldset>
+        </div>
       </aside>
 
       <footer class="layout__footer site-footer">
