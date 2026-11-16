@@ -1923,6 +1923,30 @@ form button {
   }
 }
 
+/* ===== Демонстрація роботи js/app.js (LR8) ===== */
+
+.demo h3 {
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+
+/* white-space: pre-line зберігає переноси рядків "\n", які скрипт вставляє між
+   пунктами (зайві пробіли при цьому все одно зливаються, а довгі рядки переносяться);
+   без нього браузер показав би весь список одним суцільним рядком. */
+.js-out {
+  /* Без max-width: 65ch загального правила p — блоки на всю ширину секції */
+  max-width: none;
+  margin: 0;
+  padding: var(--space-md);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--color-surface-raised);
+  /* Моноширинний шрифт сайту (JetBrains Mono) — стовпчики чисел рівні */
+  font-family: var(--font-body);
+  line-height: 1.7;
+  white-space: pre-line;
+  /* Довгі назви без пробілів не розпирають блок на вузькому екрані */
+  overflow-wrap: anywhere;
+}
+
 /* ===== Повага до prefers-reduced-motion (LR7) =====
    Людям, яким рух на екрані шкодить, система передає налаштування «зменшити рух».
    Анімації й переходи не вимикаємо, а робимо майже миттєвими (0.01ms): так

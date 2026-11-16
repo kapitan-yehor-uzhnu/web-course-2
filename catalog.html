@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/styles.css" />
+    <!-- defer: скрипт виконається після того, як браузер розбере всю розмітку,
+         тож усі елементи вже існуватимуть -->
+    <script src="js/app.js" defer></script>
     <title>Каталог — Кіносвіт</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
@@ -701,6 +704,29 @@
             <dt>Афіша</dt>
             <dd>Перелік фільмів, що демонструються в кінотеатрі цього тижня.</dd>
           </dl>
+        </section>
+
+        <!-- Результати роботи js/app.js (LR8): текст у блоки виводить скрипт -->
+        <section class="demo" id="demo">
+          <h2>Демонстрація роботи</h2>
+
+          <h3>Усього фільмів</h3>
+          <p class="js-out" id="out-count"></p>
+
+          <h3>Нумерований список фільмів</h3>
+          <p class="js-out" id="out-numbered"></p>
+
+          <h3>Жанри</h3>
+          <p class="js-out" id="out-categories"></p>
+
+          <h3>Фільми, довші за 150 хв</h3>
+          <p class="js-out" id="out-filter"></p>
+
+          <h3>Сортування</h3>
+          <p class="js-out" id="out-sorted"></p>
+
+          <h3>Статистика: рейтинг і прибуток</h3>
+          <p class="js-out" id="out-stats"></p>
         </section>
       </main>
 
