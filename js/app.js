@@ -155,6 +155,69 @@ const statsForFilms = (items) => {
   };
 };
 
+/* ===== Бонусні функції LR8 ===== */
+
+// Приймає масив фільмів і рядок — повертає фільми, у назві, режисері чи оцінках
+// яких трапляється цей підрядок (без урахування регістру)
+const searchByText = (items, query) => {
+  const needle = query.toLowerCase();
+  return items.filter(
+    (film) =>
+      film.title.toLowerCase().includes(needle) ||
+      film.director.toLowerCase().includes(needle) ||
+      film.ratings.some((rating) => String(rating).includes(needle))
+  );
+};
+
+// Приймає масив, назву поля рядком і кількість — повертає n записів із найбільшим значенням поля
+const topBy = (items, field, n = 3) =>
+  [...items].sort((a, b) => b[field] - a[field]).slice(0, n);
+
+// Приймає фільм (одразу розбираючи потрібні поля) — повертає рядок для картки
+const cardLine = ({ title, year, boxOffice: { grossMillion } }) =>
+  `${title} (${year}), збори ${grossMillion} млн $`;
+
+// Приймає масив фільмів — повертає об'єкт «назва групи → скільки фільмів у ній»
+const countByCategory = (items) =>
+  items.reduce((groups, film) => {
+    const group = categoryOf(film);
+    groups[group] = (groups[group] ?? 0) + 1;
+    return groups;
+  }, {});
+
+// Приймає масив фільмів — повертає масив рядків-зауважень (порожній, якщо все гаразд)
+const validate = (items) => {
+  const notes = [];
+  const expectedKeys = Object.keys(items[0]).join();
+  items.forEach((film, index) => {
+    const label = `Запис №${index + 1}`;
+    if (Object.keys(film).join() !== expectedKeys) {
+      notes.push(`${label}: інший набір полів, ніж у першого запису`);
+    }
+    if (typeof film.title !== "string" || film.title.trim() === "") {
+      notes.push(`${label}: порожня назва`);
+    }
+    ["id", "year", "durationMin"].forEach((field) => {
+      if (typeof film[field] !== "number") {
+        notes.push(`${label}: поле ${field} не є числом (${JSON.stringify(film[field])})`);
+      }
+    });
+    if (typeof film.boxOffice !== "object" || film.boxOffice === null) {
+      notes.push(`${label}: немає вкладеного об'єкта boxOffice`);
+    } else {
+      ["budgetMillion", "grossMillion"].forEach((field) => {
+        if (typeof film.boxOffice[field] !== "number") {
+          notes.push(`${label}: boxOffice.${field} не є числом`);
+        }
+      });
+    }
+    if (!Array.isArray(film.ratings) || film.ratings.some((r) => typeof r !== "number")) {
+      notes.push(`${label}: оцінки мають бути масивом чисел`);
+    }
+  });
+  return notes;
+};
+
 /* ===== Виведення результатів ===== */
 
 show("out-count", `Фільмів у каталозі: ${films.length}`);
@@ -199,3 +262,28 @@ show("out-stats", [
   "Прибуток кожного фільму (збори − бюджет):",
   films.map((film) => `  • ${film.title}: ${profitOf(film).toFixed(1)} млн $`).join("\n")
 ]);
+
+/* ----- Бонуси ----- */
+
+const queries = ["НОЛАН", "ма", "мюзикл"];
+show(
+  "out-search",
+  queries.map((query) => `Запит «${query}»: знайдено ${searchByText(films, query).length}\n${titlesOrEmpty(searchByText(films, query))}`)
+);
+
+show("out-top", [
+  "Топ-3 найдовших:",
+  topBy(films, "durationMin").map((film) => `  • ${film.title} — ${film.durationMin} хв`).join("\n"),
+  "Топ-2 найновіших:",
+  topBy(films, "year", 2).map((film) => `  • ${film.title} — ${film.year}`).join("\n")
+]);
+
+show("out-lines", films.map(cardLine));
+
+show(
+  "out-groups",
+  Object.entries(countByCategory(films)).map(([group, count]) => `${group}: ${count}`)
+);
+
+const problems = validate(films);
+show("out-validate", problems.length === 0 ? "Помилок не знайдено" : problems);
