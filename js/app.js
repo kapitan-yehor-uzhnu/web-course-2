@@ -312,6 +312,9 @@ const filterByDurationOver = (items, minutes) =>
 // Приймає масив фільмів — повертає НОВИЙ масив, відсортований за роком випуску
 const sortByYear = (items) => [...items].sort((a, b) => a.year - b.year);
 
+// Приймає масив фільмів — повертає НОВИЙ масив, відсортований за тривалістю
+const sortByDuration = (items) => [...items].sort((a, b) => a.durationMin - b.durationMin);
+
 // Приймає масив фільмів — повертає НОВИЙ масив, відсортований за назвою (українська абетка)
 const sortByTitle = (items) => [...items].sort((a, b) => a.title.localeCompare(b.title, "uk"));
 
@@ -420,6 +423,8 @@ const genreSelect = document.getElementById("filter");
 const durationFrom = document.getElementById("duration-from");
 const durationTo = document.getElementById("duration-to");
 const emptyMessage = document.getElementById("empty");
+const resultCount = document.getElementById("count");
+const sortButtons = document.getElementById("sort-buttons");
 const dlg = document.getElementById("details");
 const burger = document.getElementById("burger");
 const menu = document.getElementById("menu");
@@ -432,58 +437,95 @@ const bookingForm = document.getElementById("booking-form");
 // Приймає тег, клас і текст — повертає новий елемент (текст лише через textContent)
 const makeElement = (tag, className, text = "") => {
   const element = document.createElement(tag);
-  element.className = className;
+  if (className !== "") element.className = className;
   element.textContent = text;
   return element;
 };
 
-// Приймає масив фільмів — перемальовує сітку карток
+// Поточний стан каталогу: запит для підсвітки й обраний порядок карток
+let activeQuery = "";
+let activeSort = "default";
+
+// Способи сортування для кнопок: ключ — значення data-sort
+const sorters = {
+  default: (items) => items,
+  title: sortByTitle,
+  year: sortByYear,
+  duration: sortByDuration
+};
+
+// Приймає заголовок, назву й запит — виділяє збіг через <mark>, без розмітки в рядках
+const fillTitle = (heading, title, query) => {
+  const start = query === "" ? -1 : title.toLowerCase().indexOf(query);
+  if (start === -1) {
+    heading.textContent = title;
+    return;
+  }
+  const end = start + query.length;
+  const match = makeElement("mark", "", title.slice(start, end));
+  heading.append(title.slice(0, start), match, title.slice(end));
+};
+
+// Приймає фільм — повертає готову картку
+const createCard = (item) => {
+  const card = document.createElement("article");
+  // Закріплена картка стоїть першою лише у звичайному порядку, інакше ламала б сортування
+  const pinned = item.pinned && activeSort === "default";
+  card.className = pinned ? "card card--glass card--pinned" : "card";
+  card.dataset.id = item.id;
+
+  const badge = makeElement(
+    "span",
+    item.premiere ? "card__badge" : "card__badge card__badge--out",
+    item.premiere ? "Прем'єра" : "У прокаті"
+  );
+
+  const img = makeElement("img", "card__img");
+  img.src = item.img;
+  img.alt = `Постер фільму «${item.title}»`;
+  img.width = 400;
+  img.height = 600;
+  img.loading = "lazy";
+
+  const overlay = makeElement("span", "card__overlay", item.title);
+  overlay.setAttribute("aria-hidden", "true");
+
+  const heading = makeElement("h3", "card__title");
+  fillTitle(heading, item.title, activeQuery);
+
+  const body = makeElement("div", "card__body");
+  body.append(
+    heading,
+    makeElement("p", "card__meta", `${item.year} · реж. ${item.director}`),
+    makeElement("p", "card__excerpt", item.description),
+    makeElement("p", "card__id", `Код сеансу: ${item.code}`)
+  );
+
+  const details = makeElement("button", "card__preview", "Детальніше");
+  details.type = "button";
+  const booking = makeElement("a", "card__action", "Забронювати");
+  booking.href = "form.html";
+  const actions = makeElement("div", "card__actions");
+  actions.append(details, booking);
+
+  card.append(badge, img, overlay, body, actions);
+  return card;
+};
+
+// Приймає масив фільмів — перемальовує сітку однією вставкою через фрагмент
 const renderCards = (list) => {
   cards.replaceChildren();
+  const fragment = document.createDocumentFragment();
   for (const item of list) {
-    const card = document.createElement("article");
-    card.className = item.pinned ? "card card--glass card--pinned" : "card";
-    card.dataset.id = item.id;
-
-    const badge = makeElement(
-      "span",
-      item.premiere ? "card__badge" : "card__badge card__badge--out",
-      item.premiere ? "Прем'єра" : "У прокаті"
-    );
-
-    const img = makeElement("img", "card__img");
-    img.src = item.img;
-    img.alt = `Постер фільму «${item.title}»`;
-    img.width = 400;
-    img.height = 600;
-    img.loading = "lazy";
-
-    const overlay = makeElement("span", "card__overlay", item.title);
-    overlay.setAttribute("aria-hidden", "true");
-
-    const body = makeElement("div", "card__body");
-    body.append(
-      makeElement("h3", "card__title", item.title),
-      makeElement("p", "card__meta", `${item.year} · реж. ${item.director}`),
-      makeElement("p", "card__excerpt", item.description),
-      makeElement("p", "card__id", `Код сеансу: ${item.code}`)
-    );
-
-    const details = makeElement("button", "card__preview", "Детальніше");
-    details.type = "button";
-    const booking = makeElement("a", "card__action", "Забронювати");
-    booking.href = "form.html";
-    const actions = makeElement("div", "card__actions");
-    actions.append(details, booking);
-
-    card.append(badge, img, overlay, body, actions);
-    cards.append(card);
+    fragment.append(createCard(item));
   }
+  cards.append(fragment);
 };
 
 // Читає панель керування — показує лише фільми, що відповідають усім умовам
 const applyFilters = () => {
-  const query = searchInput.value.trim().toLowerCase();
+  const typed = searchInput.value.trim();
+  const query = typed.toLowerCase();
   const genre = genreSelect.value;
   const from = durationFrom.value === "" ? 0 : Number(durationFrom.value);
   const to = durationTo.value === "" ? Infinity : Number(durationTo.value);
@@ -491,8 +533,26 @@ const applyFilters = () => {
   const byGenre = genre === "all" ? films : filterByGenre(films, genre);
   const result = filterByText(filterByDurationRange(byGenre, from, to), query);
 
-  renderCards(result);
+  activeQuery = query;
+  renderCards(sorters[activeSort](result));
+  resultCount.textContent = `Знайдено: ${result.length} із ${films.length}`;
   emptyMessage.hidden = result.length > 0;
+  // Запит показуємо лише через textContent: навіть розмітка в ньому лишиться текстом
+  emptyMessage.textContent =
+    typed === ""
+      ? "Нічого не знайдено. Спробуйте інший запит."
+      : `За запитом «${typed}» нічого не знайдено. Спробуйте інший запит.`;
+};
+
+// Приймає натиснуту кнопку — запам'ятовує порядок і позначає активну кнопку
+const selectSort = (button) => {
+  activeSort = button.dataset.sort;
+  for (const item of sortButtons.querySelectorAll("button")) {
+    const active = item === button;
+    item.classList.toggle("active", active);
+    item.setAttribute("aria-pressed", String(active));
+  }
+  applyFilters();
 };
 
 // Приймає жанр — узгоджує список над каталогом і перемикачі в бічній колонці
@@ -591,7 +651,7 @@ const checkChildTicket = (form) => {
 
 // Приймає форму — повертає рядки квитанції зі значень полів
 const receiptLines = (form) => {
-  const { fullname, email, phone, visit_date: date, film, session_time: time, tickets } =
+  const { fullname, email, phone, visit_date: date, film, session_time: time, tickets, comment } =
     form.elements;
   const type = form.querySelector('input[name="ticket_type"]:checked');
   const extras = [...form.querySelectorAll('input[name="extras"]:checked')].map((box) =>
@@ -605,6 +665,7 @@ const receiptLines = (form) => {
     `Квитків: ${Number(tickets.value)}`,
     `Тип квитка: ${type === null ? "не обрано" : type.parentElement.textContent.trim()}`,
     `Додатково: ${extras.length > 0 ? extras.join(", ") : "нічого"}`,
+    `Коментар: ${comment.value.trim() === "" ? "немає" : comment.value.trim()}`,
     `Згода на обробку даних: ${form.elements.consent.checked ? "так" : "ні"}`
   ];
 };
@@ -620,9 +681,6 @@ const showReceipt = (lines) => {
 };
 
 /* ===== Виведення результатів ===== */
-
-// Тимчасова перевірка: масив видно зі сторінки — прибрати наприкінці роботи
-console.log(films.length);
 
 // Блок «Демонстрація роботи» є лише в каталозі
 if (document.getElementById("demo") !== null) {
@@ -698,15 +756,34 @@ if (document.getElementById("demo") !== null) {
 /* ===== LR9: запуск і події ===== */
 
 if (cards !== null) {
-  renderCards(films);
+  applyFilters();
 
-  // input спрацьовує на кожен введений символ, а change — лише коли поле втратить фокус
-  searchInput.addEventListener("input", applyFilters);
+  let searchTimer;
+  let inputEvents = 0;
+  let searchRuns = 0;
+
+  // input спрацьовує на кожен введений символ, а change — лише коли поле втратить фокус.
+  // Затримка: шукаємо, коли людина на 300 мс перестала друкувати, а не на кожну літеру
+  searchInput.addEventListener("input", () => {
+    inputEvents += 1;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      searchRuns += 1;
+      applyFilters();
+      console.log(`Подій input: ${inputEvents}, виконано пошуків: ${searchRuns}`);
+    }, 300);
+  });
   durationFrom.addEventListener("input", applyFilters);
   durationTo.addEventListener("input", applyFilters);
   genreSelect.addEventListener("change", () => selectGenre(genreSelect.value));
   document.querySelector(".genre-filter").addEventListener("change", (event) => {
     selectGenre(event.target.value);
+  });
+
+  // Один обробник на всю групу: яку кнопку натиснули, підказує data-sort
+  sortButtons.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-sort]");
+    if (button) selectSort(button);
   });
 
   document.getElementById("reset-filters").addEventListener("click", () => {
@@ -770,8 +847,8 @@ if (bookingForm !== null) {
       return;
     }
     showReceipt(receiptLines(bookingForm));
+    showToast(`Бронювання прийнято: ${bookingForm.elements.fullname.value.trim()}`);
     bookingForm.reset();
-    showToast("Бронювання прийнято");
   });
 
   // Коли людина виправляє поле, помилка зникає одразу, без повторної відправки

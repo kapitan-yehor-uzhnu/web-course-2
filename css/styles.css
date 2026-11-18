@@ -1932,8 +1932,35 @@ form button {
   background: var(--color-surface);
 }
 
+.sort-buttons {
+  display: flex;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.sort-buttons .active {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.count {
+  flex: 1 1 100%;
+  max-width: none;
+  margin: 0;
+  color: var(--color-muted);
+}
+
+/* Підсвітка збігу в назві картки: кольори однакові в обох темах */
+mark {
+  background: hsl(50 100% 60%);
+  color: hsl(0 0% 0%);
+}
+
 .empty {
   max-width: none;
+  overflow-wrap: anywhere;
   margin: 0 0 var(--space-md);
   color: var(--color-muted);
 }
@@ -1975,6 +2002,9 @@ input[type="checkbox"].invalid {
   bottom: var(--space-lg);
   left: var(--space-lg);
   z-index: 20;
+  /* Довгий текст переноситься і не заходить на кнопку «нагору» праворуч */
+  max-width: calc(100vw - 2 * var(--space-lg) - 4rem);
+  overflow-wrap: anywhere;
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius);
   background: var(--color-accent);

@@ -76,6 +76,13 @@
               <input type="number" id="duration-to" min="0" step="10" placeholder="200" />
             </div>
             <button id="reset-filters" type="button">Скинути</button>
+            <div class="sort-buttons" id="sort-buttons" role="group" aria-label="Сортування">
+              <button type="button" data-sort="default" class="active" aria-pressed="true">Як у каталозі</button>
+              <button type="button" data-sort="title" aria-pressed="false">За назвою</button>
+              <button type="button" data-sort="year" aria-pressed="false">За роком</button>
+              <button type="button" data-sort="duration" aria-pressed="false">За тривалістю</button>
+            </div>
+            <p id="count" class="count" aria-live="polite"></p>
           </div>
           <p id="empty" class="empty" hidden>Нічого не знайдено. Спробуйте інший запит.</p>
           <!-- Індикатор завантаження — заготовка для LR10, коли картки вантажитимуться з мережі.
