@@ -127,9 +127,10 @@ iframe {
   }
 }
 
-/* Кнопка «Тема» (бонус LR6) вмикає клас alt-theme на <body> — тему, протилежну
-   до системної: на темній системі — світлу… */
-body.alt-theme {
+/* Кнопка теми (LR9) ставить на <html> клас, який перебиває системне налаштування
+   в обидва боки: :root.light-theme сильніший за темну базу, а :root.dark-theme —
+   за світлий блок @media вище. */
+:root.light-theme {
   color-scheme: light;
   --color-brand: hsl(40 30% 90%);
   --color-accent: hsl(28 90% 35%);
@@ -154,33 +155,29 @@ body.alt-theme {
   --banner-text-shadow: 0 1px 2px rgb(255 255 255 / 80%);
 }
 
-/* …а на світлій системі — темну. Тому кожна палітра записана двічі:
-   один раз для системного налаштування, другий — для кнопки. */
-@media (prefers-color-scheme: light) {
-  body.alt-theme {
-    color-scheme: dark;
-    --color-brand: hsl(225 24% 11%);
-    --color-accent: hsl(39 94% 59%);
-    --color-on-accent: hsl(225 24% 11%);
-    --color-bg: hsl(225 28% 7%);
-    --color-surface: hsl(225 22% 12%);
-    --color-surface-raised: hsl(225 19% 16%);
-    --color-text: hsl(38 25% 92%);
-    --color-muted: hsl(220 10% 67%);
-    --color-rating: hsl(42 100% 63%);
-    --color-duration: hsl(190 65% 72%);
-    --color-visited: hsl(30 60% 68%);
-    --color-active: hsl(39 94% 45%);
-    --color-error: hsl(0 85% 65%);
-    --color-error-bg: hsl(0 45% 18%);
-    --color-success: hsl(140 55% 55%);
-    --color-success-bg: hsl(140 35% 15%);
-    --shadow: 0 8px 24px rgb(0 0 0 / 28%);
-    --shadow-hover: 0 14px 28px rgb(0 0 0 / 45%);
-    --neu-dark: rgb(0 0 0 / 55%);
-    --neu-light: rgb(255 255 255 / 6%);
-    --banner-text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
-  }
+:root.dark-theme {
+  color-scheme: dark;
+  --color-brand: hsl(225 24% 11%);
+  --color-accent: hsl(39 94% 59%);
+  --color-on-accent: hsl(225 24% 11%);
+  --color-bg: hsl(225 28% 7%);
+  --color-surface: hsl(225 22% 12%);
+  --color-surface-raised: hsl(225 19% 16%);
+  --color-text: hsl(38 25% 92%);
+  --color-muted: hsl(220 10% 67%);
+  --color-rating: hsl(42 100% 63%);
+  --color-duration: hsl(190 65% 72%);
+  --color-visited: hsl(30 60% 68%);
+  --color-active: hsl(39 94% 45%);
+  --color-error: hsl(0 85% 65%);
+  --color-error-bg: hsl(0 45% 18%);
+  --color-success: hsl(140 55% 55%);
+  --color-success-bg: hsl(140 35% 15%);
+  --shadow: 0 8px 24px rgb(0 0 0 / 28%);
+  --shadow-hover: 0 14px 28px rgb(0 0 0 / 45%);
+  --neu-dark: rgb(0 0 0 / 55%);
+  --neu-light: rgb(255 255 255 / 6%);
+  --banner-text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
 }
 
 /* Шапка липка на всіх ширинах, тож при переході за якорем (#poster-banner, #goal…)
@@ -323,31 +320,12 @@ body > header h1 {
   margin: 0;
 }
 
-/* ===== Меню, що складається на телефоні (LR7) =====
-   Список меню загорнуто в <details>: на телефоні видно лише кнопку «☰ Меню»
-   (summary), а натискання — мишею, пальцем, Enter чи Space — розгортає список.
-   Усе це вміє сам браузер, без JavaScript. */
+/* ===== Бургер-меню (LR9) =====
+   Кнопка відкриває меню на телефоні, а клас .open і aria-expanded ставить js/app.js. */
 
-/* Телефон: меню займає всю ширину шапки під назвою */
-.nav {
+/* Кнопка на всю ширину шапки, висота не менше 44px — мінімум для пальця */
+.burger {
   align-self: stretch;
-}
-
-/* Загальне правило details з LR2 (акторський склад у каталозі) дає фон і відступи —
-   для меню в шапці вони не потрібні */
-.nav details {
-  margin: 0;
-  padding: 0;
-  border-radius: 0;
-  background: none;
-}
-
-/* summary як кнопка: фон, рамка, відступи, курсор-рука і висота не менше 44px —
-   мінімум, у який зручно влучити пальцем */
-.nav__toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 44px;
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-accent);
@@ -356,34 +334,37 @@ body > header h1 {
   color: var(--color-accent);
   font-weight: 700;
   cursor: pointer;
-  /* Прибираємо стандартний трикутник summary — його замінює значок ☰ */
-  list-style: none;
 }
 
-.nav__toggle::-webkit-details-marker {
-  display: none;
-}
-
-.nav__toggle:hover {
+.burger:hover {
   background: var(--color-surface-raised);
 }
 
-/* Видимий фокус для клавіатури: Tab доводить фокус до summary, Enter/Space розгортає */
-.nav__toggle:focus-visible {
+.burger:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
 }
 
-.nav details[open] > .nav__toggle {
-  margin-bottom: var(--space-sm);
+/* Телефон: меню сховане, а відкрите займає всю ширину. Шапка липка, тому довге меню
+   прокручується саме, інакше нижні пункти на низькому екрані були б недосяжні */
+.menu {
+  display: none;
+  align-self: stretch;
+}
+
+.menu.open {
+  display: flex;
+  max-height: calc(100vh - var(--sticky-offset));
+  overflow-y: auto;
 }
 
 /* Меню на Flexbox: проміжки між пунктами дає gap на ul,
    тож у li немає ні inline-block, ні margin.
    Телефон: пункти стовпчиком, кожен на всю ширину.
    Фон меню — --color-brand (LR4). */
-.menu {
+.nav__list {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--space-sm);
   margin: 0;
@@ -393,39 +374,29 @@ body > header h1 {
   list-style: none;
 }
 
-/* Від планшета кнопка «☰ Меню» не потрібна: меню — горизонтальний ряд праворуч
-   від назви, перенесені пункти теж притиснуті праворуч.
-   <details> у HTML без атрибута open (інакше на телефоні меню відкривалося б
-   розгорнутим і липка шапка закривала б пів екрана), тому вміст закритого
-   <details> показуємо через псевдоелемент ::details-content. Браузер, який його
-   не знає, просто лишить на широкому екрані кнопку «☰ Меню» — меню не зникне. */
+/* Від планшета кнопка не потрібна: меню завжди видно рядом праворуч від назви,
+   перенесені пункти теж притиснуті праворуч */
 @media (min-width: 768px) {
-  .nav {
+  .burger {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
     align-self: auto;
   }
 
-  .nav details > .nav__list {
+  .nav__list {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-end;
-  }
-
-  @supports selector(::details-content) {
-    .nav__toggle {
-      display: none;
-    }
-
-    .nav details::details-content {
-      content-visibility: visible;
-      display: contents;
-    }
   }
 }
 
 /* Посилання — «плитки»: padding і висота не менше 44px, тож клікабельна вся область
    пункту. flex — щоб текст стояв по центру плитки.
    :any-link — щоб це правило не перебивалося загальними a:link / a:visited нижче */
-.menu a:any-link {
+.nav__list a:any-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -440,14 +411,14 @@ body > header h1 {
 }
 
 /* 5.3 Зміна фону пункту при наведенні (і при фокусі з клавіатури) */
-.menu a:hover,
-.menu a:focus-visible {
+.nav__list a:hover,
+.nav__list a:focus-visible {
   background: var(--color-surface-raised);
   color: var(--color-accent);
 }
 
 /* 5.4 Поточна сторінка: клас current переїжджає між сторінками, вигляд — контрастний */
-.menu a.current {
+.nav__list a.current {
   background: var(--color-accent);
   color: var(--color-on-accent);
   font-weight: 700;
@@ -628,18 +599,6 @@ main > img {
   margin-bottom: var(--space-sm);
   color: var(--color-muted);
   font-size: 0.875rem;
-}
-
-/* Сам фільтр — без JavaScript. Кожна картка має data-genres зі своїми жанрами
-   з variant04.json. :has() перевіряє, який перемикач обрано, а ~= шукає жанр
-   як окреме слово в списку: картки, де його немає, ховаються.
-   Для «Усі фільми» правила немає — тоді видно все. */
-.layout:has(#genre-scifi:checked) .cards .card:not([data-genres~="фантастика"]),
-.layout:has(#genre-drama:checked) .cards .card:not([data-genres~="драма"]),
-.layout:has(#genre-action:checked) .cards .card:not([data-genres~="бойовик"]),
-.layout:has(#genre-thriller:checked) .cards .card:not([data-genres~="трилер"]),
-.layout:has(#genre-adventure:checked) .cards .card:not([data-genres~="пригоди"]) {
-  display: none;
 }
 
 section,
@@ -1161,6 +1120,14 @@ body > .site-footer {
   gap: var(--gap);
   /* Відступ від заголовка «Каталог» — через padding: вертикальні margin у роботі лише знизу */
   padding-top: var(--space-sm);
+  /* Ширина однієї колонки; 100cqi — ширина зони .catalog (див. правило #cards нижче) */
+  --card-max: calc((100cqi - var(--gap)) / 2);
+}
+
+/* auto-fit згортає порожні колонки, тож після фільтра одна-дві картки розтягнулися б
+   на весь ряд і постер став би величезним. Тримаємо їх у ширині звичайної колонки */
+#cards > .card:not(.card--pinned) {
+  max-width: var(--card-max);
 }
 
 /* Кількістю постерів у ряду (варіант 4: 2 → 3 → 5) керуємо лише значенням
@@ -1171,12 +1138,14 @@ body > .site-footer {
 @media (min-width: 768px) {
   .cards {
     --min-col: calc((100% - 2 * var(--gap)) / 3);
+    --card-max: calc((100cqi - 2 * var(--gap)) / 3);
   }
 }
 
 @media (min-width: 1024px) {
   .cards {
     --min-col: calc((100% - 4 * var(--gap)) / 5);
+    --card-max: calc((100cqi - 4 * var(--gap)) / 5);
   }
 }
 
@@ -1290,6 +1259,12 @@ body > .site-footer {
   color: var(--color-on-accent);
   font-size: 0.8rem;
   border-radius: 999px;
+}
+
+/* Бейдж звичайного фільму — спокійніший за «Прем'єру» */
+.card__badge--out {
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 /* Картки вузькі (на десктопі п'ять у ряд, ~130–170px), тож відступи й шрифти компактні */
@@ -1522,31 +1497,12 @@ html:has(dialog:modal) {
   overflow: hidden;
 }
 
-dialog h2 {
-  margin: 0 0 var(--space-xs);
-}
-
-dialog .details__id {
-  margin: 0 0 var(--space-md);
-  color: var(--color-muted);
-}
-
-dialog dl {
-  margin: 0 0 var(--space-lg);
-}
-
-dialog dd {
-  margin: 0 0 var(--space-sm);
-}
-
 dialog h3 {
   margin: 0 0 var(--space-sm);
-  font-size: 1.1rem;
 }
 
-.details__cast {
-  margin: 0 0 var(--space-lg);
-  padding-left: var(--space-lg);
+dialog p {
+  margin: 0 0 var(--space-md);
 }
 
 /* ===================================================================
@@ -1707,8 +1663,8 @@ body > header h1 {
    =================================================================== */
 
 /* --- Бонус 1. Перемикач теми ---
-   Кнопка в меню вмикає/вимикає клас alt-theme на <body> — тему, протилежну
-   до системної. Сама тема — це лише блоки з перевизначеними змінними (на початку файлу):
+   Кнопка в меню перемикає класи dark-theme / light-theme на <html> (js/app.js).
+   Сама тема — це лише блоки з перевизначеними змінними (на початку файлу):
    жодне правило оформлення для неї не продубльоване.
    Кнопка виглядає як решта «плиток» меню. */
 .theme-toggle {
@@ -1947,6 +1903,86 @@ form button {
   overflow-wrap: anywhere;
 }
 
+/* ===== Панель каталогу, форма й повідомлення (LR9) ===== */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.controls__field {
+  display: flex;
+  flex: 1 1 9rem;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* Поле, список і кнопка однакової висоти, щоб панель стояла рівним рядом */
+.controls input,
+.controls select,
+.controls button {
+  min-height: 44px;
+}
+
+/* На фото зали кнопці «Детальніше» потрібне власне тло */
+.card--glass .card__preview {
+  background: var(--color-surface);
+}
+
+.empty {
+  max-width: none;
+  margin: 0 0 var(--space-md);
+  color: var(--color-muted);
+}
+
+/* Поле з помилкою: червона рамка й тло; порожній блок помилки не займає місця в сітці форми */
+.invalid {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+input[type="checkbox"].invalid {
+  outline: 2px solid var(--color-error);
+  outline-offset: 2px;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 0.875rem;
+}
+
+.error:empty {
+  display: none;
+}
+
+/* Від планшета форма у дві колонки: помилка стоїть під полем, у правій */
+@media (min-width: 768px) {
+  .error {
+    grid-column: 2;
+  }
+}
+
+.receipt ul {
+  margin: 0;
+  padding-left: var(--space-lg);
+}
+
+.toast {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: var(--space-lg);
+  z-index: 20;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  box-shadow: var(--shadow);
+  animation: fade 200ms ease-out both;
+}
+
 /* ===== Повага до prefers-reduced-motion (LR7) =====
    Людям, яким рух на екрані шкодить, система передає налаштування «зменшити рух».
    Анімації й переходи не вимикаємо, а робимо майже миттєвими (0.01ms): так
@@ -1982,9 +2018,10 @@ form button {
    колонку, кнопки — і зводимо все до чорного тексту на білому. */
 @media print {
   /* Палітра на чорно-біле: правила беруть кольори зі змінних, тож досить
-     перевизначити змінні. body.alt-theme — щоб і кнопка «Тема» не впливала на друк */
+     перевизначити змінні. Класи теми — щоб і кнопка теми не впливала на друк */
   :root,
-  body.alt-theme {
+  :root.dark-theme,
+  :root.light-theme {
     color-scheme: light;
     --color-brand: #fff;
     --color-accent: #000;
@@ -2009,7 +2046,10 @@ form button {
   }
 
   /* Навігація, бічна колонка (рубрики, фільтр, поради), кнопки й заготовки на папері марні */
-  .nav,
+  .burger,
+  .menu,
+  .controls,
+  .toast,
   .layout__nav,
   .layout__aside,
   .to-top,
@@ -2051,6 +2091,7 @@ form button {
   /* На аркуші ~720px — це «телефонна» ширина, але постерів поміщається п'ять у ряд */
   .cards {
     --min-col: calc((100% - 4 * var(--gap)) / 5);
+    --card-max: calc((100cqi - 4 * var(--gap)) / 5);
   }
 
   /* Картку не розрізає між сторінками */

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/app.js" defer></script>
     <title>Бронювання квитка — Кінотеатр «Кіносвіт»</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   </head>
@@ -13,21 +14,19 @@
         <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
         <h1>Кінотеатр «Кіносвіт»</h1>
       </div>
-      <nav class="nav" aria-label="Головне меню">
-        <details>
-          <summary class="nav__toggle">☰ Меню</summary>
-          <ul class="menu nav__list">
-            <li><a href="index.html">Головна</a></li>
-            <li><a href="index.html#poster-banner">Афіша тижня</a></li>
-            <li><a href="catalog.html">Каталог</a></li>
-            <li><a href="form.html" class="current">Бронювання</a></li>
-            <li><a href="index.html#concept">Про кінотеатр</a></li>
-            <li><a href="about.html">Про проєкт</a></li>
-            <li>
-              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('alt-theme')">Тема</button>
-            </li>
-          </ul>
-        </details>
+      <button id="burger" class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Меню">☰</button>
+      <nav id="menu" class="menu" aria-label="Головне меню">
+        <ul class="nav__list">
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="index.html#poster-banner">Афіша тижня</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="form.html" class="current">Бронювання</a></li>
+          <li><a href="index.html#concept">Про кінотеатр</a></li>
+          <li><a href="about.html">Про проєкт</a></li>
+          <li>
+            <button id="theme" class="theme-toggle" type="button" aria-pressed="false">🌙 Темна тема</button>
+          </li>
+        </ul>
       </nav>
     </header>
 
@@ -41,7 +40,7 @@
         безпосередньо в касі кінотеатру перед сеансом.
       </p>
 
-      <form action="/submit" method="post">
+      <form id="booking-form" action="/submit" method="post" novalidate>
         <!-- method="post": кожне надсилання створює окреме бронювання,
              тож дані не можна залишати в URL, а випадкове дублювання
              запиту при оновленні сторінки (F5) має бути виключене -->
@@ -53,7 +52,7 @@
             <label for="fullname">Прізвище та ім'я</label><br />
             <input
               type="text"
-              id="fullname"
+              id="fullname" aria-describedby="err-fullname"
               name="fullname"
               placeholder="Петренко Іван"
               autocomplete="name"
@@ -61,18 +60,20 @@
               minlength="2"
               maxlength="60"
             />
+            <span class="error" id="err-fullname"></span>
           </p>
 
           <p>
             <label for="email">Електронна пошта</label><br />
             <input
               type="email"
-              id="email"
+              id="email" aria-describedby="err-email"
               name="email"
               placeholder="ivan.petrenko@example.com"
               autocomplete="email"
               required
             />
+            <span class="error" id="err-email"></span>
           </p>
 
           <p>
@@ -83,7 +84,7 @@
                  Разом: +380671234567 -->
             <input
               type="tel"
-              id="phone"
+              id="phone" aria-describedby="err-phone"
               name="phone"
               placeholder="+380671234567"
               autocomplete="tel"
@@ -91,18 +92,20 @@
               pattern="\+380\d{9}"
               title="Формат: +380 і рівно дев'ять цифр номера, наприклад +380671234567"
             />
+            <span class="error" id="err-phone"></span>
           </p>
 
           <p>
             <label for="visit-date">Дата візиту (сеансу)</label><br />
             <input
               type="date"
-              id="visit-date"
+              id="visit-date" aria-describedby="err-visit-date"
               name="visit_date"
               required
               min="2026-10-09"
               max="2026-12-31"
             />
+            <span class="error" id="err-visit-date"></span>
           </p>
         </fieldset>
 
@@ -111,7 +114,7 @@
 
           <p>
             <label for="film">Фільм</label><br />
-            <select id="film" name="film" required>
+            <select id="film" aria-describedby="err-film" name="film" required>
               <option value="">— оберіть —</option>
               <option value="interstellar">«Інтерстеллар»</option>
               <option value="inception">«Початок»</option>
@@ -125,30 +128,34 @@
               <option value="gravity">«Гравітація»</option>
               <option value="heart-of-the-beast">«Серце звіра»</option>
             </select>
+            <span class="error" id="err-film"></span>
           </p>
 
           <p>
             <label for="session-time">Час сеансу</label><br />
-            <select id="session-time" name="session_time" required>
+            <select id="session-time" aria-describedby="err-session-time" name="session_time" required>
               <option value="">— оберіть —</option>
               <option value="10:00">10:00</option>
               <option value="13:30">13:30</option>
               <option value="17:00">17:00</option>
               <option value="20:30">20:30</option>
             </select>
+            <span class="error" id="err-session-time"></span>
           </p>
 
           <p>
             <label for="tickets">Кількість квитків</label><br />
             <input
               type="number"
-              id="tickets"
+              id="tickets" aria-describedby="err-tickets"
               name="tickets"
+              required
               min="1"
               max="5"
               step="1"
               placeholder="2"
             />
+            <span class="error" id="err-tickets"></span>
           </p>
 
           <p>Тип квитка:</p>
@@ -208,31 +215,34 @@
                  Разом: CIN-2026-A17 -->
             <input
               type="text"
-              id="booking-code"
+              id="booking-code" aria-describedby="err-booking-code"
               name="booking_code"
               placeholder="CIN-2026-A17"
               pattern="CIN-\d{4}-[A-Z]\d{2}"
               title="Код із листа-підтвердження. Формат: CIN, дефіс, рік із чотирьох цифр, дефіс, велика літера ряду і двозначний номер місця, наприклад CIN-2026-A17"
             />
+            <span class="error" id="err-booking-code"></span>
           </p>
 
           <p>
             <label for="comment">Коментар (необов'язково)</label><br />
             <textarea
-              id="comment"
+              id="comment" aria-describedby="err-comment"
               name="comment"
               rows="4"
               placeholder="Наприклад: прохання щодо доступу для людей з інвалідністю"
               minlength="10"
               maxlength="300"
             ></textarea>
+            <span class="error" id="err-comment"></span>
           </p>
 
           <p>
             <label for="consent">
-              <input type="checkbox" id="consent" name="consent" value="agreed" required />
+              <input type="checkbox" id="consent" aria-describedby="err-consent" name="consent" value="agreed" required />
               Я погоджуюся з правилами й умовами обробки персональних даних
             </label>
+            <span class="error" id="err-consent"></span>
           </p>
         </fieldset>
 
@@ -241,6 +251,12 @@
           <button type="reset">Скинути форму</button>
         </p>
       </form>
+
+      <!-- Квитанцію після успішної відправки збирає js/app.js -->
+      <section id="receipt" class="receipt" hidden>
+        <h2>Бронювання прийнято</h2>
+        <ul id="receipt-list"></ul>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -249,5 +265,7 @@
     </footer>
 
     <a class="to-top" href="#top" aria-label="Нагору">↑</a>
+
+    <div id="toast" class="toast" role="status" hidden></div>
   </body>
 </html>

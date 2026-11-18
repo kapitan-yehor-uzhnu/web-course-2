@@ -16,21 +16,19 @@
         <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
         <h1>Кінотеатр «Кіносвіт»</h1>
       </div>
-      <nav class="nav" aria-label="Головне меню">
-        <details>
-          <summary class="nav__toggle">☰ Меню</summary>
-          <ul class="menu nav__list">
-            <li><a href="index.html">Головна</a></li>
-            <li><a href="index.html#poster-banner">Афіша тижня</a></li>
-            <li><a href="catalog.html" class="current">Каталог</a></li>
-            <li><a href="form.html">Бронювання</a></li>
-            <li><a href="index.html#concept">Про кінотеатр</a></li>
-            <li><a href="about.html">Про проєкт</a></li>
-            <li>
-              <button class="theme-toggle" type="button" onclick="document.body.classList.toggle('alt-theme')">Тема</button>
-            </li>
-          </ul>
-        </details>
+      <button id="burger" class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Меню">☰</button>
+      <nav id="menu" class="menu" aria-label="Головне меню">
+        <ul class="nav__list">
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="index.html#poster-banner">Афіша тижня</a></li>
+          <li><a href="catalog.html" class="current">Каталог</a></li>
+          <li><a href="form.html">Бронювання</a></li>
+          <li><a href="index.html#concept">Про кінотеатр</a></li>
+          <li><a href="about.html">Про проєкт</a></li>
+          <li>
+            <button id="theme" class="theme-toggle" type="button" aria-pressed="false">🌙 Темна тема</button>
+          </li>
+        </ul>
       </nav>
     </header>
 
@@ -52,6 +50,34 @@
         <!-- Картки фільмів (LR5) -->
         <section id="catalog" class="catalog">
           <h2>Каталог</h2>
+          <!-- Панель керування каталогом: усе працює одразу, без кнопки «шукати» -->
+          <div class="controls">
+            <div class="controls__field">
+              <label for="q">Пошук</label>
+              <input type="search" id="q" placeholder="назва або режисер" />
+            </div>
+            <div class="controls__field">
+              <label for="filter">Жанр</label>
+              <select id="filter">
+                <option value="all">усі</option>
+                <option value="фантастика">фантастика</option>
+                <option value="драма">драма</option>
+                <option value="бойовик">бойовик</option>
+                <option value="трилер">трилер</option>
+                <option value="пригоди">пригоди</option>
+              </select>
+            </div>
+            <div class="controls__field">
+              <label for="duration-from">Від, хв</label>
+              <input type="number" id="duration-from" min="0" step="10" placeholder="90" />
+            </div>
+            <div class="controls__field">
+              <label for="duration-to">До, хв</label>
+              <input type="number" id="duration-to" min="0" step="10" placeholder="200" />
+            </div>
+            <button id="reset-filters" type="button">Скинути</button>
+          </div>
+          <p id="empty" class="empty" hidden>Нічого не знайдено. Спробуйте інший запит.</p>
           <!-- Індикатор завантаження — заготовка для LR10, коли картки вантажитимуться з мережі.
                Поки даних із мережі немає, він прихований атрибутом hidden -->
           <div class="loader" hidden>
@@ -123,309 +149,17 @@
               </div>
             </div>
           </div>
-          <div class="cards">
-            <article data-genres="пригоди драма трилер" class="card">
-              <span class="card__badge">Прем'єра</span>
-              <img
-                class="card__img"
-                src="images/poster-heart-of-the-beast.svg"
-                alt="Постер «Серце звіра»: засніжені гори Аляски під північним сяйвом і силует німецької вівчарки"
-                width="400"
-                height="600"
-              />
-              <span class="card__overlay" aria-hidden="true">Серце звіра</span>
-              <div class="card__body">
-                <h3 class="card__title">Серце звіра</h3>
-                <p class="card__meta">2026 · реж. Девід Ейр</p>
-                <p class="card__excerpt">
-                  Колишній солдат і його пес-вівчарка лишаються самі серед
-                  засніжених гір Аляски після аварії літака й мусять
-                  протриматися до приходу рятувальників.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-A07</p>
-              </div>
-              <div class="card__actions">
-                <button id="openDetails" class="card__preview" type="button">Швидкий перегляд</button>
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика драма трилер" class="card">
-              <img
-                class="card__img"
-                src="images/poster-blade-runner-2049.svg"
-                alt="Постер «Той, що біжить по лезу 2049»: самотня фігура в плащі серед хмарочосів у помаранчевому смогу"
-                width="640"
-                height="360"
-              />
-              <span class="card__overlay" aria-hidden="true">Той, що біжить по лезу 2049 (Blade Runner 2049)</span>
-              <div class="card__body">
-                <h3 class="card__title">Той, що біжить по лезу 2049 (Blade Runner 2049)</h3>
-                <p class="card__meta">2017 · реж. Дені Вільнев</p>
-                <p class="card__excerpt">
-                  Офіцер поліції К натрапляє на давно поховану таємницю, яка
-                  може зруйнувати крихкий порядок суспільства, і вирушає на
-                  пошуки зниклого Ріка Декарда.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-B12</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="бойовик пригоди фантастика" class="card">
-              <img
-                class="card__img"
-                src="images/poster-mad-max.svg"
-                alt="Постер «Шалений Макс: Дорога гніву»: бойова вантажівка мчить пустелею, здіймаючи хмару пилу"
-                width="500"
-                height="500"
-              />
-              <span class="card__overlay" aria-hidden="true">Шалений Макс: Дорога гніву (Mad Max: Fury Road)</span>
-              <div class="card__body">
-                <h3 class="card__title">Шалений Макс: Дорога гніву (Mad Max: Fury Road)</h3>
-                <p class="card__meta">2015 · реж. Джордж Міллер</p>
-                <p class="card__excerpt">
-                  У випаленій пустелі Макс і Імператор Фуріоса тікають на
-                  бойовій вантажівці від тирана Безсмертного Джо, рятуючи його
-                  полонених дружин.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-C03</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика пригоди драма" class="card card--glass card--pinned">
-              <span class="card__badge">Хіт прокату</span>
-              <img
-                class="card__img"
-                src="images/poster-dune.svg"
-                alt="Постер «Дюна»: піщаний черв'як виринає з дюн під двома місяцями Арракіса"
-                width="450"
-                height="600"
-              />
-              <span class="card__overlay" aria-hidden="true">Дюна</span>
-              <div class="card__body">
-                <h3 class="card__title">Дюна</h3>
-                <p class="card__meta">2021 · реж. Дені Вільнев</p>
-                <p class="card__excerpt">
-                  Юний Пол Атрід разом із родиною прибуває на пустельну планету
-                  Арракіс — єдине джерело найціннішої речовини у Всесвіті, за
-                  яку точиться смертельна боротьба.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-D21</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика драма пригоди" class="card">
-              <img
-                class="card__img"
-                src="images/poster-interstellar.svg"
-                alt="Постер «Інтерстеллар»: чорна діра з сяйливим диском над полем кукурудзи"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Інтерстеллар</span>
-              <div class="card__body">
-                <h3 class="card__title">Інтерстеллар</h3>
-                <p class="card__meta">2014 · реж. Крістофер Нолан</p>
-                <p class="card__excerpt">
-                  Колишній пілот Купер разом із командою науковців вирушає крізь
-                  червоточину, щоб знайти нову домівку для людства, поки Земля
-                  потерпає від посухи.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-E05</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика бойовик трилер" class="card">
-              <img
-                class="card__img"
-                src="images/poster-inception.svg"
-                alt="Постер «Початок»: перевернуте місто нависає над іншим, посередині — дзиґа"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Початок</span>
-              <div class="card__body">
-                <h3 class="card__title">Початок</h3>
-                <p class="card__meta">2010 · реж. Крістофер Нолан</p>
-                <p class="card__excerpt">
-                  Домінік Кобб викрадає секрети зі снів, а тепер мусить зробити
-                  протилежне — непомітно вкласти ідею в підсвідомість спадкоємця
-                  корпорації.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-F14</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="бойовик кримінал драма" class="card">
-              <img
-                class="card__img"
-                src="images/poster-dark-knight.svg"
-                alt="Постер «Темний лицар»: прожектор із силуетом кажана над нічними хмарочосами Готема"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Темний лицар</span>
-              <div class="card__body">
-                <h3 class="card__title">Темний лицар</h3>
-                <p class="card__meta">2008 · реж. Крістофер Нолан</p>
-                <p class="card__excerpt">
-                  Бетмен, комісар Гордон і прокурор Гарві Дент очищають Готем
-                  від злочинності, доки в місті не з'являється Джокер, що сіє
-                  хаос заради хаосу.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-G09</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика бойовик" class="card">
-              <img
-                class="card__img"
-                src="images/poster-matrix.svg"
-                alt="Постер «Матриця»: зелені символи цифрового дощу на чорному тлі"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Матриця</span>
-              <div class="card__body">
-                <h3 class="card__title">Матриця</h3>
-                <p class="card__meta">1999 · реж. Лана і Ліллі Вачовскі</p>
-                <p class="card__excerpt">
-                  Хакер Нео дізнається, що звичний світ — лише симуляція,
-                  створена машинами, і приєднується до повстанців Морфеуса, щоб
-                  вирватися з неї.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-H18</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика трилер драма" class="card">
-              <img
-                class="card__img"
-                src="images/poster-gravity.svg"
-                alt="Постер «Гравітація»: астронавтка з обірваним тросом дрейфує над блакитним краєм Землі"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Гравітація</span>
-              <div class="card__body">
-                <h3 class="card__title">Гравітація</h3>
-                <p class="card__meta">2013 · реж. Альфонсо Куарон</p>
-                <p class="card__excerpt">
-                  Після зіткнення з уламками на орбіті інженерка Раян Стоун
-                  лишається сама у відкритому космосі й мусить дістатися до
-                  найближчої станції.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-J02</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="драма мелодрама історичний" class="card">
-              <img
-                class="card__img"
-                src="images/poster-titanic.svg"
-                alt="Постер «Титанік»: силует лайнера з чотирма трубами на тлі заходу сонця над океаном"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Титанік</span>
-              <div class="card__body">
-                <h3 class="card__title">Титанік</h3>
-                <p class="card__meta">1997 · реж. Джеймс Кемерон</p>
-                <p class="card__excerpt">
-                  Художник Джек і аристократка Роуз знайомляться на борту
-                  «Титаніка» під час його першого рейсу, який закінчиться
-                  зіткненням з айсбергом.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-K11</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-
-            <article data-genres="фантастика пригоди бойовик" class="card">
-              <img
-                class="card__img"
-                src="images/poster-avatar.svg"
-                alt="Постер «Аватар»: летючі гори Пандори з ліанами й біолюмінесцентні вогники"
-                width="400"
-                height="600"
-                loading="lazy"
-              />
-              <span class="card__overlay" aria-hidden="true">Аватар</span>
-              <div class="card__body">
-                <h3 class="card__title">Аватар</h3>
-                <p class="card__meta">2009 · реж. Джеймс Кемерон</p>
-                <p class="card__excerpt">
-                  Колишній морський піхотинець Джейк Саллі в тілі аватара
-                  потрапляє до народу наві на Пандорі й мусить обрати, на чиєму
-                  він боці.
-                </p>
-                <p class="card__id">Код сеансу: CIN-2026-L06</p>
-              </div>
-              <div class="card__actions">
-                <a class="card__action" href="form.html">Забронювати</a>
-              </div>
-            </article>
-          </div>
+          <!-- Картки створює renderCards у js/app.js -->
+          <div class="cards" id="cards"></div>
         </section>
 
-        <!-- Модальне вікно з деталями першого фільму каталогу -->
+        <!-- Одне модальне вікно на весь каталог: вміст підставляє js/app.js -->
         <dialog id="details">
-          <h2>Серце звіра</h2>
-          <p class="details__id">Код сеансу: CIN-2026-A07</p>
-          <p>
-            Колишній солдат і його пес-вівчарка лишаються самі серед засніжених
-            гір Аляски після аварії літака й мусять протриматися до приходу
-            рятувальників.
-          </p>
-          <dl>
-            <dt>Режисер</dt>
-            <dd>Девід Ейр</dd>
-            <dt>Рік</dt>
-            <dd>2026, прем'єра</dd>
-            <dt>Тривалість</dt>
-            <dd>1 год 41 хв</dd>
-            <dt>Жанр</dt>
-            <dd>Пригоди, драма, трилер</dd>
-          </dl>
-          <h3>Акторський склад</h3>
-          <ul class="details__cast">
-            <li>Бред Пітт — Джеймс Белмонт</li>
-            <li>Дж. К. Сіммонс</li>
-            <li>Анна Ламбе</li>
-          </ul>
-          <button id="closeDetails" type="button">Закрити</button>
+          <h3 id="d-title">Деталі фільму</h3>
+          <p id="d-line1"></p>
+          <p id="d-line2"></p>
+          <p id="d-line3"></p>
+          <button id="d-close" type="button">Закрити</button>
         </dialog>
 
         <hr />
@@ -745,8 +479,7 @@
         </section>
       </main>
 
-      <!-- Бічна колонка: фільтр карток за жанром. Працює без JavaScript —
-           через :has() у CSS: обраний перемикач ховає картки інших жанрів -->
+      <!-- Бічна колонка: фільтр за жанром працює разом зі списком «Жанр» над каталогом -->
       <aside class="layout__aside catalog-aside">
         <!-- Та сама картка, що й у каталозі: у вузькій колонці вона вертикальна,
              а коли колонка ширша за 380px (телефон) — горизонтальна (контейнерний запит) -->
@@ -818,10 +551,7 @@
 
     <a class="to-top" href="#top" aria-label="Нагору">↑</a>
 
-    <script>
-      const dlg = document.getElementById("details");
-      document.getElementById("openDetails").addEventListener("click", () => dlg.showModal());
-      document.getElementById("closeDetails").addEventListener("click", () => dlg.close());
-    </script>
+    <div id="toast" class="toast" role="status" hidden></div>
+
   </body>
 </html>
