@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/app.js" defer></script>
+    <title>Статистика — Кіносвіт</title>
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header id="top" class="site-header">
+      <div class="site-header__brand">
+        <img src="images/logo.svg" alt="Логотип кінотеатру «Кіносвіт»" width="120" height="120" />
+        <h1>Кінотеатр «Кіносвіт»</h1>
+      </div>
+      <button id="burger" class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Меню">☰</button>
+      <nav id="menu" class="menu" aria-label="Головне меню">
+        <ul class="nav__list">
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="index.html#poster-banner">Афіша тижня</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="form.html">Бронювання</a></li>
+          <li><a href="index.html#concept">Про кінотеатр</a></li>
+          <li><a href="stats.html" class="current">Статистика</a></li>
+          <li><a href="about.html">Про проєкт</a></li>
+          <li>
+            <button id="theme" class="theme-toggle" type="button" aria-pressed="false">🌙 Темна тема</button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Статистика</h2>
+
+      <!-- Дані приходять із відкритого API SWAPI (без ключа) після завантаження сторінки -->
+      <section id="api-film" class="stats">
+        <h3>Класика на ретропоказі: дані з відкритого API</h3>
+        <p>
+          Для ретропоказів ми беремо довідку про фільм із публічного
+          <a href="https://swapi.dev/" target="_blank" rel="noopener noreferrer">SWAPI</a>.
+          Нижче — те, що сервер повернув просто зараз.
+        </p>
+
+        <div class="loader" hidden>
+          <div class="loader__status">
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Завантажуємо дані з API…</p>
+          </div>
+        </div>
+        <p id="stats-error" class="load-error" role="alert" hidden></p>
+        <!-- Поля відповіді додає js/app.js через createElement -->
+        <dl id="stats-list" class="stats__list"></dl>
+      </section>
+    </main>
+
+    <!-- Підвал сторінки -->
+    <footer class="site-footer">
+      <p>&copy; 2026 Кінотеатр «Кіносвіт»</p>
+      <p>Виконав: Капітан Єгор, група 1</p>
+    </footer>
+
+    <a class="to-top" href="#top" aria-label="Нагору">↑</a>
+  </body>
+</html>

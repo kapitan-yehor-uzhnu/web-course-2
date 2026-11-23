@@ -118,6 +118,8 @@ const bookingForm = document.getElementById("booking-form");
 const loader = document.querySelector(".loader");
 const loadError = document.getElementById("load-error");
 const favOnlyBox = document.getElementById("fav-only");
+const cacheNote = document.getElementById("cache-note");
+const statsList = document.getElementById("stats-list");
 
 /* ===== LR9: картки каталогу ===== */
 
@@ -280,6 +282,7 @@ const applyFilters = () => {
     : byText;
 
   activeQuery = query;
+  saveFilterState();
   renderCards(sorters[activeSort](result));
   resultCount.textContent = `Показано ${result.length} із ${films.length}`;
   emptyMessage.hidden = result.length > 0;
@@ -290,15 +293,55 @@ const applyFilters = () => {
       : `За запитом «${typed}» нічого не знайдено. Спробуйте інший запит.`;
 };
 
-// Приймає натиснуту кнопку — запам'ятовує порядок і позначає активну кнопку
-const selectSort = (button) => {
+// Приймає кнопку — запам'ятовує порядок і позначає активну кнопку (без перемальовування)
+const markSort = (button) => {
   activeSort = button.dataset.sort;
   for (const item of sortButtons.querySelectorAll("button")) {
     const active = item === button;
     item.classList.toggle("active", active);
     item.setAttribute("aria-pressed", String(active));
   }
+};
+
+// Приймає натиснуту кнопку — змінює порядок і перемальовує список
+const selectSort = (button) => {
+  markSort(button);
   applyFilters();
+};
+
+/* ===== LR10, бонус 2: стан фільтрів у localStorage ===== */
+
+// Зберігає запит, жанр і порядок одним об'єктом під ключем filters
+const saveFilterState = () => {
+  const state = { query: searchInput.value, genre: genreSelect.value, sort: activeSort };
+  localStorage.setItem("filters", JSON.stringify(state));
+};
+
+// Повертає збережений стан фільтрів або null, якщо його немає чи він зіпсований
+const loadFilterState = () => {
+  const raw = localStorage.getItem("filters");
+  if (!raw) return null;
+  try {
+    const state = JSON.parse(raw);
+    return state !== null && typeof state === "object" ? state : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+// Повертає полям вигляд зі сховища. Викликається лише після завантаження даних:
+// до того в списку «Жанр» ще немає варіантів, і збережений жанр нікуди було б поставити
+const restoreFilters = () => {
+  const state = loadFilterState();
+  if (state === null) return;
+  if (typeof state.query === "string") searchInput.value = state.query;
+  const option = genreSelect.querySelector(`option[value="${CSS.escape(String(state.genre))}"]`);
+  if (option) {
+    genreSelect.value = option.value;
+    document.querySelector(`input[name="genre"][value="${CSS.escape(option.value)}"]`).checked = true;
+  }
+  const button = sortButtons.querySelector(`button[data-sort="${CSS.escape(String(state.sort))}"]`);
+  if (button && state.sort in sorters) markSort(button);
 };
 
 // Приймає масив фільмів — додає в список «Жанр» і бічну колонку всі жанри з даних,
@@ -308,6 +351,13 @@ const fillGenreOptions = (items) => {
     genreName(a).localeCompare(genreName(b), "uk")
   );
   const radios = document.querySelector(".genre-filter");
+  // Свіжі дані з мережі можуть прийти після кешованих: прибираємо старі варіанти,
+  // щоб жанри не дублювалися, і зберігаємо вибір, якщо такий жанр лишився
+  const chosen = genreSelect.value;
+  for (const option of genreSelect.querySelectorAll('option:not([value="all"])')) option.remove();
+  for (const radio of radios.querySelectorAll('input[name="genre"]:not([value="all"])')) {
+    radio.closest("label").remove();
+  }
   for (const genre of genres) {
     const option = makeElement("option", "", genreName(genre));
     option.value = genre;
@@ -324,6 +374,9 @@ const fillGenreOptions = (items) => {
     label.append(radio, ` ${text[0].toUpperCase()}${text.slice(1)}`);
     radios.append(label);
   }
+  const keep = genres.includes(chosen) ? chosen : "all";
+  genreSelect.value = keep;
+  document.querySelector(`input[name="genre"][value="${keep}"]`).checked = true;
 };
 
 // Приймає жанр — узгоджує список над каталогом і перемикачі в бічній колонці
@@ -460,18 +513,145 @@ const showLoadError = (error) => {
   resultCount.textContent = "";
 };
 
-// Завантажує дані й лише після цього малює каталог
-async function init() {
+/* LR10, бонус 6: та сама функція на ланцюжку then/catch — для порівняння, не викликається.
+
+function loadDataWithThen() {
+  return fetch("data.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+      return response.json(); // без return наступний then отримав би undefined
+    })
+    .then((data) => {
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error("Файл даних порожній або має неправильну структуру");
+      }
+      return data.map((film, index) => ({ ...film, id: index + 1 }));
+    });
+}
+
+// Виклик виглядав би так:
+// loadDataWithThen()
+//   .then((list) => showFilms(list))
+//   .catch((error) => showLoadError(error))
+//   .finally(() => { loader.hidden = true; });
+*/
+
+/* ===== LR10, бонус 5: кеш даних у localStorage ===== */
+
+// Зберігає копію фільмів разом із часом, коли її отримано
+const saveCache = (list) => {
   try {
-    films = await loadData();
-    // Список жанрів і фільтри — лише після await: до завантаження масив порожній
-    fillGenreOptions(films);
-    applyFilters();
+    localStorage.setItem("filmsCache", JSON.stringify({ savedAt: Date.now(), films: list }));
   } catch (error) {
-    showLoadError(error);
+    // Сховище переповнене чи заборонене — каталог працює й без кешу
+  }
+};
+
+// Повертає { savedAt, films } зі сховища або null, якщо кешу немає чи його зіпсовано
+const loadCache = () => {
+  const raw = localStorage.getItem("filmsCache");
+  if (!raw) return null;
+  try {
+    const cache = JSON.parse(raw);
+    const valid =
+      cache !== null &&
+      typeof cache.savedAt === "number" &&
+      Array.isArray(cache.films) &&
+      cache.films.length > 0;
+    return valid ? cache : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+let filtersRestored = false;
+
+// Приймає масив фільмів — кладе його в films і перемальовує каталог
+const showFilms = (list) => {
+  films = list;
+  // Список жанрів і фільтри — лише після отримання даних: до того масив порожній
+  fillGenreOptions(films);
+  // Стан зі сховища повертаємо один раз — далі поля вже змінює людина
+  if (!filtersRestored) {
+    restoreFilters();
+    filtersRestored = true;
+  }
+  applyFilters();
+};
+
+// Завантажує дані й лише після цього малює каталог.
+// Якщо є кеш — показує його одразу, а свіжі дані підвантажує у фоні
+async function init() {
+  const cache = loadCache();
+  if (cache !== null) {
+    showFilms(cache.films);
+    loader.hidden = true;
+    cacheNote.hidden = false;
+    cacheNote.textContent =
+      `Дані з кешу від ${new Date(cache.savedAt).toLocaleString("uk-UA")}. Оновлюємо…`;
+  }
+
+  try {
+    const fresh = await loadData();
+    const changed = cache === null || JSON.stringify(fresh) !== JSON.stringify(cache.films);
+    saveCache(fresh);
+    if (changed) showFilms(fresh);
+    if (cache !== null && changed) showToast("Каталог оновлено свіжими даними");
+    cacheNote.hidden = true;
+  } catch (error) {
+    if (cache === null) {
+      showLoadError(error);
+    } else {
+      // Кешований каталог уже на сторінці — лише попереджаємо, що він може бути застарілим
+      cacheNote.textContent =
+        `Дані з кешу від ${new Date(cache.savedAt).toLocaleString("uk-UA")}. ` +
+        "Оновити не вдалося — перевірте з'єднання.";
+    }
   } finally {
     // Лише тут: якби спінер ховався в кінці try, то при помилці до того рядка
     // справа б не дійшла, і спінер крутився б поруч із повідомленням про помилку
+    loader.hidden = true;
+  }
+}
+
+/* ===== LR10, бонус 1: сторінка «Статистика» з відкритим API ===== */
+
+// Адреса фільму в SWAPI — публічному API без ключа
+const STATS_URL = "https://swapi.dev/api/films/1/";
+
+// Приймає дату «РРРР-ММ-ДД» — повертає її українською, напр. «25 травня 1977 р.»
+const formatReleaseDate = (text) =>
+  new Date(text).toLocaleDateString("uk-UA", { day: "numeric", month: "long", year: "numeric" });
+
+// Завантажує фільм з API і показує шість полів відповіді; при помилці — повідомлення
+async function loadStats() {
+  const statsError = document.getElementById("stats-error");
+  loader.hidden = false;
+  try {
+    const response = await fetch(STATS_URL);
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+    const film = await response.json();
+    const fields = [
+      ["Назва", film.title],
+      ["Епізод", String(film.episode_id)],
+      ["Режисер", film.director],
+      ["Продюсери", film.producer],
+      ["Дата прем'єри", formatReleaseDate(film.release_date)],
+      ["Персонажів у фільмі", String(film.characters.length)]
+    ];
+    for (const [label, value] of fields) {
+      statsList.append(makeElement("dt", "", label), makeElement("dd", "", value));
+    }
+  } catch (error) {
+    statsError.hidden = false;
+    statsError.textContent =
+      "Не вдалося отримати дані з API. Перевірте з'єднання і оновіть сторінку. " +
+      "Технічні подробиці: " + error.message;
+  } finally {
     loader.hidden = true;
   }
 }
@@ -578,6 +758,10 @@ const showReceipt = (lines) => {
 
 /* ===== LR9: запуск і події ===== */
 
+if (statsList !== null) {
+  loadStats();
+}
+
 if (cards !== null) {
   loader.hidden = false;
   init();
@@ -609,7 +793,10 @@ if (cards !== null) {
     durationFrom.value = "";
     durationTo.value = "";
     favOnlyBox.checked = false;
+    markSort(sortButtons.querySelector('button[data-sort="default"]'));
     selectGenre("all");
+    // Після selectGenre: applyFilters усередині знову записав би стан у сховище
+    localStorage.removeItem("filters");
     showToast("Фільтри скинуто");
   });
 
