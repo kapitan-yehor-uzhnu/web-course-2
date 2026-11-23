@@ -62,6 +62,11 @@ iframe {
   /* Підсвітка збігу в пошуку (LR9) — однакова в обох темах */
   --color-mark-bg: hsl(50 100% 60%);
   --color-mark-text: hsl(0 0% 0%);
+  /* Напівпрозоре темне тло під текстом на фото: однакове в обох темах, бо й фото однакове */
+  --color-scrim: hsl(225 28% 7% / 72%);
+  /* Рейтинг і тривалість на темній підкладці — кольори темної теми в обох темах */
+  --color-rating-on-scrim: hsl(42 100% 63%);
+  --color-duration-on-scrim: hsl(190 65% 72%);
   /* Розміри: шкала відступів і ширини — щоб у відступах не було «магічних чисел» */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -1638,6 +1643,21 @@ dialog table {
   text-shadow: 0 1px 3px rgb(0 0 0 / 90%), 0 0 10px rgb(0 0 0 / 60%);
 }
 
+/* Самої тіні замало там, де текст лягає на світлий екран зали, тому під текстом
+   ще й темна напівпрозора підкладка: фото видно, а назва й рядки читаються */
+.card--glass .card__body {
+  background: var(--color-scrim);
+  border-radius: calc(var(--radius) / 2);
+}
+
+.card--glass .card__body .rating {
+  color: var(--color-rating-on-scrim);
+}
+
+.card--glass .card__body .duration {
+  color: var(--color-duration-on-scrim);
+}
+
 /* --- Бонус 3. Плавний розмір заголовка сайту через clamp() ---
    Не менше 1.6rem на телефоні, не більше 3rem на широкому екрані,
    а між ними — 5% ширини вікна. Шапка однакова на всіх сторінках,
@@ -1665,7 +1685,7 @@ body > header h1 {
 
 /* --- Бонус 2. :has() як «батьківський селектор» ---
    Картка фільму на головній, у якій є ілюстрація (<img>), отримує акцентну рамку.
-   Картка без зображення («Титанік») лишається зі звичайною рамкою. */
+   Картка без зображення («Аватар») лишається зі звичайною рамкою. */
 #concept article:has(img) {
   border: 2px solid var(--color-accent);
 }
@@ -2192,8 +2212,11 @@ input[type="checkbox"].invalid {
   }
 
   .card--glass .card__body,
-  .card--glass .card__body > * {
+  .card--glass .card__body > *,
+  .card--glass .card__body .rating,
+  .card--glass .card__body .duration {
     color: #000;
+    background: none;
   }
 
   /* На аркуші ~720px — це «телефонна» ширина, але постерів поміщається п'ять у ряд */

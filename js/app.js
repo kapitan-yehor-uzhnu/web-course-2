@@ -4,7 +4,7 @@
 // let, а не const: значення присвоюється пізніше, коли файл уже прочитано.
 let films = []; // заповнюється в init(); до LR10 був масивом у коді
 
-// Те, чого немає в data.json, але потрібне карткам із LR5–LR7: постер, код сеансу,
+// Те, чого немає в data.json, але потрібне карткам із LR5–LR7: постер, код бронювання,
 // бейдж «Прем'єра» і закріплення. Ключ — назва фільму з файлу; сам файл не змінюємо.
 const extras = {
   "Interstellar": { img: "images/poster-interstellar.svg", code: "CIN-2026-E05" },
@@ -243,7 +243,7 @@ const createCard = (item) => {
     heading,
     makeElement("p", "card__meta", `${item.year} · реж. ${item.director}`),
     excerpt,
-    makeElement("p", "card__id", `Код сеансу: ${extra.code}`)
+    makeElement("p", "card__id", `Код бронювання: ${extra.code}`)
   );
 
   const details = makeElement("button", "card__preview", "Детальніше");
@@ -441,7 +441,7 @@ const openDetails = (item) => {
   // Прості поля — парами «підпис — значення» у списку означень
   const rating = averageRating(item);
   const facts = [
-    ["Код сеансу", extraOf(item).code],
+    ["Код бронювання", extraOf(item).code],
     ["Рік", String(item.year)],
     ["Режисер", item.director],
     ["Тривалість", formatDuration(item.duration_min)],
@@ -566,6 +566,49 @@ const loadCache = () => {
   }
 };
 
+// Приймає масив фільмів — малює в бічній колонці картку фільму з найвищою середньою оцінкою
+const renderRecommend = (list) => {
+  const box = document.getElementById("recommend");
+  // Порівнюємо точні середні, а не округлені: 9,875 і 9,9 після toFixed(1) обидва «9.9»
+  const mean = ({ ratings }) =>
+    ratings.length === 0 ? 0 : ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+  const best = list.reduce((top, film) => (mean(film) > mean(top) ? film : top));
+  const extra = extraOf(best);
+
+  const card = makeElement("article", "card");
+  const img = makeElement("img", "card__img");
+  img.src = extra.img;
+  img.alt = `Постер фільму «${best.title}»`;
+  img.width = 400;
+  img.height = 600;
+  img.loading = "lazy";
+  const overlay = makeElement("span", "card__overlay", best.title);
+  overlay.setAttribute("aria-hidden", "true");
+
+  const excerpt = makeElement("p", "card__excerpt");
+  excerpt.append(
+    makeElement("span", "rating", `★ ${averageRating(best)}`),
+    " · ",
+    makeElement("span", "duration", formatDuration(best.duration_min)),
+    ` · ${best.genres.map(genreName).join(", ")}`
+  );
+  const body = makeElement("div", "card__body");
+  body.append(
+    makeElement("h3", "card__title", best.title),
+    makeElement("p", "card__meta", `${best.year} · реж. ${best.director}`),
+    excerpt,
+    makeElement("p", "card__id", `Код бронювання: ${extra.code}`)
+  );
+
+  const booking = makeElement("a", "card__action", "Забронювати");
+  booking.href = "form.html";
+  const actions = makeElement("div", "card__actions");
+  actions.append(booking);
+
+  card.append(img, overlay, body, actions);
+  box.replaceChildren(card);
+};
+
 let filtersRestored = false;
 
 // Приймає масив фільмів — кладе його в films і перемальовує каталог
@@ -573,6 +616,7 @@ const showFilms = (list) => {
   films = list;
   // Список жанрів і фільтри — лише після отримання даних: до того масив порожній
   fillGenreOptions(films);
+  renderRecommend(films);
   // Стан зі сховища повертаємо один раз — далі поля вже змінює людина
   if (!filtersRestored) {
     restoreFilters();
