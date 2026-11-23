@@ -54,7 +54,7 @@
           <div class="controls">
             <div class="controls__field">
               <label for="q">Пошук</label>
-              <input type="search" id="q" placeholder="назва або режисер" />
+              <input type="search" id="q" placeholder="назва або режисер, напр. Nolan" />
             </div>
             <div class="controls__field">
               <label for="filter">Жанр</label>
@@ -164,9 +164,12 @@
         <!-- Одне модальне вікно на весь каталог: вміст підставляє js/app.js -->
         <dialog id="details">
           <h3 id="d-title">Деталі фільму</h3>
-          <p id="d-line1"></p>
-          <p id="d-line2"></p>
-          <p id="d-line3"></p>
+          <!-- Секції заповнює js/app.js: прості поля, касові збори (вкладений об'єкт),
+               місця зйомок (масив рядків) і акторський склад (масив об'єктів) -->
+          <div id="d-main"></div>
+          <div id="d-object"></div>
+          <div id="d-list"></div>
+          <div id="d-table"></div>
           <button id="d-close" type="button">Закрити</button>
         </dialog>
 

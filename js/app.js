@@ -49,6 +49,31 @@ const extraOf = (film) =>
 // Приймає жанр із файлу — повертає його українську назву
 const genreName = (genre) => genreNames[genre] ?? genre;
 
+// Підписи для ключів вкладених об'єктів і масивів об'єктів із data.json
+const fieldNames = {
+  budget_million: "Бюджет",
+  gross_worldwide_million: "Світові збори",
+  name: "Актор",
+  role: "Роль"
+};
+
+// Приймає ключ із файлу — повертає український підпис (або сам ключ, якщо підпису немає)
+const fieldName = (key) => fieldNames[key] ?? key;
+
+// Приймає суму в мільйонах доларів — повертає її повністю з розділювачами розрядів
+const formatMoney = (millions) =>
+  `${Math.round(millions * 1_000_000).toLocaleString("uk-UA")} $`;
+
+// Приймає фільм — повертає прибуток у мільйонах: збори мінус бюджет (у даних його немає)
+const profitOf = ({ boxOffice }) =>
+  boxOffice.gross_worldwide_million - boxOffice.budget_million;
+
+// Приймає фільм — повертає середню оцінку з одним знаком після коми або null без оцінок
+const averageRating = ({ ratings }) =>
+  ratings.length === 0
+    ? null
+    : (ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length).toFixed(1);
+
 // Приймає масив фільмів і жанр — повертає фільми, серед жанрів яких є цей
 const filterByGenre = (items, value) => items.filter((film) => film.genres.includes(value));
 
@@ -159,15 +184,21 @@ const createCard = (item) => {
   const heading = makeElement("h3", "card__title");
   fillTitle(heading, item.title, activeQuery);
 
+  // Рядок «рейтинг · тривалість · жанри»: рейтинг і тривалість мають власні стилі з LR4
+  const rating = averageRating(item);
+  const excerpt = makeElement("p", "card__excerpt");
+  excerpt.append(
+    makeElement("span", "rating", rating === null ? "без оцінок" : `★ ${rating}`),
+    " · ",
+    makeElement("span", "duration", formatDuration(item.duration_min)),
+    ` · ${item.genres.map(genreName).join(", ")}`
+  );
+
   const body = makeElement("div", "card__body");
   body.append(
     heading,
     makeElement("p", "card__meta", `${item.year} · реж. ${item.director}`),
-    makeElement(
-      "p",
-      "card__excerpt",
-      `${formatDuration(item.duration_min)} · ${item.genres.map(genreName).join(", ")}`
-    ),
+    excerpt,
     makeElement("p", "card__id", `Код сеансу: ${extra.code}`)
   );
 
@@ -205,7 +236,7 @@ const applyFilters = () => {
 
   activeQuery = query;
   renderCards(sorters[activeSort](result));
-  resultCount.textContent = `Знайдено: ${result.length} із ${films.length}`;
+  resultCount.textContent = `Показано ${result.length} із ${films.length}`;
   emptyMessage.hidden = result.length > 0;
   // Запит показуємо лише через textContent: навіть розмітка в ньому лишиться текстом
   emptyMessage.textContent =
@@ -232,17 +263,93 @@ const selectGenre = (genre) => {
   applyFilters();
 };
 
-// Приймає фільм — заповнює модальне вікно і відкриває його
+// Приймає заголовок і вміст — повертає секцію модалки «заголовок + вміст»
+const detailsSection = (title, ...content) => {
+  const section = document.createElement("div");
+  section.append(makeElement("h4", "", title), ...content);
+  return section;
+};
+
+// Приймає масив рядків і текст для порожнього масиву — повертає список <ul> або абзац
+const stringList = (values, emptyText) => {
+  if (values.length === 0) return makeElement("p", "details__empty", emptyText);
+  const list = document.createElement("ul");
+  for (const value of values) list.append(makeElement("li", "", value));
+  return list;
+};
+
+// Приймає масив об'єктів — повертає таблицю, стовпці якої — ключі першого елемента
+const objectTable = (rows, emptyText) => {
+  if (rows.length === 0) return makeElement("p", "details__empty", emptyText);
+  const keys = Object.keys(rows[0]);
+  const headRow = document.createElement("tr");
+  for (const key of keys) headRow.append(makeElement("th", "", fieldName(key)));
+  const thead = document.createElement("thead");
+  thead.append(headRow);
+  const tbody = document.createElement("tbody");
+  for (const row of rows) {
+    const tr = document.createElement("tr");
+    // null чи відсутнє поле показуємо рискою, щоб клітинка не була порожньою
+    for (const key of keys) tr.append(makeElement("td", "", String(row[key] ?? "—")));
+    tbody.append(tr);
+  }
+  const table = document.createElement("table");
+  table.append(thead, tbody);
+  return table;
+};
+
+// Приймає фільм — будує всю деталізацію в модальному вікні і відкриває його
 const openDetails = (item) => {
-  const cast = item.cast
-    .map(({ name, role }) => (role === null ? name : `${name} — ${role}`))
-    .join("; ");
+  const main = document.getElementById("d-main");
+  const object = document.getElementById("d-object");
+  const list = document.getElementById("d-list");
+  const table = document.getElementById("d-table");
+  // Очищаємо все перед заповненням, інакше дані попереднього фільму змішалися б із новими
+  main.replaceChildren();
+  object.replaceChildren();
+  list.replaceChildren();
+  table.replaceChildren();
+
   document.getElementById("d-title").textContent = item.title;
-  document.getElementById("d-line1").textContent =
-    `${extraOf(item).code} · реж. ${item.director} · ${item.year} · ` +
-    `${formatDuration(item.duration_min)} · ${item.genres.map(genreName).join(", ")}`;
-  document.getElementById("d-line2").textContent = `Акторський склад: ${cast}`;
-  document.getElementById("d-line3").textContent = `Місця зйомок: ${item.locations.join(", ")}`;
+
+  // Прості поля — парами «підпис — значення» у списку означень
+  const rating = averageRating(item);
+  const facts = [
+    ["Код сеансу", extraOf(item).code],
+    ["Рік", String(item.year)],
+    ["Режисер", item.director],
+    ["Тривалість", formatDuration(item.duration_min)],
+    ["Жанри", item.genres.map(genreName).join(", ")],
+    [
+      "Оцінки глядачів",
+      rating === null ? "оцінок ще немає" : `${item.ratings.join(", ")} (середня ${rating})`
+    ]
+  ];
+  const dl = document.createElement("dl");
+  for (const [label, value] of facts) {
+    dl.append(makeElement("dt", "", label), makeElement("dd", "", value));
+  }
+  main.append(dl);
+
+  // Касові збори: ключі вкладеного об'єкта перебираємо, а прибуток рахуємо самі
+  const money = document.createElement("dl");
+  for (const [key, value] of Object.entries(item.boxOffice)) {
+    money.append(makeElement("dt", "", fieldName(key)), makeElement("dd", "", formatMoney(value)));
+  }
+  const profit = profitOf(item);
+  money.append(
+    makeElement("dt", "", "Прибуток (збори − бюджет)"),
+    makeElement("dd", profit < 0 ? "details__loss" : "", formatMoney(profit))
+  );
+  object.append(detailsSection("Касові збори", money));
+
+  list.append(
+    detailsSection("Місця зйомок", stringList(item.locations, "Місця зйомок не вказано"))
+  );
+  table.append(
+    detailsSection("Акторський склад", objectTable(item.cast, "Акторський склад не вказано"))
+  );
+
   dlg.showModal();
 };
 
@@ -271,23 +378,25 @@ async function loadData() {
 }
 
 // Приймає помилку — показує над каталогом зрозуміле повідомлення замість карток
+// Не лише console.error: людина консолі не бачить, а порожня сторінка для неї — «сайт зламався»
 const showLoadError = (error) => {
-  loadError.textContent =
-    `Не вдалося завантажити каталог (${error.message}). ` +
-    "Перевірте з'єднання й оновіть сторінку.";
   loadError.hidden = false;
+  loadError.textContent =
+    "Не вдалося завантажити каталог. Перевірте з'єднання і " +
+    "оновіть сторінку. Технічні подробиці: " + error.message;
   resultCount.textContent = "";
 };
 
 // Завантажує дані й лише після цього малює каталог
 async function init() {
-  loader.hidden = false;
   try {
     films = await loadData();
     applyFilters();
   } catch (error) {
     showLoadError(error);
   } finally {
+    // Лише тут: якби спінер ховався в кінці try, то при помилці до того рядка
+    // справа б не дійшла, і спінер крутився б поруч із повідомленням про помилку
     loader.hidden = true;
   }
 }
@@ -395,6 +504,7 @@ const showReceipt = (lines) => {
 /* ===== LR9: запуск і події ===== */
 
 if (cards !== null) {
+  loader.hidden = false;
   init();
 
   let searchTimer;
