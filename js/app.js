@@ -117,6 +117,7 @@ const toast = document.getElementById("toast");
 const bookingForm = document.getElementById("booking-form");
 const loader = document.querySelector(".loader");
 const loadError = document.getElementById("load-error");
+const favOnlyBox = document.getElementById("fav-only");
 
 /* ===== LR9: картки каталогу ===== */
 
@@ -131,6 +132,41 @@ const makeElement = (tag, className, text = "") => {
 // Поточний стан каталогу: запит для підсвітки й обраний порядок карток
 let activeQuery = "";
 let activeSort = "default";
+
+/* ===== LR10: обране в localStorage ===== */
+
+// Повертає масив id обраних фільмів зі сховища; захищено від порожнього й зіпсованого вмісту
+function loadFavorites() {
+  const raw = localStorage.getItem("favorites");
+  if (!raw) return []; // ключа ще немає
+  try {
+    const list = JSON.parse(raw); // вміст могли зіпсувати вручну чи інший скрипт
+    return Array.isArray(list) ? list : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+// Приймає масив id — зберігає його в сховищі рядком JSON
+function saveFavorites(list) {
+  localStorage.setItem("favorites", JSON.stringify(list));
+}
+
+let favorites = loadFavorites();
+
+// Приймає id фільму — додає його до обраного або прибирає, повертає новий стан
+const toggleFavorite = (id) => {
+  const added = !favorites.includes(id);
+  favorites = added ? [...favorites, id] : favorites.filter((favId) => favId !== id);
+  saveFavorites(favorites);
+  return added;
+};
+
+// Приймає кнопку-сердечко і стан — оновлює її вигляд і підказку для читалки
+const paintFavButton = (button, isFavorite) => {
+  button.textContent = isFavorite ? "❤️" : "🤍";
+  button.setAttribute("aria-pressed", String(isFavorite));
+};
 
 // Способи сортування для кнопок: ключ — значення data-sort
 const sorters = {
@@ -164,6 +200,12 @@ const createCard = (item) => {
   const pinned = extra.pinned === true && activeSort === "default";
   card.className = pinned ? "card card--glass card--pinned" : "card";
   card.dataset.id = item.id;
+
+  const fav = makeElement("button", "fav");
+  fav.type = "button";
+  fav.dataset.id = item.id;
+  fav.setAttribute("aria-label", `Додати «${item.title}» до обраного`);
+  paintFavButton(fav, favorites.includes(item.id));
 
   const badge = makeElement(
     "span",
@@ -209,7 +251,7 @@ const createCard = (item) => {
   const actions = makeElement("div", "card__actions");
   actions.append(details, booking);
 
-  card.append(badge, img, overlay, body, actions);
+  card.append(fav, badge, img, overlay, body, actions);
   return card;
 };
 
@@ -232,7 +274,10 @@ const applyFilters = () => {
   const to = durationTo.value === "" ? Infinity : Number(durationTo.value);
 
   const byGenre = genre === "all" ? films : filterByGenre(films, genre);
-  const result = filterByText(filterByDurationRange(byGenre, from, to), query);
+  const byText = filterByText(filterByDurationRange(byGenre, from, to), query);
+  const result = favOnlyBox.checked
+    ? byText.filter((film) => favorites.includes(film.id))
+    : byText;
 
   activeQuery = query;
   renderCards(sorters[activeSort](result));
@@ -254,6 +299,31 @@ const selectSort = (button) => {
     item.setAttribute("aria-pressed", String(active));
   }
   applyFilters();
+};
+
+// Приймає масив фільмів — додає в список «Жанр» і бічну колонку всі жанри з даних,
+// щоб варіанти фільтра ніколи не розійшлися з data.json
+const fillGenreOptions = (items) => {
+  const genres = [...new Set(items.flatMap((film) => film.genres))].sort((a, b) =>
+    genreName(a).localeCompare(genreName(b), "uk")
+  );
+  const radios = document.querySelector(".genre-filter");
+  for (const genre of genres) {
+    const option = makeElement("option", "", genreName(genre));
+    option.value = genre;
+    genreSelect.append(option);
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "genre";
+    radio.id = `genre-${genre}`;
+    radio.value = genre;
+    const label = document.createElement("label");
+    label.htmlFor = radio.id;
+    const text = genreName(genre);
+    label.append(radio, ` ${text[0].toUpperCase()}${text.slice(1)}`);
+    radios.append(label);
+  }
 };
 
 // Приймає жанр — узгоджує список над каталогом і перемикачі в бічній колонці
@@ -295,7 +365,10 @@ const objectTable = (rows, emptyText) => {
   }
   const table = document.createElement("table");
   table.append(thead, tbody);
-  return table;
+  // Обгортка прокручує широку таблицю на вузькому екрані, а не всю сторінку
+  const wrap = makeElement("div", "table-wrap");
+  wrap.append(table);
+  return wrap;
 };
 
 // Приймає фільм — будує всю деталізацію в модальному вікні і відкриває його
@@ -391,6 +464,8 @@ const showLoadError = (error) => {
 async function init() {
   try {
     films = await loadData();
+    // Список жанрів і фільтри — лише після await: до завантаження масив порожній
+    fillGenreOptions(films);
     applyFilters();
   } catch (error) {
     showLoadError(error);
@@ -508,22 +583,16 @@ if (cards !== null) {
   init();
 
   let searchTimer;
-  let inputEvents = 0;
-  let searchRuns = 0;
 
   // input спрацьовує на кожен введений символ, а change — лише коли поле втратить фокус.
   // Затримка: шукаємо, коли людина на 300 мс перестала друкувати, а не на кожну літеру
   searchInput.addEventListener("input", () => {
-    inputEvents += 1;
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => {
-      searchRuns += 1;
-      applyFilters();
-      console.log(`Подій input: ${inputEvents}, виконано пошуків: ${searchRuns}`);
-    }, 300);
+    searchTimer = setTimeout(applyFilters, 300);
   });
   durationFrom.addEventListener("input", applyFilters);
   durationTo.addEventListener("input", applyFilters);
+  favOnlyBox.addEventListener("change", applyFilters);
   genreSelect.addEventListener("change", () => selectGenre(genreSelect.value));
   document.querySelector(".genre-filter").addEventListener("change", (event) => {
     selectGenre(event.target.value);
@@ -539,6 +608,7 @@ if (cards !== null) {
     searchInput.value = "";
     durationFrom.value = "";
     durationTo.value = "";
+    favOnlyBox.checked = false;
     selectGenre("all");
     showToast("Фільтри скинуто");
   });
@@ -546,6 +616,20 @@ if (cards !== null) {
   // Клік із картки спливає до контейнера, а контейнер не перемальовується, тому
   // один слухач на ньому працює і для карток, створених уже після підписки.
   cards.addEventListener("click", (event) => {
+    // Сердечко перемикає обране й вікна не відкриває
+    const favButton = event.target.closest(".fav");
+    if (favButton) {
+      const added = toggleFavorite(Number(favButton.dataset.id));
+      // У режимі «тільки обране» картка має зникнути, тож перемальовуємо список;
+      // інакше міняємо лише цю кнопку, і фокус клавіатури лишається на ній
+      if (favOnlyBox.checked) {
+        applyFilters();
+      } else {
+        paintFavButton(favButton, added);
+      }
+      showToast(added ? "Додано до обраного" : "Прибрано з обраного");
+      return;
+    }
     // Посилання «Забронювати» веде на форму й вікна не відкриває
     if (event.target.closest("a")) return;
     const card = event.target.closest(".card");
@@ -578,8 +662,18 @@ if (burger !== null) {
 }
 
 if (themeButton !== null) {
-  applyTheme(isDark());
-  themeButton.addEventListener("click", () => applyTheme(!isDark()));
+  // Спершу вибір людини зі сховища: він свідомий і важливіший за загальне налаштування системи
+  const saved = localStorage.getItem("theme"); // "dark" | "light" | null
+  if (saved) {
+    applyTheme(saved === "dark");
+  } else {
+    applyTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+  themeButton.addEventListener("click", () => {
+    const next = !isDark();
+    applyTheme(next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  });
 }
 
 if (bookingForm !== null) {

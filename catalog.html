@@ -60,11 +60,7 @@
               <label for="filter">Жанр</label>
               <select id="filter">
                 <option value="all">усі</option>
-                <option value="sci-fi">фантастика</option>
-                <option value="drama">драма</option>
-                <option value="action">бойовик</option>
-                <option value="thriller">трилер</option>
-                <option value="adventure">пригоди</option>
+                <!-- решта жанрів додається з data.json у js/app.js -->
               </select>
             </div>
             <div class="controls__field">
@@ -75,6 +71,10 @@
               <label for="duration-to">До, хв</label>
               <input type="number" id="duration-to" min="0" step="10" placeholder="200" />
             </div>
+            <label class="controls__check" for="fav-only">
+              <input type="checkbox" id="fav-only" />
+              Тільки обране
+            </label>
             <button id="reset-filters" type="button">Скинути</button>
             <div class="sort-buttons" id="sort-buttons" role="group" aria-label="Сортування">
               <button type="button" data-sort="default" class="active" aria-pressed="true">Як у каталозі</button>
@@ -492,26 +492,7 @@
               <input type="radio" id="genre-all" name="genre" value="all" checked />
               Усі фільми
             </label>
-            <label for="genre-scifi">
-              <input type="radio" id="genre-scifi" name="genre" value="sci-fi" />
-              Фантастика
-            </label>
-            <label for="genre-drama">
-              <input type="radio" id="genre-drama" name="genre" value="drama" />
-              Драма
-            </label>
-            <label for="genre-action">
-              <input type="radio" id="genre-action" name="genre" value="action" />
-              Бойовик
-            </label>
-            <label for="genre-thriller">
-              <input type="radio" id="genre-thriller" name="genre" value="thriller" />
-              Трилер
-            </label>
-            <label for="genre-adventure">
-              <input type="radio" id="genre-adventure" name="genre" value="adventure" />
-              Пригоди
-            </label>
+            <!-- перемикачі інших жанрів додаються з data.json у js/app.js -->
           </fieldset>
         </div>
       </aside>
