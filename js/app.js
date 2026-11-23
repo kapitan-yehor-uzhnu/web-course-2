@@ -1,302 +1,60 @@
 /* ===== Дані ===== */
 
-// Фільми кінотеатру «Кіносвіт»: дані взято з variants-data/variant04.json, а постери,
-// описи й коди сеансів — зі статичних карток LR5–LR7. У LR10 цей масив переїде
-// у зовнішній data.json і завантажуватиметься через fetch.
-// const забороняє лише перезаписати саму змінну films іншим значенням,
-// а вміст масиву лишається змінним — тому films.push(...) працює.
-const films = [
-  {
-    id: 1,
-    title: "Початок",
-    director: "Крістофер Нолан",
-    year: 2010,
-    durationMin: 148,
-    genre: "фантастика",
-    genres: ["фантастика", "бойовик", "трилер"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-F14",
-    img: "images/poster-inception.svg",
-    description: "Домінік Кобб викрадає секрети зі снів, а тепер мусить зробити протилежне — непомітно вкласти ідею в підсвідомість спадкоємця корпорації.",
-    boxOffice: { budgetMillion: 160, grossMillion: 839 },
-    ratings: [9, 8.5, 10, 9, 8],
-    cast: [
-      { name: "Леонардо Ді Капріо", role: "Домінік Кобб" },
-      { name: "Джозеф Гордон-Левітт", role: "Артур" },
-      { name: "Елліот Пейдж", role: "Аріадна" }
-    ]
+// Фільми тепер лежать у data.json і завантажуються через fetch у loadData().
+// let, а не const: значення присвоюється пізніше, коли файл уже прочитано.
+let films = []; // заповнюється в init(); до LR10 був масивом у коді
+
+// Те, чого немає в data.json, але потрібне карткам із LR5–LR7: постер, код сеансу,
+// бейдж «Прем'єра» і закріплення. Ключ — назва фільму з файлу; сам файл не змінюємо.
+const extras = {
+  "Interstellar": { img: "images/poster-interstellar.svg", code: "CIN-2026-E05" },
+  "Avatar": { img: "images/poster-avatar.svg", code: "CIN-2026-L06" },
+  "Inception": { img: "images/poster-inception.svg", code: "CIN-2026-F14" },
+  "The Lord of the Rings: The Fellowship of the Ring": {
+    img: "images/poster-lotr.svg",
+    code: "CIN-2026-M03"
   },
-  {
-    id: 2,
-    title: "Темний лицар",
-    director: "Крістофер Нолан",
-    year: 2008,
-    durationMin: 152,
-    genre: "бойовик",
-    genres: ["бойовик", "кримінал", "драма"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-G09",
-    img: "images/poster-dark-knight.svg",
-    description: "Бетмен, комісар Гордон і прокурор Гарві Дент очищають Готем від злочинності, доки в місті не з'являється Джокер, що сіє хаос заради хаосу.",
-    boxOffice: { budgetMillion: 185, grossMillion: 1006 },
-    ratings: [10, 9.5, 9, 10],
-    cast: [
-      { name: "Крістіан Бейл", role: "Брюс Вейн / Бетмен" },
-      { name: "Гіт Леджер", role: "Джокер" },
-      { name: "Аарон Екгарт", role: "Гарві Дент" }
-    ]
-  },
-  {
-    id: 3,
-    title: "Титанік",
-    director: "Джеймс Кемерон",
-    year: 1997,
-    durationMin: 194,
-    genre: "мелодрама",
-    genres: ["драма", "мелодрама", "історичний"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-K11",
-    img: "images/poster-titanic.svg",
-    description: "Художник Джек і аристократка Роуз знайомляться на борту «Титаніка» під час його першого рейсу, який закінчиться зіткненням з айсбергом.",
-    boxOffice: { budgetMillion: 200, grossMillion: 2264.7 },
-    ratings: [8, 9, 7.5],
-    cast: [
-      { name: "Леонардо Ді Капріо", role: "Джек Доусон" },
-      { name: "Кейт Вінслет", role: "Роуз Девітт Б'юкейтер" },
-      { name: "Біллі Зейн", role: "Кел Гоклі" }
-    ]
-  },
-  {
-    id: 4,
-    title: "Матриця",
-    director: "Лана і Ліллі Вачовскі",
-    year: 1999,
-    durationMin: 136,
-    genre: "фантастика",
-    genres: ["фантастика", "бойовик"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-H18",
-    img: "images/poster-matrix.svg",
-    description: "Хакер Нео дізнається, що звичний світ — лише симуляція, створена машинами, і приєднується до повстанців Морфеуса, щоб вирватися з неї.",
-    boxOffice: { budgetMillion: 63, grossMillion: 467.2 },
-    ratings: [9, 9, 8.5, 10, 9],
-    cast: [
-      { name: "Кіану Рівз", role: "Нео" },
-      { name: "Лоуренс Фішберн", role: "Морфеус" },
-      { name: "Керрі-Енн Мосс", role: "Трініті" }
-    ]
-  },
-  {
-    id: 5,
-    title: "Дюна",
-    director: "Дені Вільнев",
-    year: 2021,
-    durationMin: 155,
-    genre: "пригоди",
-    genres: ["фантастика", "пригоди", "драма"],
-    premiere: true,
-    pinned: true,
-    code: "CIN-2026-D21",
-    img: "images/poster-dune.svg",
-    description: "Юний Пол Атрід разом із родиною прибуває на пустельну планету Арракіс — єдине джерело найціннішої речовини у Всесвіті, за яку точиться смертельна боротьба.",
-    boxOffice: { budgetMillion: 165, grossMillion: 407.6 },
-    ratings: [9, 8, 8.5],
-    cast: [
-      { name: "Тімоті Шаламе", role: "Пол Атрід" },
-      { name: "Ребекка Фергюсон", role: "леді Джессіка" },
-      { name: "Оскар Айзек", role: "герцог Лето Атрід" }
-    ]
-  },
-  {
-    id: 6,
-    title: "Гравітація",
-    director: "Альфонсо Куарон",
-    year: 2013,
-    durationMin: 91,
-    genre: "трилер",
-    genres: ["фантастика", "трилер", "драма"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-J02",
-    img: "images/poster-gravity.svg",
-    description: "Після зіткнення з уламками на орбіті інженерка Раян Стоун лишається сама у відкритому космосі й мусить дістатися до найближчої станції.",
-    boxOffice: { budgetMillion: 100, grossMillion: 723.2 },
-    ratings: [8, 7.5],
-    cast: [
-      { name: "Сандра Буллок", role: "Раян Стоун" },
-      { name: "Джордж Клуні", role: "Метт Ковальскі" },
-      { name: "Ед Гарріс", role: "Центр керування польотами (голос)" }
-    ]
-  },
-  {
-    id: 7,
-    title: "Інтерстеллар",
-    director: "Крістофер Нолан",
-    year: 2014,
-    durationMin: 169,
-    genre: "фантастика",
-    genres: ["фантастика", "драма", "пригоди"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-E05",
-    img: "images/poster-interstellar.svg",
-    description: "Колишній пілот Купер разом із командою науковців вирушає крізь червоточину, щоб знайти нову домівку для людства, поки Земля потерпає від посухи.",
-    boxOffice: { budgetMillion: 165, grossMillion: 758.6 },
-    ratings: [10, 9, 9.5, 10, 8.5],
-    cast: [
-      { name: "Метью Макконахі", role: "Купер" },
-      { name: "Енн Гетевей", role: "Амелія Бренд" },
-      { name: "Джессіка Честейн", role: "Мерф" }
-    ]
-  },
-  {
-    id: 8,
-    title: "Аватар",
-    director: "Джеймс Кемерон",
-    year: 2009,
-    durationMin: 162,
-    genre: "фантастика",
-    genres: ["фантастика", "пригоди", "бойовик"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-L06",
-    img: "images/poster-avatar.svg",
-    description: "Колишній морський піхотинець Джейк Саллі в тілі аватара потрапляє до народу наві на Пандорі й мусить обрати, на чиєму він боці.",
-    boxOffice: { budgetMillion: 237, grossMillion: 2923.7 },
-    ratings: [8, 8.5, 7.5, 9, 8],
-    cast: [
-      { name: "Сем Вортінгтон", role: "Джейк Саллі" },
-      { name: "Зої Салдана", role: "Нейтірі" },
-      { name: "Сігурні Вівер", role: "Грейс Августин" }
-    ]
-  },
-  {
-    id: 9,
-    title: "Шалений Макс: Дорога гніву (Mad Max: Fury Road)",
-    director: "Джордж Міллер",
-    year: 2015,
-    durationMin: 120,
-    genre: "бойовик",
-    genres: ["бойовик", "пригоди", "фантастика"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-C03",
-    img: "images/poster-mad-max.svg",
-    description: "У випаленій пустелі Макс і Імператор Фуріоса тікають на бойовій вантажівці від тирана Безсмертного Джо, рятуючи його полонених дружин.",
-    boxOffice: { budgetMillion: 154, grossMillion: 380.4 },
-    ratings: [8.5, 9, 8, 7.5, 9],
-    cast: [
-      { name: "Том Гарді", role: "Макс Рокатанскі" },
-      { name: "Шарліз Терон", role: "Імператор Фуріоса" },
-      { name: "Ніколас Голт", role: "Нюкс" }
-    ]
-  },
-  {
-    id: 10,
-    title: "Той, що біжить по лезу 2049 (Blade Runner 2049)",
-    director: "Дені Вільнев",
-    year: 2017,
-    durationMin: 164,
-    genre: "фантастика",
-    genres: ["фантастика", "драма", "трилер"],
-    premiere: false,
-    pinned: false,
-    code: "CIN-2026-B12",
+  "The Matrix": { img: "images/poster-matrix.svg", code: "CIN-2026-H18" },
+  "Dune": { img: "images/poster-dune.svg", code: "CIN-2026-D21", premiere: true, pinned: true },
+  "Blade Runner 2049": {
     img: "images/poster-blade-runner-2049.svg",
-    description: "Офіцер поліції К натрапляє на давно поховану таємницю, яка може зруйнувати крихкий порядок суспільства, і вирушає на пошуки зниклого Ріка Декарда.",
-    boxOffice: { budgetMillion: 150, grossMillion: 276.6 },
-    ratings: [8.5, 9, 7, 8, 9.5],
-    cast: [
-      { name: "Раян Гослінг", role: "К" },
-      { name: "Гаррісон Форд", role: "Рік Декард" },
-      { name: "Ана де Армас", role: "Джой" }
-    ]
+    code: "CIN-2026-B12",
+    premiere: true
   },
-  {
-    id: 11,
-    title: "Серце звіра",
-    director: "Девід Ейр",
-    year: 2026,
-    durationMin: 101,
-    genre: "пригоди",
-    genres: ["пригоди", "драма", "трилер"],
-    premiere: true,
-    pinned: false,
-    code: "CIN-2026-A07",
-    img: "images/poster-heart-of-the-beast.svg",
-    description: "Колишній солдат і його пес-вівчарка лишаються самі серед засніжених гір Аляски після аварії літака й мусять протриматися до приходу рятувальників.",
-    boxOffice: { budgetMillion: null, grossMillion: null },
-    ratings: [],
-    cast: [
-      { name: "Бред Пітт", role: "Джеймс Белмонт" },
-      { name: "Дж. К. Сіммонс", role: null },
-      { name: "Анна Ламбе", role: null }
-    ]
-  }
-];
-
-/* ===== Допоміжні функції ===== */
-
-// Записує текст у вказаний елемент. Масив рядків склеює переносами.
-const show = (id, value) => {
-  const box = document.getElementById(id);
-  if (box === null) {
-    console.error("Немає елемента з id:", id);
-    return;
-  }
-  box.textContent = Array.isArray(value) ? value.join("\n") : value;
+  "The Dark Knight": { img: "images/poster-dark-knight.svg", code: "CIN-2026-G09" },
+  "The Shawshank Redemption": { img: "images/poster-shawshank.svg", code: "CIN-2026-N11" },
+  "Gladiator": { img: "images/poster-gladiator.svg", code: "CIN-2026-P07" }
 };
 
-// Приймає масив фільмів — повертає рядок-список назв або «нічого не знайдено»
-const titlesOrEmpty = (items) =>
-  items.length > 0
-    ? items.map((film) => `  • ${film.title}`).join("\n")
-    : "  нічого не знайдено";
-
-// Приймає суму в мільйонах або null — повертає підпис для сторінки
-const moneyText = (value) =>
-  value === null ? "ще немає даних" : `${Number(value.toFixed(1))} млн $`;
+// Жанри у файлі записано англійською — на сторінці показуємо українські назви
+const genreNames = {
+  "sci-fi": "фантастика",
+  "drama": "драма",
+  "adventure": "пригоди",
+  "action": "бойовик",
+  "fantasy": "фентезі",
+  "thriller": "трилер",
+  "crime": "кримінал",
+  "epic": "епос",
+  "historical": "історичний",
+  "neo-noir": "неонуар"
+};
 
 /* ===== Функції обробки ===== */
 
-// Приймає фільм — повертає назву узагальненої групи за його жанром
-function categoryOf(film) {
-  switch (film.genre) {
-    case "фантастика":
-    case "пригоди":
-      return "Фантастика й пригоди";
-    case "бойовик":
-    case "трилер":
-      return "Гостросюжетне кіно";
-    case "драма":
-      return "Драма";
-    default:
-      return "Інші жанри";
-  }
-}
+// Приймає фільм — повертає дані для картки, яких немає у файлі (або заглушку для нового фільму)
+const extraOf = (film) =>
+  extras[film.title] ?? { img: "images/poster-banner.svg", code: "CIN-2026-—" };
 
-// Приймає масив фільмів — повертає масив рядків «1. Назва — режисер, рік (збори)»
-const numberedList = (items) => {
-  const lines = [];
-  for (let i = 0; i < items.length; i++) {
-    const film = items[i];
-    lines.push(
-      `${i + 1}. ${film.title} — ${film.director}, ${film.year} (збори: ${moneyText(film.boxOffice.grossMillion)})`
-    );
-  }
-  return lines;
-};
+// Приймає жанр із файлу — повертає його українську назву
+const genreName = (genre) => genreNames[genre] ?? genre;
 
 // Приймає масив фільмів і жанр — повертає фільми, серед жанрів яких є цей
 const filterByGenre = (items, value) => items.filter((film) => film.genres.includes(value));
 
 // Приймає масив фільмів і межі в хвилинах — повертає фільми з тривалістю в цих межах
 const filterByDurationRange = (items, from, to) =>
-  items.filter((film) => film.durationMin >= from && film.durationMin <= to);
+  items.filter((film) => film.duration_min >= from && film.duration_min <= to);
 
 // Приймає масив фільмів і запит у нижньому регістрі — повертає збіги за назвою або режисером
 const filterByText = (items, query) =>
@@ -305,113 +63,14 @@ const filterByText = (items, query) =>
       film.title.toLowerCase().includes(query) || film.director.toLowerCase().includes(query)
   );
 
-// Приймає масив фільмів і кількість хвилин — повертає фільми, довші за цю тривалість
-const filterByDurationOver = (items, minutes) =>
-  items.filter((film) => film.durationMin > minutes);
-
 // Приймає масив фільмів — повертає НОВИЙ масив, відсортований за роком випуску
 const sortByYear = (items) => [...items].sort((a, b) => a.year - b.year);
 
 // Приймає масив фільмів — повертає НОВИЙ масив, відсортований за тривалістю
-const sortByDuration = (items) => [...items].sort((a, b) => a.durationMin - b.durationMin);
+const sortByDuration = (items) => [...items].sort((a, b) => a.duration_min - b.duration_min);
 
 // Приймає масив фільмів — повертає НОВИЙ масив, відсортований за назвою (українська абетка)
 const sortByTitle = (items) => [...items].sort((a, b) => a.title.localeCompare(b.title, "uk"));
-
-// Приймає фільм — повертає прибуток у мільйонах доларів або null, якщо зборів ще немає
-const profitOf = ({ boxOffice: { budgetMillion, grossMillion } }) =>
-  budgetMillion === null || grossMillion === null ? null : grossMillion - budgetMillion;
-
-// Приймає фільм з оцінками — повертає його середню оцінку глядачів
-const averageRatingOf = (film) =>
-  film.ratings.reduce((sum, rating) => sum + rating, 0) / film.ratings.length;
-
-// Приймає масив фільмів — повертає об'єкт зі статистикою за тривалістю, жанрами й оцінками
-const statsForFilms = (items) => {
-  // Початкове значення 0 — це стартова сума. Без нього reduce узяв би накопичувачем
-  // перший фільм (об'єкт), і «об'єкт + число» дало б рядок "[object Object]148…",
-  // а на порожньому масиві reduce без початкового значення взагалі кидає помилку.
-  const total = items.reduce((sum, film) => sum + film.durationMin, 0);
-  // Найдовший фільм: накопичувач — поточний «рекордсмен», порівнюємо з кожним фільмом
-  const max = items.reduce((longest, film) =>
-    film.durationMin > longest.durationMin ? film : longest
-  );
-  // У прем'єри ще немає оцінок, тому середнє рахуємо лише за фільмами з оцінками
-  const rated = items.filter((film) => film.ratings.length > 0);
-  const ratingSum = rated.reduce((sum, film) => sum + averageRatingOf(film), 0);
-  return {
-    count: items.length,
-    total,
-    average: (total / items.length).toFixed(1),
-    max,
-    categories: new Set(items.map((film) => film.genre)).size,
-    averageRating: (ratingSum / rated.length).toFixed(2)
-  };
-};
-
-/* ===== Бонусні функції LR8 ===== */
-
-// Приймає масив фільмів і рядок — повертає фільми, у назві, режисері чи оцінках
-// яких трапляється цей підрядок (без урахування регістру)
-const searchByText = (items, query) => {
-  const needle = query.toLowerCase();
-  return items.filter(
-    (film) =>
-      film.title.toLowerCase().includes(needle) ||
-      film.director.toLowerCase().includes(needle) ||
-      film.ratings.some((rating) => String(rating).includes(needle))
-  );
-};
-
-// Приймає масив, назву поля рядком і кількість — повертає n записів із найбільшим значенням поля
-const topBy = (items, field, n = 3) =>
-  [...items].sort((a, b) => b[field] - a[field]).slice(0, n);
-
-// Приймає фільм (одразу розбираючи потрібні поля) — повертає рядок для картки
-const cardLine = ({ title, year, boxOffice: { grossMillion } }) =>
-  `${title} (${year}), збори: ${moneyText(grossMillion)}`;
-
-// Приймає масив фільмів — повертає об'єкт «назва групи → скільки фільмів у ній»
-const countByCategory = (items) =>
-  items.reduce((groups, film) => {
-    const group = categoryOf(film);
-    groups[group] = (groups[group] ?? 0) + 1;
-    return groups;
-  }, {});
-
-// Приймає масив фільмів — повертає масив рядків-зауважень (порожній, якщо все гаразд)
-const validate = (items) => {
-  const notes = [];
-  const expectedKeys = Object.keys(items[0]).join();
-  items.forEach((film, index) => {
-    const label = `Запис №${index + 1}`;
-    if (Object.keys(film).join() !== expectedKeys) {
-      notes.push(`${label}: інший набір полів, ніж у першого запису`);
-    }
-    if (typeof film.title !== "string" || film.title.trim() === "") {
-      notes.push(`${label}: порожня назва`);
-    }
-    ["id", "year", "durationMin"].forEach((field) => {
-      if (typeof film[field] !== "number") {
-        notes.push(`${label}: поле ${field} не є числом (${JSON.stringify(film[field])})`);
-      }
-    });
-    if (typeof film.boxOffice !== "object" || film.boxOffice === null) {
-      notes.push(`${label}: немає вкладеного об'єкта boxOffice`);
-    } else {
-      ["budgetMillion", "grossMillion"].forEach((field) => {
-        // null означає «зборів ще немає» — так записано прем'єру
-        if (film.boxOffice[field] !== null && typeof film.boxOffice[field] !== "number") {
-          notes.push(`${label}: boxOffice.${field} не є числом`);
-        }
-      });
-    }
-    if (!Array.isArray(film.ratings) || film.ratings.some((r) => typeof r !== "number")) {
-      notes.push(`${label}: оцінки мають бути масивом чисел`);
-    }
-  });
-  return notes;
-};
 
 /* ===== LR9: елементи сторінки =====
    Скрипт підключено на всіх сторінках, а елементи є не всюди, тому на «чужій»
@@ -431,6 +90,8 @@ const menu = document.getElementById("menu");
 const themeButton = document.getElementById("theme");
 const toast = document.getElementById("toast");
 const bookingForm = document.getElementById("booking-form");
+const loader = document.querySelector(".loader");
+const loadError = document.getElementById("load-error");
 
 /* ===== LR9: картки каталогу ===== */
 
@@ -466,22 +127,27 @@ const fillTitle = (heading, title, query) => {
   heading.append(title.slice(0, start), match, title.slice(end));
 };
 
+// Приймає хвилини — повертає рядок на кшталт «2 год 28 хв»
+const formatDuration = (minutes) =>
+  `${Math.floor(minutes / 60)} год ${String(minutes % 60).padStart(2, "0")} хв`;
+
 // Приймає фільм — повертає готову картку
 const createCard = (item) => {
   const card = document.createElement("article");
   // Закріплена картка стоїть першою лише у звичайному порядку, інакше ламала б сортування
-  const pinned = item.pinned && activeSort === "default";
+  const extra = extraOf(item);
+  const pinned = extra.pinned === true && activeSort === "default";
   card.className = pinned ? "card card--glass card--pinned" : "card";
   card.dataset.id = item.id;
 
   const badge = makeElement(
     "span",
-    item.premiere ? "card__badge" : "card__badge card__badge--out",
-    item.premiere ? "Прем'єра" : "У прокаті"
+    extra.premiere ? "card__badge" : "card__badge card__badge--out",
+    extra.premiere ? "Прем'єра" : "У прокаті"
   );
 
   const img = makeElement("img", "card__img");
-  img.src = item.img;
+  img.src = extra.img;
   img.alt = `Постер фільму «${item.title}»`;
   img.width = 400;
   img.height = 600;
@@ -497,8 +163,12 @@ const createCard = (item) => {
   body.append(
     heading,
     makeElement("p", "card__meta", `${item.year} · реж. ${item.director}`),
-    makeElement("p", "card__excerpt", item.description),
-    makeElement("p", "card__id", `Код сеансу: ${item.code}`)
+    makeElement(
+      "p",
+      "card__excerpt",
+      `${formatDuration(item.duration_min)} · ${item.genres.map(genreName).join(", ")}`
+    ),
+    makeElement("p", "card__id", `Код сеансу: ${extra.code}`)
   );
 
   const details = makeElement("button", "card__preview", "Детальніше");
@@ -562,10 +232,6 @@ const selectGenre = (genre) => {
   applyFilters();
 };
 
-// Приймає хвилини — повертає рядок на кшталт «2 год 28 хв»
-const formatDuration = (minutes) =>
-  `${Math.floor(minutes / 60)} год ${String(minutes % 60).padStart(2, "0")} хв`;
-
 // Приймає фільм — заповнює модальне вікно і відкриває його
 const openDetails = (item) => {
   const cast = item.cast
@@ -573,12 +239,58 @@ const openDetails = (item) => {
     .join("; ");
   document.getElementById("d-title").textContent = item.title;
   document.getElementById("d-line1").textContent =
-    `${item.code} · реж. ${item.director} · ${item.year} · ` +
-    `${formatDuration(item.durationMin)} · ${item.genres.join(", ")}`;
-  document.getElementById("d-line2").textContent = item.description;
-  document.getElementById("d-line3").textContent = `Акторський склад: ${cast}`;
+    `${extraOf(item).code} · реж. ${item.director} · ${item.year} · ` +
+    `${formatDuration(item.duration_min)} · ${item.genres.map(genreName).join(", ")}`;
+  document.getElementById("d-line2").textContent = `Акторський склад: ${cast}`;
+  document.getElementById("d-line3").textContent = `Місця зйомок: ${item.locations.join(", ")}`;
   dlg.showModal();
 };
+
+/* ===== LR10: завантаження даних ===== */
+
+// fetch кидає помилку лише тоді, коли сервер узагалі не відповів (немає мережі).
+// Відповідь «404» чи «500» для нього — успішна доставка, тож без перевірки
+// response.ok до catch ми б не потрапили, а response.json() намагався б розібрати
+// сторінку помилки як дані.
+async function loadData() {
+  const response = await fetch("data.json");
+
+  if (!response.ok) {
+    throw new Error("HTTP " + response.status);
+  }
+
+  const data = await response.json();
+
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error("Файл даних порожній або має неправильну структуру");
+  }
+
+  // У файлі немає id, а картки знаходять свій фільм саме за ним (data-id),
+  // тому додаємо номер за порядком у копії — сам data.json лишається незмінним
+  return data.map((film, index) => ({ ...film, id: index + 1 }));
+}
+
+// Приймає помилку — показує над каталогом зрозуміле повідомлення замість карток
+const showLoadError = (error) => {
+  loadError.textContent =
+    `Не вдалося завантажити каталог (${error.message}). ` +
+    "Перевірте з'єднання й оновіть сторінку.";
+  loadError.hidden = false;
+  resultCount.textContent = "";
+};
+
+// Завантажує дані й лише після цього малює каталог
+async function init() {
+  loader.hidden = false;
+  try {
+    films = await loadData();
+    applyFilters();
+  } catch (error) {
+    showLoadError(error);
+  } finally {
+    loader.hidden = true;
+  }
+}
 
 /* ===== LR9: меню, тема, повідомлення ===== */
 
@@ -680,83 +392,10 @@ const showReceipt = (lines) => {
   document.getElementById("receipt").hidden = false;
 };
 
-/* ===== Виведення результатів ===== */
-
-// Блок «Демонстрація роботи» є лише в каталозі
-if (document.getElementById("demo") !== null) {
-  show("out-count", `Фільмів у каталозі: ${films.length}`);
-  show("out-numbered", numberedList(films));
-
-  show("out-categories", films.map((film) => `${film.title} → ${categoryOf(film)}`));
-
-  const sciFi = filterByGenre(films, "фантастика");
-  const musicals = filterByGenre(films, "мюзикл");
-  const longFilms = filterByDurationOver(films, 150);
-
-  show("out-filter", [
-    `Жанр «фантастика»: знайдено ${sciFi.length}`,
-    titlesOrEmpty(sciFi),
-    `Жанр «мюзикл»: знайдено ${musicals.length}`,
-    titlesOrEmpty(musicals),
-    `Довші за 150 хв: знайдено ${longFilms.length}`,
-    titlesOrEmpty(longFilms)
-  ]);
-
-  const byYear = sortByYear(films);
-  const byTitle = sortByTitle(films);
-
-  show("out-sorted", [
-    "За роком випуску:",
-    byYear.map((film) => `  • ${film.year} — ${film.title}`).join("\n"),
-    "За назвою:",
-    byTitle.map((film) => `  • ${film.title}`).join("\n"),
-    "Вихідний масив (порядок не змінився):",
-    films.map((film) => `  • ${film.id}. ${film.title}`).join("\n")
-  ]);
-
-  const stats = statsForFilms(films);
-
-  show("out-stats", [
-    `Фільмів: ${stats.count}`,
-    `Загальна тривалість: ${stats.total} хв`,
-    `Середня тривалість: ${stats.average} хв`,
-    `Найдовший: ${stats.max.title} (${stats.max.durationMin} хв)`,
-    `Різних жанрів: ${stats.categories}`,
-    `Середній рейтинг глядачів: ${stats.averageRating}`,
-    "Прибуток кожного фільму (збори − бюджет):",
-    films.map((film) => `  • ${film.title}: ${moneyText(profitOf(film))}`).join("\n")
-  ]);
-
-  /* ----- Бонуси ----- */
-
-  const queries = ["НОЛАН", "ма", "мюзикл"];
-  show(
-    "out-search",
-    queries.map((query) => `Запит «${query}»: знайдено ${searchByText(films, query).length}\n${titlesOrEmpty(searchByText(films, query))}`)
-  );
-
-  show("out-top", [
-    "Топ-3 найдовших:",
-    topBy(films, "durationMin").map((film) => `  • ${film.title} — ${film.durationMin} хв`).join("\n"),
-    "Топ-2 найновіших:",
-    topBy(films, "year", 2).map((film) => `  • ${film.title} — ${film.year}`).join("\n")
-  ]);
-
-  show("out-lines", films.map(cardLine));
-
-  show(
-    "out-groups",
-    Object.entries(countByCategory(films)).map(([group, count]) => `${group}: ${count}`)
-  );
-
-  const problems = validate(films);
-  show("out-validate", problems.length === 0 ? "Помилок не знайдено" : problems);
-}
-
 /* ===== LR9: запуск і події ===== */
 
 if (cards !== null) {
-  applyFilters();
+  init();
 
   let searchTimer;
   let inputEvents = 0;

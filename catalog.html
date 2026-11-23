@@ -60,11 +60,11 @@
               <label for="filter">Жанр</label>
               <select id="filter">
                 <option value="all">усі</option>
-                <option value="фантастика">фантастика</option>
-                <option value="драма">драма</option>
-                <option value="бойовик">бойовик</option>
-                <option value="трилер">трилер</option>
-                <option value="пригоди">пригоди</option>
+                <option value="sci-fi">фантастика</option>
+                <option value="drama">драма</option>
+                <option value="action">бойовик</option>
+                <option value="thriller">трилер</option>
+                <option value="adventure">пригоди</option>
               </select>
             </div>
             <div class="controls__field">
@@ -84,6 +84,7 @@
             </div>
             <p id="count" class="count" aria-live="polite"></p>
           </div>
+          <p id="load-error" class="load-error" role="alert" hidden></p>
           <p id="empty" class="empty" hidden>Нічого не знайдено. Спробуйте інший запит.</p>
           <!-- Індикатор завантаження — заготовка для LR10, коли картки вантажитимуться з мережі.
                Поки даних із мережі немає, він прихований атрибутом hidden -->
@@ -446,44 +447,6 @@
             <dd>Перелік фільмів, що демонструються в кінотеатрі цього тижня.</dd>
           </dl>
         </section>
-
-        <!-- Результати роботи js/app.js (LR8): текст у блоки виводить скрипт -->
-        <section class="demo" id="demo">
-          <h2>Демонстрація роботи</h2>
-
-          <h3>Усього фільмів</h3>
-          <p class="js-out" id="out-count"></p>
-
-          <h3>Нумерований список фільмів</h3>
-          <p class="js-out" id="out-numbered"></p>
-
-          <h3>Жанри</h3>
-          <p class="js-out" id="out-categories"></p>
-
-          <h3>Фільми, довші за 150 хв</h3>
-          <p class="js-out" id="out-filter"></p>
-
-          <h3>Сортування</h3>
-          <p class="js-out" id="out-sorted"></p>
-
-          <h3>Статистика: рейтинг і прибуток</h3>
-          <p class="js-out" id="out-stats"></p>
-
-          <h3>Пошук за назвою, режисером і оцінками</h3>
-          <p class="js-out" id="out-search"></p>
-
-          <h3>Топ фільмів</h3>
-          <p class="js-out" id="out-top"></p>
-
-          <h3>Рядки карток</h3>
-          <p class="js-out" id="out-lines"></p>
-
-          <h3>Скільки фільмів у кожній групі</h3>
-          <p class="js-out" id="out-groups"></p>
-
-          <h3>Перевірка даних</h3>
-          <p class="js-out" id="out-validate"></p>
-        </section>
       </main>
 
       <!-- Бічна колонка: фільтр за жанром працює разом зі списком «Жанр» над каталогом -->
@@ -527,23 +490,23 @@
               Усі фільми
             </label>
             <label for="genre-scifi">
-              <input type="radio" id="genre-scifi" name="genre" value="фантастика" />
+              <input type="radio" id="genre-scifi" name="genre" value="sci-fi" />
               Фантастика
             </label>
             <label for="genre-drama">
-              <input type="radio" id="genre-drama" name="genre" value="драма" />
+              <input type="radio" id="genre-drama" name="genre" value="drama" />
               Драма
             </label>
             <label for="genre-action">
-              <input type="radio" id="genre-action" name="genre" value="бойовик" />
+              <input type="radio" id="genre-action" name="genre" value="action" />
               Бойовик
             </label>
             <label for="genre-thriller">
-              <input type="radio" id="genre-thriller" name="genre" value="трилер" />
+              <input type="radio" id="genre-thriller" name="genre" value="thriller" />
               Трилер
             </label>
             <label for="genre-adventure">
-              <input type="radio" id="genre-adventure" name="genre" value="пригоди" />
+              <input type="radio" id="genre-adventure" name="genre" value="adventure" />
               Пригоди
             </label>
           </fieldset>

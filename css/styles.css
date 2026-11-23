@@ -1879,30 +1879,6 @@ form button {
   }
 }
 
-/* ===== Демонстрація роботи js/app.js (LR8) ===== */
-
-.demo h3 {
-  margin: var(--space-lg) 0 var(--space-sm);
-}
-
-/* white-space: pre-line зберігає переноси рядків "\n", які скрипт вставляє між
-   пунктами (зайві пробіли при цьому все одно зливаються, а довгі рядки переносяться);
-   без нього браузер показав би весь список одним суцільним рядком. */
-.js-out {
-  /* Без max-width: 65ch загального правила p — блоки на всю ширину секції */
-  max-width: none;
-  margin: 0;
-  padding: var(--space-md);
-  border-radius: calc(var(--radius) / 2);
-  background: var(--color-surface-raised);
-  /* Моноширинний шрифт сайту (JetBrains Mono) — стовпчики чисел рівні */
-  font-family: var(--font-body);
-  line-height: 1.7;
-  white-space: pre-line;
-  /* Довгі назви без пробілів не розпирають блок на вузькому екрані */
-  overflow-wrap: anywhere;
-}
-
 /* ===== Панель каталогу, форма й повідомлення (LR9) ===== */
 
 .controls {
@@ -1956,6 +1932,17 @@ form button {
 mark {
   background: hsl(50 100% 60%);
   color: hsl(0 0% 0%);
+}
+
+/* Повідомлення, якщо data.json не завантажився */
+.load-error {
+  max-width: none;
+  margin: 0 0 var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--color-error);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--color-error-bg);
+  color: var(--color-text);
 }
 
 .empty {

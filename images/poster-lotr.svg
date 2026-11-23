@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="400" height="600" viewBox="0 0 400 600">
+  <!-- Постер «Володар перснів: Хранителі Персня» — вертикальний 2:3, Перстень над горами -->
+  <defs>
+    <linearGradient id="lotr-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1d12" />
+      <stop offset="1" stop-color="#7a4a1e" />
+    </linearGradient>
+    <radialGradient id="lotr-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd27a" stop-opacity="0.6" />
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#lotr-sky)" />
+  <circle cx="200" cy="220" r="150" fill="url(#lotr-glow)" />
+  <!-- Перстень -->
+  <ellipse cx="200" cy="220" rx="78" ry="78" fill="none" stroke="#f2c14e" stroke-width="22" />
+  <ellipse cx="200" cy="220" rx="78" ry="78" fill="none" stroke="#fff1c2" stroke-width="4" opacity="0.6" />
+  <!-- гори -->
+  <path d="M 0 470 L 90 360 L 150 420 L 230 330 L 310 410 L 400 350 L 400 600 L 0 600 Z" fill="#1a120b" />
+  <path d="M 230 330 L 250 352 L 238 350 Z" fill="#c9b79a" />
+  <text x="200" y="540" fill="#f6e3b4" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="700" text-anchor="middle" letter-spacing="3">ВОЛОДАР ПЕРСНІВ</text>
+</svg>

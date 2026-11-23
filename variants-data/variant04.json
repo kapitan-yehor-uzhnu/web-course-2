@@ -1,200 +1,181 @@
 [
-  {
-    "title": "Початок",
-    "year": 2010,
-    "duration_min": 148,
-    "director": "Крістофер Нолан",
-    "genres": ["фантастика", "бойовик", "трилер"],
-    "cast": [
-      { "name": "Леонардо Ді Капріо", "role": "Домінік Кобб" },
-      { "name": "Джозеф Гордон-Левітт", "role": "Артур" },
-      { "name": "Елліот Пейдж", "role": "Аріадна" }
-    ],
-    "boxOffice": {
-      "budget_million": 160,
-      "gross_worldwide_million": 839
+    {
+      "title": "Interstellar",
+      "year": 2014,
+      "duration_min": 169,
+      "director": "Christopher Nolan",
+      "genres": ["sci-fi", "drama", "adventure"],
+      "cast": [
+        { "name": "Matthew McConaughey", "role": "Cooper" },
+        { "name": "Anne Hathaway", "role": "Amelia Brand" },
+        { "name": "Jessica Chastain", "role": "Murph" }
+      ],
+      "boxOffice": {
+        "budget_million": 165,
+        "gross_worldwide_million": 681
+      },
+      "locations": ["Iceland", "USA", "Canada"],
+      "ratings": [9.0, 10.0, 9.5, 8.7]
     },
-    "locations": ["Танжер, Марокко", "Париж, Франція", "Калгарі, Канада", "Лос-Анджелес, США"],
-    "ratings": [9, 8.5, 10, 9, 8]
-  },
-  {
-    "title": "Інтерстеллар",
-    "year": 2014,
-    "duration_min": 169,
-    "director": "Крістофер Нолан",
-    "genres": ["фантастика", "драма", "пригоди"],
-    "cast": [
-      { "name": "Метью Макконахі", "role": "Купер" },
-      { "name": "Енн Гетевей", "role": "Амелія Бренд" },
-      { "name": "Джессіка Честейн", "role": "Мерф" }
-    ],
-    "boxOffice": {
-      "budget_million": 165,
-      "gross_worldwide_million": 758.6
+    {
+      "title": "Avatar",
+      "year": 2009,
+      "duration_min": 162,
+      "director": "James Cameron",
+      "genres": ["sci-fi", "fantasy", "adventure"],
+      "cast": [
+        { "name": "Sam Worthington", "role": "Jake Sully" },
+        { "name": "Zoe Saldana", "role": "Neytiri" },
+        { "name": "Sigourney Weaver", "role": "Grace" }
+      ],
+      "boxOffice": {
+        "budget_million": 237,
+        "gross_worldwide_million": 2923
+      },
+      "locations": ["New Zealand", "USA"],
+      "ratings": [8.4, 9.0, 8.8, 7.9]
     },
-    "locations": ["Альберта, Канада", "Ісландія", "Лос-Анджелес, США"],
-    "ratings": [10, 9, 9.5, 10, 8.5]
-  },
-  {
-    "title": "Матриця",
-    "year": 1999,
-    "duration_min": 136,
-    "director": "Лана і Ліллі Вачовскі",
-    "genres": ["фантастика", "бойовик"],
-    "cast": [
-      { "name": "Кіану Рівз", "role": "Нео" },
-      { "name": "Лоуренс Фішберн", "role": "Морфеус" },
-      { "name": "Керрі-Енн Мосс", "role": "Трініті" }
-    ],
-    "boxOffice": {
-      "budget_million": 63,
-      "gross_worldwide_million": 467.2
+    {
+      "title": "Inception",
+      "year": 2010,
+      "duration_min": 148,
+      "director": "Christopher Nolan",
+      "genres": ["sci-fi", "thriller", "action"],
+      "cast": [
+        { "name": "Leonardo DiCaprio", "role": "Cobb" },
+        { "name": "Joseph Gordon-Levitt", "role": "Arthur" },
+        { "name": "Tom Hardy", "role": "Eames" }
+      ],
+      "boxOffice": {
+        "budget_million": 160,
+        "gross_worldwide_million": 836
+      },
+      "locations": ["Japan", "USA", "France", "UK", "Canada"],
+      "ratings": [9.5, 9.0, 8.8, 9.7]
     },
-    "locations": ["Сідней, Австралія"],
-    "ratings": [9, 9, 8.5, 10, 9]
-  },
-  {
-    "title": "Аватар",
-    "year": 2009,
-    "duration_min": 162,
-    "director": "Джеймс Кемерон",
-    "genres": ["фантастика", "пригоди", "бойовик"],
-    "cast": [
-      { "name": "Сем Вортінгтон", "role": "Джейк Саллі" },
-      { "name": "Зої Салдана", "role": "Нейтірі" },
-      { "name": "Сігурні Вівер", "role": "Грейс Августин" }
-    ],
-    "boxOffice": {
-      "budget_million": 237,
-      "gross_worldwide_million": 2923.7
+    {
+      "title": "The Lord of the Rings: The Fellowship of the Ring",
+      "year": 2001,
+      "duration_min": 178,
+      "director": "Peter Jackson",
+      "genres": ["fantasy", "adventure"],
+      "cast": [
+        { "name": "Elijah Wood", "role": "Frodo" },
+        { "name": "Ian McKellen", "role": "Gandalf" },
+        { "name": "Orlando Bloom", "role": "Legolas" }
+      ],
+      "boxOffice": {
+        "budget_million": 93,
+        "gross_worldwide_million": 898
+      },
+      "locations": ["New Zealand"],
+      "ratings": [9.0, 9.5, 9.2]
     },
-    "locations": ["Веллінгтон, Нова Зеландія", "Лос-Анджелес, США"],
-    "ratings": [8, 8.5, 7.5, 9, 8]
-  },
-  {
-    "title": "Темний лицар",
-    "year": 2008,
-    "duration_min": 152,
-    "director": "Крістофер Нолан",
-    "genres": ["бойовик", "кримінал", "драма"],
-    "cast": [
-      { "name": "Крістіан Бейл", "role": "Брюс Вейн / Бетмен" },
-      { "name": "Гіт Леджер", "role": "Джокер" },
-      { "name": "Аарон Екгарт", "role": "Гарві Дент" }
-    ],
-    "boxOffice": {
-      "budget_million": 185,
-      "gross_worldwide_million": 1006
+    {
+      "title": "The Matrix",
+      "year": 1999,
+      "duration_min": 136,
+      "director": "Lana & Lilly Wachowski",
+      "genres": ["sci-fi", "action"],
+      "cast": [
+        { "name": "Keanu Reeves", "role": "Neo" },
+        { "name": "Carrie-Anne Moss", "role": "Trinity" },
+        { "name": "Laurence Fishburne", "role": "Morpheus" }
+      ],
+      "boxOffice": {
+        "budget_million": 63,
+        "gross_worldwide_million": 467
+      },
+      "locations": ["Australia", "USA"],
+      "ratings": [9.5, 9.0, 8.9, 9.3]
     },
-    "locations": ["Чикаго, США", "Лондон, Велика Британія", "Гонконг, Китай"],
-    "ratings": [10, 9.5, 9, 10, 9]
-  },
-  {
-    "title": "Шалений Макс: Дорога гніву",
-    "year": 2015,
-    "duration_min": 120,
-    "director": "Джордж Міллер",
-    "genres": ["бойовик", "пригоди", "фантастика"],
-    "cast": [
-      { "name": "Том Гарді", "role": "Макс Рокатанскі" },
-      { "name": "Шарліз Терон", "role": "Імператор Фуріоса" },
-      { "name": "Ніколас Голт", "role": "Нюкс" }
-    ],
-    "boxOffice": {
-      "budget_million": 154,
-      "gross_worldwide_million": 380.4
+    {
+      "title": "Dune",
+      "year": 2021,
+      "duration_min": 155,
+      "director": "Denis Villeneuve",
+      "genres": ["sci-fi", "epic"],
+      "cast": [
+        { "name": "Timothée Chalamet", "role": "Paul Atreides" },
+        { "name": "Zendaya", "role": "Chani" },
+        { "name": "Oscar Isaac", "role": "Duke Leto" }
+      ],
+      "boxOffice": {
+        "budget_million": 165,
+        "gross_worldwide_million": 406
+      },
+      "locations": ["Jordan", "Hungary", "UAE"],
+      "ratings": [8.5, 9.0, 8.8]
     },
-    "locations": ["пустеля Наміб, Намібія", "Сідней, Австралія"],
-    "ratings": [8.5, 9, 8, 7.5, 9]
-  },
-  {
-    "title": "Гравітація",
-    "year": 2013,
-    "duration_min": 91,
-    "director": "Альфонсо Куарон",
-    "genres": ["фантастика", "трилер", "драма"],
-    "cast": [
-      { "name": "Сандра Буллок", "role": "Раян Стоун" },
-      { "name": "Джордж Клуні", "role": "Метт Ковальскі" },
-      { "name": "Ед Гарріс", "role": "Центр керування польотами (голос)" }
-    ],
-    "boxOffice": {
-      "budget_million": 100,
-      "gross_worldwide_million": 723.2
+    {
+      "title": "Blade Runner 2049",
+      "year": 2017,
+      "duration_min": 164,
+      "director": "Denis Villeneuve",
+      "genres": ["sci-fi", "neo-noir"],
+      "cast": [
+        { "name": "Ryan Gosling", "role": "K" },
+        { "name": "Harrison Ford", "role": "Deckard" },
+        { "name": "Ana de Armas", "role": "Joi" }
+      ],
+      "boxOffice": {
+        "budget_million": 150,
+        "gross_worldwide_million": 267
+      },
+      "locations": ["Hungary", "Spain"],
+      "ratings": [8.7, 8.9, 9.2]
     },
-    "locations": ["Шеппертон, Велика Британія", "озеро Пауелл, США"],
-    "ratings": [8, 7.5, 8.5, 8, 7]
-  },
-  {
-    "title": "Той, що біжить по лезу 2049",
-    "year": 2017,
-    "duration_min": 164,
-    "director": "Дені Вільнев",
-    "genres": ["фантастика", "драма", "трилер"],
-    "cast": [
-      { "name": "Раян Гослінг", "role": "К" },
-      { "name": "Гаррісон Форд", "role": "Рік Декард" },
-      { "name": "Ана де Армас", "role": "Джой" }
-    ],
-    "boxOffice": {
-      "budget_million": 150,
-      "gross_worldwide_million": 276.6
+    {
+      "title": "The Dark Knight",
+      "year": 2008,
+      "duration_min": 152,
+      "director": "Christopher Nolan",
+      "genres": ["action", "crime", "drama"],
+      "cast": [
+        { "name": "Christian Bale", "role": "Batman" },
+        { "name": "Heath Ledger", "role": "Joker" },
+        { "name": "Aaron Eckhart", "role": "Harvey Dent" }
+      ],
+      "boxOffice": {
+        "budget_million": 185,
+        "gross_worldwide_million": 1006
+      },
+      "locations": ["USA", "UK"],
+      "ratings": [10, 9.8, 9.7, 10]
     },
-    "locations": ["Будапешт, Угорщина", "Лас-Вегас, США"],
-    "ratings": [8.5, 9, 7, 8, 9.5]
-  },
-  {
-    "title": "Дюна",
-    "year": 2021,
-    "duration_min": 155,
-    "director": "Дені Вільнев",
-    "genres": ["фантастика", "пригоди", "драма"],
-    "cast": [
-      { "name": "Тімоті Шаламе", "role": "Пол Атрід" },
-      { "name": "Ребекка Фергюсон", "role": "леді Джессіка" },
-      { "name": "Оскар Айзек", "role": "герцог Лето Атрід" }
-    ],
-    "boxOffice": {
-      "budget_million": 165,
-      "gross_worldwide_million": 407.6
+    {
+      "title": "The Shawshank Redemption",
+      "year": 1994,
+      "duration_min": 142,
+      "director": "Frank Darabont",
+      "genres": ["drama"],
+      "cast": [
+        { "name": "Tim Robbins", "role": "Andy Dufresne" },
+        { "name": "Morgan Freeman", "role": "Red" }
+      ],
+      "boxOffice": {
+        "budget_million": 25,
+        "gross_worldwide_million": 73
+      },
+      "locations": ["USA"],
+      "ratings": [10, 9.9, 9.8]
     },
-    "locations": ["Вади-Рам, Йорданія", "Абу-Дабі, ОАЕ", "Будапешт, Угорщина", "Стадландет, Норвегія"],
-    "ratings": [9, 8, 8.5, 9, 8.5]
-  },
-  {
-    "title": "Титанік",
-    "year": 1997,
-    "duration_min": 194,
-    "director": "Джеймс Кемерон",
-    "genres": ["драма", "мелодрама", "історичний"],
-    "cast": [
-      { "name": "Леонардо Ді Капріо", "role": "Джек Доусон" },
-      { "name": "Кейт Вінслет", "role": "Роуз Девітт Б'юкейтер" },
-      { "name": "Біллі Зейн", "role": "Кел Гоклі" }
-    ],
-    "boxOffice": {
-      "budget_million": 200,
-      "gross_worldwide_million": 2264.7
-    },
-    "locations": ["Росаріто, Мексика", "Галіфакс, Канада"],
-    "ratings": [8, 9, 7.5, 8.5, 8]
-  },
-  {
-    "title": "Серце звіра",
-    "year": 2026,
-    "duration_min": 101,
-    "director": "Девід Ейр",
-    "genres": ["пригоди", "драма", "трилер"],
-    "cast": [
-      { "name": "Бред Пітт", "role": "Джеймс Белмонт" },
-      { "name": "Дж. К. Сіммонс", "role": null },
-      { "name": "Анна Ламбе", "role": null }
-    ],
-    "boxOffice": {
-      "budget_million": null,
-      "gross_worldwide_million": null
-    },
-    "locations": [],
-    "ratings": []
-  }
-]
+    {
+      "title": "Gladiator",
+      "year": 2000,
+      "duration_min": 155,
+      "director": "Ridley Scott",
+      "genres": ["historical", "drama", "action"],
+      "cast": [
+        { "name": "Russell Crowe", "role": "Maximus" },
+        { "name": "Joaquin Phoenix", "role": "Commodus" }
+      ],
+      "boxOffice": {
+        "budget_million": 103,
+        "gross_worldwide_million": 503
+      },
+      "locations": ["Malta", "Morocco", "UK"],
+      "ratings": [9.3, 9.1, 9.0, 9.4]
+    }
+  ]
+  
